@@ -1,0 +1,258 @@
+version: '3.9'
+
+services:
+  # ===================
+  # Frontend - Next.js
+  # ===================
+  web:
+    build:
+      context: ../apps/web
+      dockerfile: ../../docker/services/web/Dockerfile
+    container_name: thinkspace-web
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+      - NEXT_PUBLIC_STRAPI_URL=${NEXT_PUBLIC_STRAPI_URL}
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      - NEXT_PUBLIC_MEILISEARCH_HOST=${NEXT_PUBLIC_MEILISEARCH_HOST}
+      - STRAPI_URL=${STRAPI_URL:-http://cms:1337}
+      - STRAPI_API_TOKEN=${STRAPI_API_TOKEN}
+      - REVALIDATION_SECRET=${REVALIDATION_SECRET}
+    depends_on:
+      - api
+      - cms
+    networks:
+      - thinkspace-network
+
+  # ===================
+  # API Server - Elysia/Bun
+  # ===================
+  api:
+    build:
+      context: ../apps/api
+      dockerfile: ../../docker/services/api/Dockerfile
+    container_name: thinkspace-api
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=3001
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      - SUPABASE_URL=${SUPABASE_URL:-http://rest:3000}
+      - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
+      - REDIS_URL=redis://redis:6379
+      - MEILISEARCH_HOST=http://meilisearch:7700
+      - MEILISEARCH_KEY=${MEILISEARCH_KEY}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - CONTACT_EMAIL=${CONTACT_EMAIL}
+      - JWT_SECRET=${JWT_SECRET}
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - thinkspace-network
+
+  # ===================
+  # CMS - Strapi 5
+  # ===================
+  cms:
+    build:
+      context: ../apps/cms
+      dockerfile: ../../docker/services/cms/Dockerfile
+    container_name: thinkspace-cms
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - HOST=0.0.0.0
+      - PORT=1337
+      - APP_KEYS=${STRAPI_APP_KEYS}
+      - API_TOKEN_SALT=${STRAPI_API_TOKEN_SALT}
+      - ADMIN_JWT_SECRET=${STRAPI_ADMIN_JWT_SECRET}
+      - TRANSFER_TOKEN_SALT=${STRAPI_TRANSFER_TOKEN_SALT}
+      - JWT_SECRET=${STRAPI_JWT_SECRET:-${JWT_SECRET}}
+      - DATABASE_CLIENT=postgres
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=${POSTGRES_DB}
+      - DATABASE_USERNAME=${POSTGRES_USER}
+      - DATABASE_PASSWORD=${POSTGRES_PASSWORD}
+      - DATABASE_SSL=false
+      - WEBHOOK_URL=${NEXT_PUBLIC_SITE_URL}/api/revalidate
+      - WEBHOOK_SECRET=${REVALIDATION_SECRET}
+    volumes:
+      - cms-uploads:/app/public/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - thinkspace-network
+
+  # ===================
+  # Database - PostgreSQL (Supabase)
+  # ===================
+  db:
+    image: supabase/postgres:15.1.0.147
+    container_name: thinkspace-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-thinkspace}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - thinkspace-network
+
+  # ===================
+  # Supabase Auth (GoTrue)
+  # ===================
+  auth:
+    image: supabase/gotrue:v2.143.0
+    container_name: thinkspace-auth
+    restart: unless-stopped
+    environment:
+      - GOTRUE_API_HOST=0.0.0.0
+      - GOTRUE_API_PORT=9999
+      - GOTRUE_DB_DRIVER=postgres
+      - GOTRUE_DB_DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?search_path=auth
+      - GOTRUE_SITE_URL=${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+      - GOTRUE_URI_ALLOW_LIST=${GOTRUE_URI_ALLOW_LIST:-}
+      - GOTRUE_DISABLE_SIGNUP=${GOTRUE_DISABLE_SIGNUP:-false}
+      - GOTRUE_JWT_SECRET=${JWT_SECRET}
+      - GOTRUE_JWT_EXP=3600
+      - GOTRUE_JWT_DEFAULT_GROUP_NAME=authenticated
+      - GOTRUE_EXTERNAL_EMAIL_ENABLED=true
+      - GOTRUE_MAILER_AUTOCONFIRM=true
+      - GOTRUE_SMTP_HOST=${SMTP_HOST:-}
+      - GOTRUE_SMTP_PORT=${SMTP_PORT:-587}
+      - GOTRUE_SMTP_USER=${SMTP_USER:-}
+      - GOTRUE_SMTP_PASS=${SMTP_PASS:-}
+      - GOTRUE_SMTP_ADMIN_EMAIL=${SMTP_ADMIN_EMAIL:-}
+      - GOTRUE_MAILER_URLPATHS_INVITE=/auth/v1/verify
+      - GOTRUE_MAILER_URLPATHS_CONFIRMATION=/auth/v1/verify
+      - GOTRUE_MAILER_URLPATHS_RECOVERY=/auth/v1/verify
+      - GOTRUE_MAILER_URLPATHS_EMAIL_CHANGE=/auth/v1/verify
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - thinkspace-network
+
+  # ===================
+  # Supabase REST (PostgREST)
+  # ===================
+  rest:
+    image: postgrest/postgrest:v12.0.2
+    container_name: thinkspace-rest
+    restart: unless-stopped
+    environment:
+      - PGRST_DB_URI=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      - PGRST_DB_SCHEMAS=public,storage
+      - PGRST_DB_ANON_ROLE=anon
+      - PGRST_JWT_SECRET=${JWT_SECRET}
+      - PGRST_DB_USE_LEGACY_GUCS=false
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - thinkspace-network
+
+  # ===================
+  # Supabase Storage
+  # ===================
+  storage:
+    image: supabase/storage-api:v0.46.4
+    container_name: thinkspace-storage
+    restart: unless-stopped
+    environment:
+      - ANON_KEY=${SUPABASE_ANON_KEY}
+      - SERVICE_KEY=${SUPABASE_SERVICE_KEY}
+      - POSTGREST_URL=http://rest:3000
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      - FILE_SIZE_LIMIT=52428800
+      - STORAGE_BACKEND=file
+      - FILE_STORAGE_BACKEND_PATH=/var/lib/storage
+      - TENANT_ID=stub
+      - REGION=stub
+      - GLOBAL_S3_BUCKET=stub
+    volumes:
+      - storage-data:/var/lib/storage
+    depends_on:
+      db:
+        condition: service_healthy
+      rest:
+        condition: service_started
+    networks:
+      - thinkspace-network
+
+  # ===================
+  # Cache - Redis
+  # ===================
+  redis:
+    image: redis:7-alpine
+    container_name: thinkspace-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    networks:
+      - thinkspace-network
+
+  # ===================
+  # Search - Meilisearch
+  # ===================
+  meilisearch:
+    image: getmeili/meilisearch:v1.6
+    container_name: thinkspace-search
+    restart: unless-stopped
+    environment:
+      - MEILI_MASTER_KEY=${MEILISEARCH_KEY}
+      - MEILI_ENV=${NODE_ENV:-production}
+    volumes:
+      - meilisearch-data:/meili_data
+    networks:
+      - thinkspace-network
+
+  # ===================
+  # Reverse Proxy - Nginx
+  # ===================
+  nginx:
+    image: nginx:alpine
+    container_name: thinkspace-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./services/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./services/nginx/ssl:/etc/nginx/ssl:ro
+      - nginx-cache:/var/cache/nginx
+    depends_on:
+      - web
+      - api
+      - cms
+    networks:
+      - thinkspace-network
+
+networks:
+  thinkspace-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  redis-data:
+  meilisearch-data:
+  cms-uploads:
+  storage-data:
+  nginx-cache:

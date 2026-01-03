@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_sections_ctas",
+  "info": {
+    "displayName": "CTA",
+    "icon": "bell",
+    "description": "Call-to-action section"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "primaryButton": {
+      "type": "component",
+      "component": "shared.button"
+    },
+    "secondaryButton": {
+      "type": "component",
+      "component": "shared.button"
+    },
+    "backgroundVariant": {
+      "type": "enumeration",
+      "enum": ["primary", "dark", "light"],
+      "default": "dark"
+    }
+  }
+}

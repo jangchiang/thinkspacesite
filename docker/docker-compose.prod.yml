@@ -1,0 +1,47 @@
+version: '3.9'
+
+# Production overrides - optimized builds, no exposed internal ports
+
+services:
+  web:
+    build:
+      target: production
+    environment:
+      - NODE_ENV=production
+
+  api:
+    build:
+      target: production
+    environment:
+      - NODE_ENV=production
+
+  cms:
+    environment:
+      - NODE_ENV=production
+
+  meilisearch:
+    environment:
+      - MEILI_ENV=production
+
+  nginx:
+    environment:
+      - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
+
+  # Add resource limits for production
+  db:
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+
+  redis:
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  meilisearch:
+    deploy:
+      resources:
+        limits:
+          memory: 512M

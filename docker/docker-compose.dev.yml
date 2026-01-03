@@ -1,0 +1,71 @@
+version: '3.9'
+
+# Development overrides - exposes ports and mounts volumes for hot reload
+
+services:
+  web:
+    build:
+      target: development
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../apps/web:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NODE_ENV=development
+    command: bun run dev
+
+  api:
+    build:
+      target: development
+    ports:
+      - "3001:3001"
+    volumes:
+      - ../apps/api:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: bun run dev
+
+  cms:
+    ports:
+      - "1337:1337"
+    volumes:
+      - ../apps/cms:/app
+      - /app/node_modules
+      - /app/.cache
+    environment:
+      - NODE_ENV=development
+    command: npm run develop
+
+  db:
+    ports:
+      - "5432:5432"
+
+  auth:
+    ports:
+      - "9999:9999"
+
+  rest:
+    ports:
+      - "3002:3000"
+
+  storage:
+    ports:
+      - "5000:5000"
+
+  redis:
+    ports:
+      - "6379:6379"
+
+  meilisearch:
+    ports:
+      - "7700:7700"
+    environment:
+      - MEILI_ENV=development
+
+  # Disable nginx in development - access services directly
+  nginx:
+    profiles:
+      - production

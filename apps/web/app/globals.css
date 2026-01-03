@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom global styles */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply antialiased;
+    font-family: var(--font-kanit), system-ui, sans-serif;
+  }
+
+  /* Thai language specific styles - increased line-height for diacritical marks */
+  html[lang="th"] {
+    line-height: 2;
+  }
+
+  html[lang="th"] h1,
+  html[lang="th"] h2,
+  html[lang="th"] h3 {
+    line-height: 1.6;
+  }
+
+  html[lang="th"] h4,
+  html[lang="th"] h5,
+  html[lang="th"] h6 {
+    line-height: 1.7;
+  }
+
+  html[lang="th"] .text-4xl,
+  html[lang="th"] .text-5xl,
+  html[lang="th"] .text-6xl {
+    line-height: 1.5 !important;
+  }
+
+  html[lang="th"] p,
+  html[lang="th"] span,
+  html[lang="th"] li {
+    line-height: 2;
+  }
+
+  /* Focus styles for accessibility */
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary;
+  }
+}
+
+@layer components {
+  /* Container utility */
+  .container-custom {
+    @apply mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
+  }
+
+  /* Section padding */
+  .section-padding {
+    @apply py-16 md:py-24 lg:py-32;
+  }
+
+  /* Gradient text */
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+  }
+
+  /* Thai text utility - use on elements that need extra spacing */
+  .thai-text {
+    line-height: 1.8;
+  }
+
+  .thai-heading {
+    line-height: 1.5;
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
