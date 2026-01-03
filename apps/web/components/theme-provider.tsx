@@ -11,12 +11,14 @@ interface ThemeContextType {
   mounted: boolean
 }
 
-const ThemeContext = createContext<ThemeContextType>({
+const defaultContext: ThemeContextType = {
   theme: 'thinkspace',
   toggleTheme: () => {},
   setTheme: () => {},
   mounted: false,
-})
+}
+
+const ThemeContext = createContext<ThemeContextType>(defaultContext)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>('thinkspace')

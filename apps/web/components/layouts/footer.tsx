@@ -40,15 +40,15 @@ export function Footer({ locale, dict }: FooterProps) {
   }
 
   return (
-    <footer className="bg-neutral text-neutral-content">
+    <footer className="bg-base-200 text-base-content border-t border-base-300">
       <div className="container-custom py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link href={`/${locale}`} className="flex items-center gap-2 mb-4">
-              <span className="font-bold text-xl">Thinkspace Technology</span>
+              <span className="font-bold text-xl text-base-content">Thinkspace Technology</span>
             </Link>
-            <p className="text-neutral-content/70 mb-6 max-w-sm">
+            <p className="text-base-content/70 mb-6 max-w-sm">
               {dict.footer.tagline}
             </p>
             <div className="space-y-2 text-sm">
@@ -69,13 +69,13 @@ export function Footer({ locale, dict }: FooterProps) {
 
           {/* Services */}
           <div>
-            <h3 className="font-semibold mb-4">{dict.footer.services}</h3>
+            <h3 className="font-semibold mb-4 text-base-content">{dict.footer.services}</h3>
             <ul className="space-y-2">
               {navigation.services.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-neutral-content/70 hover:text-neutral-content text-sm"
+                    className="text-base-content/60 hover:text-primary text-sm transition-colors"
                   >
                     {item.name}
                   </Link>
@@ -86,13 +86,13 @@ export function Footer({ locale, dict }: FooterProps) {
 
           {/* Company */}
           <div>
-            <h3 className="font-semibold mb-4">{dict.footer.company}</h3>
+            <h3 className="font-semibold mb-4 text-base-content">{dict.footer.company}</h3>
             <ul className="space-y-2">
               {navigation.company.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-neutral-content/70 hover:text-neutral-content text-sm"
+                    className="text-base-content/60 hover:text-primary text-sm transition-colors"
                   >
                     {item.name}
                   </Link>
@@ -103,13 +103,13 @@ export function Footer({ locale, dict }: FooterProps) {
 
           {/* Legal */}
           <div>
-            <h3 className="font-semibold mb-4">{dict.footer.legal}</h3>
+            <h3 className="font-semibold mb-4 text-base-content">{dict.footer.legal}</h3>
             <ul className="space-y-2">
               {navigation.legal.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-neutral-content/70 hover:text-neutral-content text-sm"
+                    className="text-base-content/60 hover:text-primary text-sm transition-colors"
                   >
                     {item.name}
                   </Link>
@@ -123,7 +123,7 @@ export function Footer({ locale, dict }: FooterProps) {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="text-neutral-content/70 hover:text-primary"
+                  className="text-base-content/60 hover:text-primary transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -135,7 +135,7 @@ export function Footer({ locale, dict }: FooterProps) {
         </div>
 
         {/* Bottom */}
-        <div className="border-t border-neutral-content/10 mt-12 pt-8 text-center text-sm text-neutral-content/70">
+        <div className="border-t border-base-300 mt-12 pt-8 text-center text-sm text-base-content/60">
           <p>&copy; {new Date().getFullYear()} Thinkspace Technology. {dict.footer.copyright}</p>
         </div>
       </div>
