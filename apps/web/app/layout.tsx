@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter, Kanit } from 'next/font/google'
 import './globals.css'
+import { ThemeProvider } from '@/components/theme-provider'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -59,8 +60,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" data-theme="thinkspace" className={`${inter.variable} ${kanit.variable}`} suppressHydrationWarning>
-      <body className="min-h-screen bg-base-100" suppressHydrationWarning>
-        {children}
+      <body className="min-h-screen bg-base-100 transition-colors duration-300" suppressHydrationWarning>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )

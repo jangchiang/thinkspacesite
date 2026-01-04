@@ -3,10 +3,15 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef, useEffect, useState } from 'react'
 
-type Dict = Record<string, any>
+interface Stat {
+  id: number
+  value: string
+  label: string
+  order: number
+}
 
 interface StatsSectionProps {
-  dict: Dict
+  stats?: Stat[]
 }
 
 function AnimatedNumber({ value, suffix = '' }: { value: number; suffix?: string }) {
@@ -44,6 +49,28 @@ function AnimatedNumber({ value, suffix = '' }: { value: number; suffix?: string
   )
 }
 
+// Parse value to extract number and suffix for animation
+function parseStatValue(value: string): { number: number | null; suffix: string; displayRaw: boolean } {
+  // Check for special cases like 24/7
+  if (value.includes('/')) {
+    return { number: null, suffix: '', displayRaw: true }
+  }
+
+  // Extract number and suffix (e.g., "500+" -> 500, "+")
+  const match = value.match(/^([\d.]+)(.*)$/)
+  if (match) {
+    const num = parseFloat(match[1])
+    const suffix = match[2] || ''
+    // If it's a decimal, don't animate
+    if (match[1].includes('.')) {
+      return { number: null, suffix: '', displayRaw: true }
+    }
+    return { number: num, suffix, displayRaw: false }
+  }
+
+  return { number: null, suffix: '', displayRaw: true }
+}
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -68,16 +95,20 @@ const itemVariants = {
   },
 }
 
-export function StatsSection({ dict }: StatsSectionProps) {
+// Default stats (fallback if no CMS data)
+const defaultStats: Stat[] = [
+  { id: 1, value: '500+', label: 'Enterprise Clients', order: 1 },
+  { id: 2, value: '99.9%', label: 'SLA Uptime', order: 2 },
+  { id: 3, value: '24/7', label: 'Support Available', order: 3 },
+  { id: 4, value: '15+', label: 'Years Experience', order: 4 },
+]
+
+export function StatsSection({ stats }: StatsSectionProps) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
-  const stats = [
-    { value: 500, suffix: '+', labelKey: 'clients' },
-    { value: 99.9, suffix: '%', labelKey: 'uptime', isDecimal: true },
-    { displayValue: '24/7', labelKey: 'support' },
-    { value: 15, suffix: '+', labelKey: 'experience' },
-  ]
+  // Use provided stats or fallback to defaults
+  const displayStats = stats && stats.length > 0 ? stats : defaultStats
 
   return (
     <section className="section-padding bg-primary text-primary-content overflow-hidden" ref={ref}>
@@ -88,35 +119,37 @@ export function StatsSection({ dict }: StatsSectionProps) {
           animate={isInView ? 'visible' : 'hidden'}
           variants={containerVariants}
         >
-          {stats.map((stat, index) => (
-            <motion.div
-              key={stat.labelKey}
-              className="text-center"
-              variants={itemVariants}
-            >
+          {displayStats.map((stat, index) => {
+            const parsed = parseStatValue(stat.value)
+
+            return (
               <motion.div
-                className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2"
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+                key={stat.id}
+                className="text-center"
+                variants={itemVariants}
               >
-                {stat.displayValue ? (
-                  stat.displayValue
-                ) : stat.isDecimal ? (
-                  <span>{stat.value}{stat.suffix}</span>
-                ) : (
-                  <AnimatedNumber value={stat.value!} suffix={stat.suffix} />
-                )}
+                <motion.div
+                  className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+                >
+                  {parsed.displayRaw ? (
+                    stat.value
+                  ) : (
+                    <AnimatedNumber value={parsed.number!} suffix={parsed.suffix} />
+                  )}
+                </motion.div>
+                <motion.div
+                  className="text-primary-content/80 text-sm md:text-base"
+                  initial={{ opacity: 0 }}
+                  animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+                >
+                  {stat.label}
+                </motion.div>
               </motion.div>
-              <motion.div
-                className="text-primary-content/80 text-sm md:text-base"
-                initial={{ opacity: 0 }}
-                animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-              >
-                {dict.stats[stat.labelKey]}
-              </motion.div>
-            </motion.div>
-          ))}
+            )
+          })}
         </motion.div>
       </div>
     </section>

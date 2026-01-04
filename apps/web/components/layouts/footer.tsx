@@ -23,8 +23,8 @@ export function Footer({ locale, dict }: FooterProps) {
     company: [
       { name: dict.nav.about, href: `/${locale}/about` },
       { name: dict.footer.careers, href: `/${locale}/careers` },
-      { name: dict.nav.blog, href: `/${locale}/blog` },
-      { name: dict.footer.caseStudies, href: `/${locale}/case-studies` },
+      { name: dict.footer.news, href: `/${locale}/news` },
+      { name: dict.footer.works, href: `/${locale}/works` },
       { name: dict.nav.contact, href: `/${locale}/contact` },
     ],
     legal: [

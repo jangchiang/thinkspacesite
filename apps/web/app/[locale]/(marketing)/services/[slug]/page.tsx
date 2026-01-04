@@ -1,7 +1,9 @@
 import { type Locale } from '@/lib/i18n'
 import { getDictionary } from '@/lib/dictionary'
+import { getService, getPageHero } from '@/lib/strapi'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
+import { buildHeroBackground } from '@/lib/hero-utils'
 import {
   ServiceHero,
   FeaturesSection,
@@ -14,6 +16,43 @@ import {
 
 type Props = {
   params: Promise<{ locale: Locale; slug: string }>
+}
+
+// Strapi service data interface
+interface StrapiImage {
+  id: number
+  url: string
+  formats?: {
+    large?: { url: string }
+    medium?: { url: string }
+    small?: { url: string }
+    thumbnail?: { url: string }
+  }
+}
+
+interface StrapiService {
+  id: number
+  documentId: string
+  title: string
+  slug: string
+  description?: string
+  shortDescription?: string
+  icon?: string
+  color?: string
+  featuredImage?: StrapiImage
+  features?: { id: number; title: string }[]
+  useCases?: { id: number; title: string; description: string }[]
+  technologies?: { id: number; name: string }[]
+  processSteps?: { id: number; title: string; description: string }[]
+}
+
+// Helper to build Strapi image URL
+function getStrapiImageUrl(image: StrapiImage | undefined): string | undefined {
+  if (!image) return undefined
+  const baseUrl = process.env.STRAPI_URL || 'http://localhost:1337'
+  // Prefer large format, fallback to original
+  const imageUrl = image.formats?.large?.url || image.formats?.medium?.url || image.url
+  return `${baseUrl}${imageUrl}`
 }
 
 interface ServiceData {
@@ -107,8 +146,16 @@ const serviceData: Record<string, ServiceData> = {
         th: { title: 'แพลตฟอร์ม E-commerce', description: 'พัฒนาร้านค้าออนไลน์ที่ขยายได้พร้อมการเชื่อมต่อการชำระเงินและการจัดการสินค้าคงคลัง' }
       },
       {
-        en: { title: 'Mobile Apps', description: 'Create native and cross-platform mobile applications for iOS and Android' },
-        th: { title: 'แอปมือถือ', description: 'สร้างแอปพลิเคชันมือถือแบบ Native และ Cross-platform สำหรับ iOS และ Android' }
+        en: { title: 'API & Integration', description: 'Design and develop RESTful and GraphQL APIs with seamless third-party integrations' },
+        th: { title: 'API และการเชื่อมต่อ', description: 'ออกแบบและพัฒนา RESTful และ GraphQL API พร้อมการเชื่อมต่อกับระบบภายนอกอย่างราบรื่น' }
+      },
+      {
+        en: { title: 'DevOps & Automation', description: 'Implement CI/CD pipelines, infrastructure as code, and automated deployment workflows' },
+        th: { title: 'DevOps และระบบอัตโนมัติ', description: 'วาง CI/CD Pipeline, Infrastructure as Code และระบบ Deployment อัตโนมัติ' }
+      },
+      {
+        en: { title: 'Legacy Modernization', description: 'Transform legacy systems to modern architecture with minimal disruption to operations' },
+        th: { title: 'ปรับปรุงระบบเก่า', description: 'แปลงระบบเก่าให้เป็นสถาปัตยกรรมสมัยใหม่โดยกระทบการดำเนินงานน้อยที่สุด' }
       },
       {
         en: { title: 'SaaS Products', description: 'Build multi-tenant SaaS platforms with subscription management and analytics' },
@@ -123,7 +170,7 @@ const serviceData: Record<string, ServiceData> = {
         th: { title: 'โซลูชัน IoT', description: 'พัฒนาแอปพลิเคชัน IoT สำหรับอุปกรณ์อัจฉริยะ เซ็นเซอร์ และการตรวจสอบแบบเรียลไทม์' }
       },
     ],
-    technologies: ['React', 'Next.js', 'Node.js', 'Python', 'TypeScript', 'PostgreSQL', 'MongoDB', 'Redis', 'GraphQL', 'Flutter', 'React Native', 'Go'],
+    technologies: ['React', 'Next.js', 'Vue.js', 'Angular', 'Node.js', 'Python', 'Go', 'Rust', 'TypeScript', 'PostgreSQL', 'MongoDB', 'Redis', 'GraphQL', 'Docker', 'Kubernetes', 'AWS', 'Azure', 'Terraform', 'GitHub Actions', 'GitLab CI', 'Elasticsearch', 'RabbitMQ', 'Kafka'],
     process: [
       {
         en: { title: 'Requirements Analysis', description: 'Deep dive into your business needs, user stories, and technical requirements to define project scope.' },
@@ -463,17 +510,58 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ServiceDetailPage({ params }: Props) {
   const { locale, slug } = await params
-  const service = serviceData[slug]
 
-  if (!service) {
+  // Fetch dictionary, service, and hero data in parallel
+  const [dict, strapiServiceResult, heroData] = await Promise.all([
+    getDictionary(locale),
+    getService(slug, locale).catch(() => null) as Promise<StrapiService | null>,
+    getPageHero(`service-${slug}`, locale),
+  ])
+
+  const strapiService = strapiServiceResult
+  const heroBackground = buildHeroBackground(heroData)
+
+  // Fall back to hardcoded data if not in Strapi
+  const fallbackService = serviceData[slug]
+
+  if (!strapiService && !fallbackService) {
     notFound()
   }
 
-  const dict = await getDictionary(locale)
+  // Use Strapi data if available, otherwise use fallback
+  let title: string
+  let description: string
+  let iconName: string
+  let color: string
+  let features: string[]
+  let useCases: { title: string; description: string }[]
+  let technologies: string[]
+  let processSteps: { title: string; description: string }[]
+  let featuredImageUrl: string | undefined
 
-  const features = service.features.map((f) => (locale === 'th' ? f.th : f.en))
-  const useCases = service.useCases.map((uc) => locale === 'th' ? uc.th : uc.en)
-  const processSteps = service.process.map((p) => locale === 'th' ? p.th : p.en)
+  if (strapiService) {
+    // Use Strapi data
+    title = strapiService.title
+    description = strapiService.description || strapiService.shortDescription || ''
+    iconName = strapiService.icon || 'Code'
+    color = strapiService.color || 'bg-primary'
+    features = strapiService.features?.map(f => f.title) || []
+    useCases = strapiService.useCases?.map(uc => ({ title: uc.title, description: uc.description })) || []
+    technologies = strapiService.technologies?.map(t => t.name) || []
+    processSteps = strapiService.processSteps?.map(ps => ({ title: ps.title, description: ps.description })) || []
+    featuredImageUrl = getStrapiImageUrl(strapiService.featuredImage)
+  } else {
+    // Use fallback hardcoded data
+    const service = fallbackService!
+    title = dict.services?.[service.key]?.title || slug
+    description = dict.services?.[service.key]?.description || ''
+    iconName = service.iconName
+    color = service.color
+    features = service.features.map((f) => (locale === 'th' ? f.th : f.en))
+    useCases = service.useCases.map((uc) => locale === 'th' ? uc.th : uc.en)
+    technologies = service.technologies
+    processSteps = service.process.map((p) => locale === 'th' ? p.th : p.en)
+  }
 
   const benefits = [
     {
@@ -499,16 +587,18 @@ export default async function ServiceDetailPage({ params }: Props) {
   return (
     <>
       <ServiceHero
-        iconName={service.iconName}
-        color={service.color}
-        title={dict.services?.[service.key]?.title || slug}
-        description={dict.services?.[service.key]?.description || ''}
+        iconName={iconName}
+        color={color}
+        title={title}
+        description={description}
+        background={heroBackground}
       />
 
       <FeaturesSection
         title={locale === 'th' ? 'สิ่งที่เรานำเสนอ' : 'What We Offer'}
         features={features}
         imagePlaceholder={locale === 'th' ? 'รูปภาพบริการ' : 'Service Image'}
+        imageUrl={featuredImageUrl}
       />
 
       <UseCasesSection
@@ -521,7 +611,7 @@ export default async function ServiceDetailPage({ params }: Props) {
 
       <TechnologiesSection
         title={locale === 'th' ? 'เทคโนโลยีที่เราใช้' : 'Technologies We Use'}
-        technologies={service.technologies}
+        technologies={technologies}
       />
 
       <ProcessSection

@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_service_technologies",
+  "info": {
+    "displayName": "Technology",
+    "description": "A technology used in the service"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

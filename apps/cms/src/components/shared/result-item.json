@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_shared_result_items",
+  "info": {
+    "displayName": "Result Item",
+    "description": "A result metric with value and label"
+  },
+  "options": {},
+  "attributes": {
+    "value": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}

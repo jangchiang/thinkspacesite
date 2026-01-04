@@ -5,8 +5,9 @@ import type { Metadata } from 'next'
 import {
   ContactHero,
   ContactInfoSection,
-  MapSection,
 } from '@/components/sections/contact-sections'
+import { getPageHero } from '@/lib/strapi'
+import { buildHeroBackground } from '@/lib/hero-utils'
 
 type Props = {
   params: Promise<{ locale: Locale }>
@@ -25,7 +26,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ContactPage({ params }: Props) {
   const { locale } = await params
-  const dict = await getDictionary(locale)
+
+  // Fetch hero and dictionary in parallel
+  const [heroData, dict] = await Promise.all([
+    getPageHero('contact', locale),
+    getDictionary(locale)
+  ])
+
+  const heroBackground = buildHeroBackground(heroData)
 
   const contactInfo = [
     {
@@ -59,12 +67,13 @@ export default async function ContactPage({ params }: Props) {
   return (
     <>
       <ContactHero
-        title={locale === 'th' ? 'ติดต่อเรา' : 'Contact Us'}
+        title={heroData?.title || (locale === 'th' ? 'ติดต่อเรา' : 'Contact Us')}
         description={
-          locale === 'th'
+          heroData?.subtitle || (locale === 'th'
             ? 'มีคำถามหรือต้องการข้อมูลเพิ่มเติม? ทีมงานของเราพร้อมให้ความช่วยเหลือ'
-            : 'Have questions or need more information? Our team is here to help.'
+            : 'Have questions or need more information? Our team is here to help.')
         }
+        background={heroBackground}
       />
 
       <ContactInfoSection
@@ -74,10 +83,6 @@ export default async function ContactPage({ params }: Props) {
       >
         <ContactForm locale={locale} />
       </ContactInfoSection>
-
-      <MapSection
-        placeholder={locale === 'th' ? 'แผนที่จะแสดงที่นี่' : 'Map will be displayed here'}
-      />
     </>
   )
 }

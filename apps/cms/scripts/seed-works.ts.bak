@@ -1,0 +1,240 @@
+/**
+ * Seed Works (Case Studies) data to Strapi
+ */
+
+const STRAPI_URL = 'http://localhost:1337';
+const API_TOKEN = process.env.STRAPI_API_TOKEN || '';
+
+interface WorkData {
+  slug: string;
+  clientName: string;
+  industry: { th: string; en: string };
+  title: { th: string; en: string };
+  excerpt: { th: string; en: string };
+  challenge: { th: string; en: string };
+  solution: { th: string; en: string };
+  resultValue: string;
+  resultLabel: { th: string; en: string };
+}
+
+const worksData: WorkData[] = [
+  {
+    slug: 'fintech-cloud-migration',
+    clientName: 'FinTech Corp',
+    industry: { th: 'การเงิน', en: 'Financial Services' },
+    title: {
+      th: 'การย้ายระบบสู่คลาวด์สำหรับ FinTech',
+      en: 'Cloud Migration for FinTech'
+    },
+    excerpt: {
+      th: 'ระบบเก่าไม่สามารถรองรับการเติบโตของธุรกิจ',
+      en: 'Legacy systems unable to support business growth'
+    },
+    challenge: {
+      th: 'FinTech Corp ประสบปัญหาระบบเก่าที่ไม่สามารถรองรับการเติบโตของธุรกิจที่รวดเร็ว ระบบมีการหยุดทำงานบ่อยครั้งและค่าใช้จ่ายในการดูแลรักษาสูงมาก',
+      en: 'FinTech Corp faced challenges with legacy systems that couldn\'t support rapid business growth. The systems experienced frequent downtime and maintenance costs were extremely high.'
+    },
+    solution: {
+      th: 'เราได้วางแผนและดำเนินการย้ายระบบทั้งหมดไปยัง AWS Cloud โดยใช้ Kubernetes สำหรับการจัดการ container และ Terraform สำหรับ Infrastructure as Code',
+      en: 'We planned and executed a complete migration to AWS Cloud using Kubernetes for container orchestration and Terraform for Infrastructure as Code.'
+    },
+    resultValue: '60%',
+    resultLabel: { th: 'ลดค่าใช้จ่าย IT', en: 'IT Cost Reduction' },
+  },
+  {
+    slug: 'retail-digital-transformation',
+    clientName: 'RetailMax',
+    industry: { th: 'ค้าปลีก', en: 'Retail' },
+    title: {
+      th: 'การเปลี่ยนแปลงดิจิทัลสำหรับค้าปลีก',
+      en: 'Digital Transformation for Retail'
+    },
+    excerpt: {
+      th: 'ต้องการเชื่อมต่อช่องทางออนไลน์และออฟไลน์',
+      en: 'Need to connect online and offline channels'
+    },
+    challenge: {
+      th: 'RetailMax ต้องการเชื่อมต่อช่องทางออนไลน์และออฟไลน์เพื่อสร้างประสบการณ์ลูกค้าที่ไร้รอยต่อ ระบบสินค้าคงคลังไม่เชื่อมต่อกันและข้อมูลลูกค้าไม่เป็นหนึ่งเดียว',
+      en: 'RetailMax needed to connect online and offline channels to create a seamless customer experience. Inventory systems were disconnected and customer data was not unified.'
+    },
+    solution: {
+      th: 'เราพัฒนาแพลตฟอร์ม Omnichannel ที่เชื่อมต่อทุกช่องทางการขาย พร้อมระบบ CRM และการวิเคราะห์ข้อมูลลูกค้าแบบ Real-time',
+      en: 'We developed an Omnichannel platform connecting all sales channels, along with a CRM system and real-time customer analytics.'
+    },
+    resultValue: '3x',
+    resultLabel: { th: 'เพิ่มยอดขายออนไลน์', en: 'Online Sales Increase' },
+  },
+  {
+    slug: 'healthcare-security',
+    clientName: 'MediCare Plus',
+    industry: { th: 'สุขภาพ', en: 'Healthcare' },
+    title: {
+      th: 'ความปลอดภัยข้อมูลสุขภาพ',
+      en: 'Healthcare Data Security'
+    },
+    excerpt: {
+      th: 'ปฏิบัติตามข้อกำหนด HIPAA และรักษาความปลอดภัยข้อมูล',
+      en: 'HIPAA compliance and data security'
+    },
+    challenge: {
+      th: 'MediCare Plus ต้องการปฏิบัติตามข้อกำหนด HIPAA และ PDPA พร้อมทั้งรักษาความปลอดภัยข้อมูลผู้ป่วยจากภัยคุกคามไซเบอร์ที่เพิ่มขึ้น',
+      en: 'MediCare Plus needed to comply with HIPAA and PDPA regulations while protecting patient data from increasing cyber threats.'
+    },
+    solution: {
+      th: 'เราวางระบบ Security Operation Center (SOC) พร้อม 24/7 monitoring, การเข้ารหัสข้อมูล end-to-end และ Zero Trust Architecture',
+      en: 'We implemented a Security Operation Center (SOC) with 24/7 monitoring, end-to-end data encryption, and Zero Trust Architecture.'
+    },
+    resultValue: '100%',
+    resultLabel: { th: 'ปฏิบัติตามข้อกำหนด', en: 'Compliance Achieved' },
+  },
+  {
+    slug: 'manufacturing-iot',
+    clientName: 'Thai Manufacturing Co.',
+    industry: { th: 'การผลิต', en: 'Manufacturing' },
+    title: {
+      th: 'ระบบ IoT สำหรับโรงงานอัจฉริยะ',
+      en: 'IoT System for Smart Factory'
+    },
+    excerpt: {
+      th: 'ต้องการติดตามเครื่องจักรและลดเวลาหยุดทำงาน',
+      en: 'Need to monitor machines and reduce downtime'
+    },
+    challenge: {
+      th: 'Thai Manufacturing Co. ประสบปัญหาเครื่องจักรหยุดทำงานโดยไม่คาดคิด ทำให้เกิดความเสียหายทางการผลิตและต้นทุนสูง',
+      en: 'Thai Manufacturing Co. faced unexpected machine downtime causing production losses and high costs.'
+    },
+    solution: {
+      th: 'เราติดตั้งระบบ IoT sensors และ Predictive Maintenance ด้วย Machine Learning เพื่อทำนายและป้องกันการเสียของเครื่องจักร',
+      en: 'We installed IoT sensors and Predictive Maintenance using Machine Learning to predict and prevent machine failures.'
+    },
+    resultValue: '45%',
+    resultLabel: { th: 'ลดเวลาหยุดทำงาน', en: 'Reduced Downtime' },
+  },
+  {
+    slug: 'logistics-ai',
+    clientName: 'FastShip Logistics',
+    industry: { th: 'โลจิสติกส์', en: 'Logistics' },
+    title: {
+      th: 'AI สำหรับการจัดเส้นทางขนส่ง',
+      en: 'AI for Route Optimization'
+    },
+    excerpt: {
+      th: 'ต้องการลดต้นทุนขนส่งและเพิ่มความเร็วในการจัดส่ง',
+      en: 'Need to reduce transport costs and increase delivery speed'
+    },
+    challenge: {
+      th: 'FastShip Logistics ใช้เวลามากในการวางแผนเส้นทางและมีต้นทุนเชื้อเพลิงสูง การจัดส่งล่าช้าทำให้ลูกค้าไม่พอใจ',
+      en: 'FastShip Logistics spent too much time on route planning with high fuel costs. Delayed deliveries caused customer dissatisfaction.'
+    },
+    solution: {
+      th: 'เราพัฒนาระบบ AI Route Optimization ที่วิเคราะห์ข้อมูลการจราจร สภาพอากาศ และตำแหน่งลูกค้าเพื่อหาเส้นทางที่ดีที่สุด',
+      en: 'We developed an AI Route Optimization system that analyzes traffic, weather, and customer locations to find the best routes.'
+    },
+    resultValue: '30%',
+    resultLabel: { th: 'ลดต้นทุนเชื้อเพลิง', en: 'Fuel Cost Reduction' },
+  },
+];
+
+async function createWork(work: WorkData) {
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${API_TOKEN}`,
+  };
+
+  // Create Thai version first (default locale)
+  const thData = {
+    data: {
+      title: work.title.th,
+      slug: work.slug,
+      clientName: work.clientName,
+      industry: work.industry.th,
+      excerpt: work.excerpt.th,
+      challenge: work.challenge.th,
+      solution: work.solution.th,
+      resultValue: work.resultValue,
+      resultLabel: work.resultLabel.th,
+    },
+  };
+
+  console.log(`Creating Thai version of ${work.slug}...`);
+
+  const thResponse = await fetch(`${STRAPI_URL}/api/case-studies`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(thData),
+  });
+
+  if (!thResponse.ok) {
+    const error = await thResponse.text();
+    console.error(`Failed to create Thai ${work.slug}:`, error);
+    return null;
+  }
+
+  const thResult = await thResponse.json() as { data: { documentId: string } };
+  const documentId = thResult.data.documentId;
+  console.log(`Created Thai ${work.slug} with documentId: ${documentId}`);
+
+  // Publish Thai version
+  await fetch(`${STRAPI_URL}/api/case-studies/${documentId}/actions/publish`, {
+    method: 'POST',
+    headers,
+  });
+  console.log(`Published Thai ${work.slug}`);
+
+  // Create English localization
+  const enData = {
+    data: {
+      title: work.title.en,
+      slug: work.slug,
+      clientName: work.clientName,
+      industry: work.industry.en,
+      excerpt: work.excerpt.en,
+      challenge: work.challenge.en,
+      solution: work.solution.en,
+      resultValue: work.resultValue,
+      resultLabel: work.resultLabel.en,
+    },
+  };
+
+  console.log(`Creating English version of ${work.slug}...`);
+
+  const enResponse = await fetch(`${STRAPI_URL}/api/case-studies/${documentId}?locale=en`, {
+    method: 'PUT',
+    headers,
+    body: JSON.stringify(enData),
+  });
+
+  if (!enResponse.ok) {
+    const error = await enResponse.text();
+    console.error(`Failed to create English ${work.slug}:`, error);
+    return documentId;
+  }
+
+  console.log(`Created English ${work.slug}`);
+
+  // Publish English version
+  await fetch(`${STRAPI_URL}/api/case-studies/${documentId}/actions/publish?locale=en`, {
+    method: 'POST',
+    headers,
+  });
+  console.log(`Published English ${work.slug}\n`);
+
+  return documentId;
+}
+
+async function main() {
+  if (!API_TOKEN) {
+    console.error('Error: STRAPI_API_TOKEN is not set');
+    process.exit(1);
+  }
+
+  console.log('Seeding Works (Case Studies) data...\n');
+
+  for (const work of worksData) {
+    await createWork(work);
+  }
+
+  console.log('Seeding complete!');
+}
+
+main().catch(console.error);

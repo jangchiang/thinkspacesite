@@ -82,7 +82,28 @@
   }
 }
 
+/* Marquee animations for tech stack */
+@keyframes marquee-left {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0%); }
+}
+
 @layer utilities {
+  /* Services marquee animation */
+  .animate-marquee {
+    animation: marquee-left 25s linear infinite;
+  }
+
+  /* Slower marquee for services section */
+  .animate-marquee-slow {
+    animation: marquee-left 35s linear infinite;
+  }
+
   /* Hide scrollbar */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
@@ -189,4 +210,49 @@
 /* Smooth page transitions */
 .page-transition {
   animation: fadeIn 0.4s ease-out;
+}
+
+/* Improve button press feedback */
+.btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* Smooth link transitions */
+a {
+  transition: color 0.2s ease;
+}
+
+/* Better focus states for accessibility */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid oklch(var(--p));
+  outline-offset: 2px;
+}
+
+/* Reduced motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Scroll margin for anchor links */
+[id] {
+  scroll-margin-top: 5rem;
+}
+
+/* Selection color */
+::selection {
+  background-color: oklch(var(--p) / 0.3);
 }

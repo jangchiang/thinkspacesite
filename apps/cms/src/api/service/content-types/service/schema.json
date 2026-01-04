@@ -38,28 +38,61 @@
         }
       }
     },
-    "content": {
-      "type": "richtext",
+    "shortDescription": {
+      "type": "text",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       }
     },
-    "featuredImage": {
-      "type": "media",
-      "multiple": false,
-      "allowedTypes": ["images"]
-    },
     "icon": {
-      "type": "string"
+      "type": "enumeration",
+      "enum": ["Cloud", "Code", "Server", "Database", "Shield", "BarChart", "FlaskConical"],
+      "default": "Code"
+    },
+    "color": {
+      "type": "string",
+      "default": "bg-primary"
     },
     "order": {
       "type": "integer",
       "default": 0
     },
+    "featuredImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
     "features": {
-      "type": "json",
+      "type": "component",
+      "repeatable": true,
+      "component": "service.feature",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "useCases": {
+      "type": "component",
+      "repeatable": true,
+      "component": "service.use-case",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "technologies": {
+      "type": "component",
+      "repeatable": true,
+      "component": "service.technology"
+    },
+    "processSteps": {
+      "type": "component",
+      "repeatable": true,
+      "component": "service.process-step",
       "pluginOptions": {
         "i18n": {
           "localized": true

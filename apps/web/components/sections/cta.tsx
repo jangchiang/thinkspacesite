@@ -99,10 +99,10 @@ export function CTASection({ dict, locale }: CTASectionProps) {
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
-                href={`/${locale}/case-studies`}
+                href={`/${locale}/works`}
                 className="btn btn-outline btn-lg text-white border-white/40 hover:bg-white hover:text-primary hover:border-white group"
               >
-                {dict.cta.caseStudies}
+                {dict.cta.viewWorks}
               </Link>
             </motion.div>
           </div>

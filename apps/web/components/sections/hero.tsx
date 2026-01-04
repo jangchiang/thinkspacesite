@@ -5,15 +5,30 @@ import { ArrowRight, Play } from 'lucide-react'
 import { type Locale } from '@/lib/i18n'
 import { motion } from 'framer-motion'
 import { BackgroundPaths } from '@/components/backgrounds/background-paths'
+import { LogoCarousel } from '@/components/ui/logo-carousel'
 
 type Dict = Record<string, any>
+
+interface Partner {
+  id: number
+  name: string
+  website?: string
+  logo?: {
+    url: string
+    formats?: {
+      thumbnail?: { url: string }
+      small?: { url: string }
+    }
+  }
+}
 
 interface HeroSectionProps {
   dict: Dict
   locale: Locale
+  partners?: Partner[]
 }
 
-export function HeroSection({ dict, locale }: HeroSectionProps) {
+export function HeroSection({ dict, locale, partners = [] }: HeroSectionProps) {
   return (
     <section className="relative overflow-hidden min-h-[90vh] flex items-center">
       {/* Animated Paths Background */}
@@ -24,21 +39,17 @@ export function HeroSection({ dict, locale }: HeroSectionProps) {
           <div className="max-w-4xl mx-auto text-center">
             {/* Badge */}
             <motion.div
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-base-100/80 backdrop-blur-md border border-primary/20 text-primary text-sm font-medium mb-8 shadow-lg shadow-primary/5"
+              className="inline-flex items-center px-4 py-2 rounded-full bg-base-100/80 backdrop-blur-md border border-primary/20 text-primary text-sm font-medium mb-8 shadow-lg shadow-primary/5"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-              </span>
               {dict.hero.badge}
             </motion.div>
 
             {/* Headline */}
             <motion.h1
-              className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight mb-6"
+              className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-normal leading-[1.2] md:leading-[1.15] mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
@@ -46,7 +57,7 @@ export function HeroSection({ dict, locale }: HeroSectionProps) {
               {dict.hero.title}
               <br />
               <span
-                className="inline-block"
+                className="inline-block mt-2"
                 style={{
                   background: 'linear-gradient(to right, #22c55e, #16a34a)',
                   WebkitBackgroundClip: 'text',
@@ -98,32 +109,20 @@ export function HeroSection({ dict, locale }: HeroSectionProps) {
               </motion.div>
             </motion.div>
 
-            {/* Trust Indicators */}
-            <motion.div
-              className="mt-16 pt-8 border-t border-base-content/10"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-            >
-              <p className="text-sm text-base-content/50 mb-6">
-                {dict.hero.trustedBy}
-              </p>
-              <div className="flex flex-wrap items-center justify-center gap-8">
-                {['Company A', 'Company B', 'Company C', 'Company D', 'Company E'].map(
-                  (company, index) => (
-                    <motion.div
-                      key={company}
-                      className="text-lg font-semibold text-base-content/30 hover:text-base-content/60 transition-colors"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.4, delay: 0.6 + index * 0.1 }}
-                    >
-                      {company}
-                    </motion.div>
-                  )
-                )}
-              </div>
-            </motion.div>
+            {/* Trust Indicators with Logo Carousel */}
+            {partners.length > 0 && (
+              <motion.div
+                className="mt-16 pt-8 border-t border-base-content/10"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+              >
+                <LogoCarousel
+                  partners={partners}
+                  title={dict.hero.trustedBy}
+                />
+              </motion.div>
+            )}
           </div>
         </div>
       </div>

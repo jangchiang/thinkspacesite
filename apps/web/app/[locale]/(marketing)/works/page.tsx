@@ -1,0 +1,246 @@
+import { type Locale } from '@/lib/i18n'
+import Link from 'next/link'
+import Image from 'next/image'
+import { ArrowRight, Building2, TrendingUp } from 'lucide-react'
+import type { Metadata } from 'next'
+import { getCaseStudies, getPageHero } from '@/lib/strapi'
+import { HeroSection } from '@/components/sections/hero-section'
+import { buildHeroBackground } from '@/lib/hero-utils'
+
+type Props = {
+  params: Promise<{ locale: Locale }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params
+
+  return {
+    title: locale === 'th' ? 'ผลงาน' : 'Work Profile',
+    description: locale === 'th'
+      ? 'ผลงานและโครงการที่ Thinkspace Technology ได้ดำเนินการ'
+      : 'Projects and work completed by Thinkspace Technology',
+  }
+}
+
+interface StrapiWork {
+  id: number
+  documentId: string
+  title: string
+  slug: string
+  clientName?: string
+  industry?: string
+  excerpt?: string
+  challenge?: string
+  resultValue?: string
+  resultLabel?: string
+  featuredImage?: {
+    url: string
+    formats?: {
+      medium?: { url: string }
+      small?: { url: string }
+    }
+  }
+  clientLogo?: {
+    url: string
+    formats?: {
+      thumbnail?: { url: string }
+      small?: { url: string }
+    }
+  }
+}
+
+// Fallback data when Strapi is empty
+const fallbackWorks = [
+  {
+    slug: 'fintech-cloud-migration',
+    client: { en: 'FinTech Corp', th: 'FinTech Corp' },
+    industry: { en: 'Financial Services', th: 'การเงิน' },
+    title: { en: 'Cloud Migration for FinTech', th: 'การย้ายระบบสู่คลาวด์สำหรับ FinTech' },
+    challenge: {
+      en: 'Legacy systems unable to support business growth',
+      th: 'ระบบเก่าไม่สามารถรองรับการเติบโตของธุรกิจ'
+    },
+    resultValue: '60%',
+    resultLabel: { en: 'IT Cost Reduction', th: 'ลดค่าใช้จ่าย IT' },
+  },
+  {
+    slug: 'retail-digital-transformation',
+    client: { en: 'RetailMax', th: 'RetailMax' },
+    industry: { en: 'Retail', th: 'ค้าปลีก' },
+    title: { en: 'Digital Transformation for Retail', th: 'การเปลี่ยนแปลงดิจิทัลสำหรับค้าปลีก' },
+    challenge: {
+      en: 'Need to connect online and offline channels',
+      th: 'ต้องการเชื่อมต่อช่องทางออนไลน์และออฟไลน์'
+    },
+    resultValue: '3x',
+    resultLabel: { en: 'Online Sales Increase', th: 'เพิ่มยอดขายออนไลน์' },
+  },
+  {
+    slug: 'healthcare-security',
+    client: { en: 'MediCare Plus', th: 'MediCare Plus' },
+    industry: { en: 'Healthcare', th: 'สุขภาพ' },
+    title: { en: 'Healthcare Data Security', th: 'ความปลอดภัยข้อมูลสุขภาพ' },
+    challenge: {
+      en: 'HIPAA compliance and data security',
+      th: 'ปฏิบัติตามข้อกำหนด HIPAA และรักษาความปลอดภัยข้อมูล'
+    },
+    resultValue: '100%',
+    resultLabel: { en: 'Compliance Achieved', th: 'ปฏิบัติตามข้อกำหนด' },
+  },
+]
+
+// Helper to build Strapi image URL
+function getStrapiImageUrl(url: string | undefined): string | undefined {
+  if (!url) return undefined
+  const baseUrl = process.env.STRAPI_URL || 'http://localhost:1337'
+  return `${baseUrl}${url}`
+}
+
+export default async function WorksPage({ params }: Props) {
+  const { locale } = await params
+
+  // Fetch hero and works in parallel
+  const [heroData, strapiWorksResult] = await Promise.all([
+    getPageHero('works', locale),
+    getCaseStudies(locale).catch(() => [] as StrapiWork[])
+  ])
+
+  const strapiWorks = (strapiWorksResult || []) as StrapiWork[]
+  const heroBackground = buildHeroBackground(heroData)
+
+  // Use Strapi data if available, otherwise use fallback
+  const works = strapiWorks.length > 0
+    ? strapiWorks.map((work) => ({
+        slug: work.slug,
+        client: work.clientName || '',
+        industry: work.industry || '',
+        title: work.title,
+        challenge: work.excerpt || work.challenge || '',
+        resultValue: work.resultValue || '',
+        resultLabel: work.resultLabel || '',
+        featuredImage: getStrapiImageUrl(
+          work.featuredImage?.formats?.medium?.url || work.featuredImage?.url
+        ),
+        clientLogo: getStrapiImageUrl(
+          work.clientLogo?.formats?.small?.url || work.clientLogo?.url
+        ),
+      }))
+    : fallbackWorks.map((work) => ({
+        slug: work.slug,
+        client: locale === 'th' ? work.client.th : work.client.en,
+        industry: locale === 'th' ? work.industry.th : work.industry.en,
+        title: locale === 'th' ? work.title.th : work.title.en,
+        challenge: locale === 'th' ? work.challenge.th : work.challenge.en,
+        resultValue: work.resultValue,
+        resultLabel: locale === 'th' ? work.resultLabel.th : work.resultLabel.en,
+        featuredImage: undefined,
+        clientLogo: undefined,
+      }))
+
+  return (
+    <>
+      {/* Hero Section */}
+      <HeroSection background={heroBackground} minHeight="min-h-[40vh]">
+        <div className="max-w-3xl mx-auto text-center">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+            {heroData?.title || (locale === 'th' ? 'ผลงานของเรา' : 'Our Work Profile')}
+          </h1>
+          <p className={`text-lg md:text-xl ${heroBackground ? 'opacity-80' : 'text-base-content/70'}`}>
+            {heroData?.subtitle || (locale === 'th'
+              ? 'ดูผลงานและโครงการที่เราได้ดำเนินการให้กับลูกค้า'
+              : 'Explore our portfolio of successful projects and client work')}
+          </p>
+        </div>
+      </HeroSection>
+
+      {/* Works Grid */}
+      <section className="section-padding">
+        <div className="container-custom">
+          <div className="space-y-8">
+            {works.map((work) => (
+              <div key={work.slug} className="card bg-base-100 shadow-lg lg:card-side">
+                <div className="lg:w-1/3 bg-base-200 flex items-center justify-center p-8 relative overflow-hidden">
+                  {work.featuredImage ? (
+                    <Image
+                      src={work.featuredImage}
+                      alt={work.title}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="text-center">
+                      {work.clientLogo ? (
+                        <Image
+                          src={work.clientLogo}
+                          alt={work.client}
+                          width={120}
+                          height={60}
+                          className="mx-auto mb-4 object-contain"
+                        />
+                      ) : (
+                        <Building2 className="w-16 h-16 text-primary mx-auto mb-4" />
+                      )}
+                      <p className="font-bold text-lg">{work.client}</p>
+                      <p className="text-sm text-base-content/60">{work.industry}</p>
+                    </div>
+                  )}
+                </div>
+                <div className="card-body lg:w-2/3">
+                  <h2 className="card-title text-2xl">{work.title}</h2>
+                  {work.featuredImage && (
+                    <div className="flex items-center gap-2 text-sm text-base-content/60 mb-2">
+                      <span className="font-semibold">{work.client}</span>
+                      <span>•</span>
+                      <span>{work.industry}</span>
+                    </div>
+                  )}
+                  <p className="text-base-content/70 mb-4">
+                    <strong>{locale === 'th' ? 'ความท้าทาย: ' : 'Challenge: '}</strong>
+                    {work.challenge}
+                  </p>
+                  {work.resultValue && (
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-lg">
+                        <TrendingUp className="w-5 h-5" />
+                        <span className="font-bold text-2xl">{work.resultValue}</span>
+                      </div>
+                      <span className="text-base-content/70">{work.resultLabel}</span>
+                    </div>
+                  )}
+                  <div className="card-actions">
+                    <Link
+                      href={`/${locale}/works/${work.slug}`}
+                      className="btn btn-primary"
+                    >
+                      {locale === 'th' ? 'ดูรายละเอียด' : 'View Details'}
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="section-padding bg-base-200">
+        <div className="container-custom">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-3xl font-bold mb-4">
+              {locale === 'th' ? 'สนใจร่วมงานกับเรา?' : 'Interested in Working With Us?'}
+            </h2>
+            <p className="text-base-content/70 mb-8">
+              {locale === 'th'
+                ? 'ติดต่อเราเพื่อพูดคุยเกี่ยวกับโครงการของคุณ'
+                : 'Contact us to discuss your project'}
+            </p>
+            <Link href={`/${locale}/contact`} className="btn btn-primary btn-lg">
+              {locale === 'th' ? 'ติดต่อเรา' : 'Contact Us'}
+            </Link>
+          </div>
+        </div>
+      </section>
+    </>
+  )
+}

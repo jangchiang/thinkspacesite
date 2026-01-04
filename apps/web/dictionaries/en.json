@@ -7,19 +7,20 @@
     "home": "Home",
     "services": "Services",
     "about": "About",
-    "blog": "Blog",
+    "news": "News",
+    "works": "Work Profile",
     "contact": "Contact",
     "research": "Research",
     "getStarted": "Get Started"
   },
   "hero": {
-    "badge": "Trusted by 500+ enterprises worldwide",
+    "badge": "Turning Ideas into Reality",
     "title": "Transform Your Business with",
     "titleHighlight": "Enterprise Technology",
-    "subtitle": "We help enterprises accelerate digital transformation with cloud solutions, cybersecurity, and intelligent automation. Partner with industry experts who deliver results.",
+    "subtitle": "We turn your ideas into reality with tailored technology solutions. From startups to enterprises, we provide the right solutions to power your success.",
     "cta": "Get Started",
     "watchDemo": "Watch Demo",
-    "trustedBy": "Trusted by leading enterprises"
+    "trustedBy": "Trusted by organizations"
   },
   "services": {
     "title": "Comprehensive Technology Solutions",
@@ -181,7 +182,7 @@
     "title": "Ready to Transform Your Business?",
     "subtitle": "Let's discuss how our technology solutions can help you achieve your business goals. Schedule a free consultation with our experts.",
     "schedule": "Schedule Consultation",
-    "caseStudies": "View Case Studies",
+    "viewWorks": "View Our Work",
     "button": "Get Started"
   },
   "about": {
@@ -376,7 +377,8 @@
     "company": "Company",
     "legal": "Legal",
     "careers": "Careers",
-    "caseStudies": "Case Studies",
+    "news": "News",
+    "works": "Work Profile",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
     "cookies": "Cookie Policy",

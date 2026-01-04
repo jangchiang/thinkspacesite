@@ -13,29 +13,6 @@ interface ServicesSectionProps {
   locale: Locale
 }
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
-    },
-  },
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  },
-}
-
 const headerVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
@@ -48,115 +25,149 @@ const headerVariants = {
   },
 }
 
+// Icon mapping
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  cloud: Cloud,
+  software: Code,
+  hpc: Server,
+  dataAi: Database,
+  security: Shield,
+  consulting: BarChart,
+  research: FlaskConical,
+}
+
 export function ServicesSection({ dict, locale }: ServicesSectionProps) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
+  // Show only 4 main services for the marquee
   const services = [
-    {
-      icon: Cloud,
-      key: 'cloud',
-      href: `/${locale}/services/cloud`,
-    },
-    {
-      icon: Code,
-      key: 'software',
-      href: `/${locale}/services/software`,
-    },
-    {
-      icon: Server,
-      key: 'hpc',
-      href: `/${locale}/services/hpc-ai`,
-    },
-    {
-      icon: Database,
-      key: 'dataAi',
-      href: `/${locale}/services/ai-datascience`,
-    },
-    {
-      icon: Shield,
-      key: 'security',
-      href: `/${locale}/services/cybersecurity`,
-    },
-    {
-      icon: BarChart,
-      key: 'consulting',
-      href: `/${locale}/services/consulting`,
-    },
-    {
-      icon: FlaskConical,
-      key: 'research',
-      href: `/${locale}/services/research`,
-    },
+    { key: 'cloud', slug: 'cloud' },
+    { key: 'software', slug: 'software' },
+    { key: 'security', slug: 'cybersecurity' },
+    { key: 'dataAi', slug: 'ai-datascience' },
   ]
 
   return (
-    <section className="section-padding bg-base-200" ref={ref}>
+    <section className="py-16 md:py-20 lg:py-24 bg-base-200 overflow-hidden" ref={ref}>
       <div className="container-custom">
         {/* Header */}
         <motion.div
-          className="max-w-3xl mx-auto text-center mb-16"
+          className="max-w-3xl mx-auto text-center mb-12"
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
           variants={headerVariants}
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
             {dict.services.title}
           </h2>
-          <p className="text-lg text-base-content/70">
+          <p className="text-lg md:text-xl text-base-content/70">
             {dict.services.subtitle}
           </p>
         </motion.div>
+      </div>
 
-        {/* Services Grid */}
-        <motion.div
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          variants={containerVariants}
-        >
-          {services.map((service) => (
-            <motion.div key={service.key} variants={itemVariants}>
+      {/* Services Marquee - Full Width */}
+      <motion.div
+        className="relative"
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+      >
+        {/* Gradient fade edges */}
+        <div className="absolute left-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-r from-base-200 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-l from-base-200 to-transparent z-10 pointer-events-none" />
+
+        {/* Marquee container */}
+        <div className="flex animate-marquee-slow hover:[animation-play-state:paused]">
+          {/* First set */}
+          {services.map((service, index) => {
+            const IconComponent = iconMap[service.key] || Code
+            return (
               <Link
-                href={service.href}
-                className="group card bg-base-100 hover:shadow-xl transition-all duration-300 h-full"
+                key={`first-${service.key}`}
+                href={`/${locale}/services/${service.slug}`}
+                className="flex-shrink-0 mx-4 group"
               >
-                <div className="card-body">
-                  <motion.div
-                    className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary transition-all duration-300"
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-                  >
-                    <service.icon className="w-7 h-7 text-primary group-hover:text-primary-content transition-colors" />
-                  </motion.div>
-                  <h3 className="card-title text-xl">
-                    {dict.services[service.key].title}
-                  </h3>
-                  <p className="text-base-content/70">
-                    {dict.services[service.key].description}
-                  </p>
-                  <div className="card-actions mt-4">
-                    <span className="inline-flex items-center gap-1 text-primary font-medium group-hover:gap-2 transition-all">
+                <motion.div
+                  className="w-72 md:w-80 bg-base-100 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-base-300 hover:border-primary/30"
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-all duration-300">
+                      <IconComponent className="w-7 h-7 text-primary group-hover:text-primary-content transition-colors" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors">
+                        {dict.services[service.key].title}
+                      </h3>
+                      <p className="text-sm text-base-content/60 line-clamp-2">
+                        {dict.services[service.key].description}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-base-200">
+                    <span className="inline-flex items-center gap-2 text-primary text-sm font-medium group-hover:gap-3 transition-all">
                       {dict.services.learnMore}
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </span>
                   </div>
-                </div>
+                </motion.div>
               </Link>
-            </motion.div>
-          ))}
-        </motion.div>
+            )
+          })}
+          {/* Duplicate set for seamless loop */}
+          {services.map((service, index) => {
+            const IconComponent = iconMap[service.key] || Code
+            return (
+              <Link
+                key={`second-${service.key}`}
+                href={`/${locale}/services/${service.slug}`}
+                className="flex-shrink-0 mx-4 group"
+              >
+                <motion.div
+                  className="w-72 md:w-80 bg-base-100 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-base-300 hover:border-primary/30"
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-all duration-300">
+                      <IconComponent className="w-7 h-7 text-primary group-hover:text-primary-content transition-colors" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors">
+                        {dict.services[service.key].title}
+                      </h3>
+                      <p className="text-sm text-base-content/60 line-clamp-2">
+                        {dict.services[service.key].description}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-base-200">
+                    <span className="inline-flex items-center gap-2 text-primary text-sm font-medium group-hover:gap-3 transition-all">
+                      {dict.services.learnMore}
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </div>
+                </motion.div>
+              </Link>
+            )
+          })}
+        </div>
+      </motion.div>
 
-        {/* CTA */}
+      {/* CTA */}
+      <div className="container-custom">
         <motion.div
           className="text-center mt-12"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.5, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.5, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <Link
             href={`/${locale}/services`}
-            className="btn btn-primary btn-lg group"
+            className="btn btn-primary btn-lg group shadow-lg shadow-primary/20"
           >
             {dict.services.viewAll}
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

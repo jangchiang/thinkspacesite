@@ -1,6 +1,10 @@
 {
-  "/[locale]/(marketing)/page": "app/[locale]/(marketing)/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/[locale]/(marketing)/news/page": "app/[locale]/(marketing)/news/page.js",
   "/[locale]/(marketing)/services/page": "app/[locale]/(marketing)/services/page.js",
+  "/[locale]/(marketing)/page": "app/[locale]/(marketing)/page.js",
+  "/[locale]/(marketing)/works/[slug]/page": "app/[locale]/(marketing)/works/[slug]/page.js",
   "/[locale]/(marketing)/services/[slug]/page": "app/[locale]/(marketing)/services/[slug]/page.js",
-  "/[locale]/(marketing)/blog/page": "app/[locale]/(marketing)/blog/page.js"
+  "/[locale]/(marketing)/works/page": "app/[locale]/(marketing)/works/page.js",
+  "/[locale]/(marketing)/news/[slug]/page": "app/[locale]/(marketing)/news/[slug]/page.js"
 }

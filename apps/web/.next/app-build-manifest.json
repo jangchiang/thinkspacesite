@@ -17,30 +17,55 @@
       "static/chunks/main-app.js",
       "static/chunks/app/[locale]/(marketing)/layout.js"
     ],
+    "/[locale]/(marketing)/works/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/[locale]/(marketing)/works/page.js"
+    ],
+    "/[locale]/(marketing)/works/[slug]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/[locale]/(marketing)/works/[slug]/page.js"
+    ],
     "/[locale]/(marketing)/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/[locale]/(marketing)/page.js"
     ],
-    "/[locale]/(marketing)/services/[slug]/page": [
+    "/[locale]/(marketing)/careers/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/(marketing)/services/[slug]/page.js"
+      "static/chunks/app/[locale]/(marketing)/careers/page.js"
+    ],
+    "/[locale]/(marketing)/about/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/[locale]/(marketing)/about/page.js"
+    ],
+    "/[locale]/(marketing)/news/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/[locale]/(marketing)/news/page.js"
     ],
     "/[locale]/(marketing)/services/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/[locale]/(marketing)/services/page.js"
     ],
+    "/[locale]/(marketing)/services/[slug]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/[locale]/(marketing)/services/[slug]/page.js"
+    ],
     "/[locale]/(marketing)/contact/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/[locale]/(marketing)/contact/page.js"
     ],
-    "/[locale]/(marketing)/blog/page": [
+    "/[locale]/(marketing)/news/[slug]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/(marketing)/blog/page.js"
+      "static/chunks/app/[locale]/(marketing)/news/[slug]/page.js"
     ]
   }
 }

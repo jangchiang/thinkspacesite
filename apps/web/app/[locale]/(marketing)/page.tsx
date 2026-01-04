@@ -1,7 +1,11 @@
 import { type Locale } from '@/lib/i18n'
 import { getDictionary } from '@/lib/dictionary'
+import { getPartners, getStats, getCaseStudies, getBlogPosts } from '@/lib/strapi'
 import { HeroSection } from '@/components/sections/hero'
 import { ServicesSection } from '@/components/sections/services'
+import { WhyChooseUsSection } from '@/components/sections/why-choose-us'
+import { FeaturedWorksSection } from '@/components/sections/featured-works'
+import { NewsPreviewSection } from '@/components/sections/news-preview'
 import { StatsSection } from '@/components/sections/stats'
 import { CTASection } from '@/components/sections/cta'
 
@@ -9,15 +13,76 @@ type Props = {
   params: Promise<{ locale: Locale }>
 }
 
+interface Partner {
+  id: number
+  name: string
+  website?: string
+  logo?: {
+    url: string
+    formats?: {
+      thumbnail?: { url: string }
+      small?: { url: string }
+    }
+  }
+}
+
+interface Stat {
+  id: number
+  value: string
+  label: string
+  order: number
+}
+
+interface CaseStudy {
+  id: number
+  clientName: string
+  title: string
+  slug: string
+  excerpt: string
+  industry: string
+  resultValue: string
+  resultLabel: string
+}
+
+interface BlogPost {
+  id: number
+  title: string
+  slug: string
+  excerpt: string | null
+  publishedAt: string
+  category: string | null
+  featuredImage?: {
+    url: string
+    formats?: {
+      medium?: { url: string }
+      small?: { url: string }
+    }
+  }
+}
+
 export default async function HomePage({ params }: Props) {
   const { locale } = await params
-  const dict = await getDictionary(locale)
+  const [dict, partnersData, statsData, caseStudiesData, blogData] = await Promise.all([
+    getDictionary(locale),
+    getPartners().catch(() => []),
+    getStats(locale).catch(() => []),
+    getCaseStudies(locale, 4).catch(() => []),
+    getBlogPosts(locale, { pageSize: 3 }).catch(() => ({ posts: [] }))
+  ])
+
+  const partners = (partnersData || []) as Partner[]
+  const stats = (statsData || []) as Stat[]
+  const caseStudies = (caseStudiesData || []) as CaseStudy[]
+  const blogPosts = (blogData?.posts || []) as BlogPost[]
 
   return (
     <>
-      <HeroSection dict={dict} locale={locale} />
+      <HeroSection dict={dict} locale={locale} partners={partners} />
       <ServicesSection dict={dict} locale={locale} />
-      <StatsSection dict={dict} />
+      <WhyChooseUsSection locale={locale} />
+      <FeaturedWorksSection locale={locale} caseStudies={caseStudies} />
+      <NewsPreviewSection locale={locale} posts={blogPosts} />
+      <StatsSection stats={stats} />
       <CTASection dict={dict} locale={locale} />
     </>
   )

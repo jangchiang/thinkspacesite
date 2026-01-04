@@ -1,0 +1,264 @@
+/**
+ * Update English versions of existing services
+ */
+
+const STRAPI_URL = 'http://localhost:1337';
+const API_TOKEN = process.env.STRAPI_API_TOKEN || '';
+
+interface ServiceUpdate {
+  documentId: string;
+  slug: string;
+  titleEn: string;
+  descriptionEn: string;
+  icon: string;
+  color: string;
+  order: number;
+  features: string[];
+  useCases: { title: string; description: string }[];
+  technologies: string[];
+  processSteps: { title: string; description: string }[];
+}
+
+const updates: ServiceUpdate[] = [
+  {
+    documentId: 'y94ymn2a5gfo3nw6o08z90jx',
+    slug: 'cloud',
+    titleEn: 'Cloud Services',
+    descriptionEn: 'Seamless cloud migration and multi-cloud management for scalable, secure infrastructure.',
+    icon: 'Cloud',
+    color: 'bg-blue-500',
+    order: 0,
+    features: ['Cloud Migration & Strategy', 'Multi-cloud Management', 'Cloud Security & Compliance', 'Cost Optimization & FinOps', 'DevOps & CI/CD Automation', 'Kubernetes & Container Orchestration'],
+    useCases: [
+      { title: 'Enterprise Migration', description: 'Migrate legacy systems to cloud with zero downtime and full data integrity' },
+      { title: 'Hybrid Cloud Setup', description: 'Connect on-premises infrastructure with public cloud for optimal flexibility' },
+      { title: 'Disaster Recovery', description: 'Implement robust backup and recovery solutions across multiple regions' },
+      { title: 'Auto-scaling Infrastructure', description: 'Dynamic resource allocation based on real-time demand patterns' },
+      { title: 'Cloud-Native Development', description: 'Build applications designed specifically for cloud environments' },
+      { title: 'Multi-Cloud Strategy', description: 'Leverage multiple cloud providers to avoid vendor lock-in' },
+    ],
+    technologies: ['AWS', 'Azure', 'Google Cloud', 'Kubernetes', 'Docker', 'Terraform', 'Ansible', 'Jenkins', 'GitLab CI', 'Prometheus', 'Grafana', 'Helm'],
+    processSteps: [
+      { title: 'Assessment & Discovery', description: 'Analyze your current infrastructure, applications, and business requirements to create a tailored cloud strategy.' },
+      { title: 'Architecture Design', description: 'Design scalable, secure, and cost-effective cloud architecture aligned with best practices.' },
+      { title: 'Migration & Implementation', description: 'Execute migration with minimal disruption using proven methodologies and automation tools.' },
+      { title: 'Optimization & Support', description: 'Continuously monitor, optimize costs, and provide 24/7 support for your cloud environment.' },
+    ],
+  },
+  {
+    documentId: 'y15ckxt4b4km6rpojaalgo87',
+    slug: 'software',
+    titleEn: 'Software Solutions',
+    descriptionEn: 'Custom software development and SaaS products for enterprise needs.',
+    icon: 'Code',
+    color: 'bg-green-500',
+    order: 1,
+    features: ['Custom Software Development', 'SaaS Platform Development', 'Web & Mobile Applications', 'API Development & Integration', 'Legacy System Modernization', 'Microservices Architecture'],
+    useCases: [
+      { title: 'Enterprise Applications', description: 'Build custom ERP, CRM, and business management systems tailored to your workflow' },
+      { title: 'E-commerce Platforms', description: 'Develop scalable online stores with payment integration and inventory management' },
+      { title: 'API & Integration', description: 'Design and develop RESTful and GraphQL APIs with seamless third-party integrations' },
+      { title: 'DevOps & Automation', description: 'Implement CI/CD pipelines, infrastructure as code, and automated deployment workflows' },
+      { title: 'Legacy Modernization', description: 'Transform legacy systems to modern architecture with minimal disruption to operations' },
+      { title: 'SaaS Products', description: 'Build multi-tenant SaaS platforms with subscription management and analytics' },
+    ],
+    technologies: ['React', 'Next.js', 'Vue.js', 'Angular', 'Node.js', 'Python', 'Go', 'Rust', 'TypeScript', 'PostgreSQL', 'MongoDB', 'Redis', 'GraphQL', 'Docker', 'Kubernetes', 'AWS', 'Azure', 'Terraform', 'GitHub Actions', 'GitLab CI', 'Elasticsearch', 'RabbitMQ', 'Kafka'],
+    processSteps: [
+      { title: 'Requirements Analysis', description: 'Deep dive into your business needs, user stories, and technical requirements to define project scope.' },
+      { title: 'UI/UX Design', description: 'Create intuitive user interfaces and experiences through wireframes, prototypes, and user testing.' },
+      { title: 'Agile Development', description: 'Iterative development with regular sprints, demos, and feedback cycles for continuous improvement.' },
+      { title: 'Testing & QA', description: 'Comprehensive testing including unit, integration, and end-to-end tests to ensure quality.' },
+      { title: 'Deployment & Maintenance', description: 'Smooth deployment with CI/CD pipelines and ongoing maintenance and support.' },
+    ],
+  },
+  {
+    documentId: 'qxsxt2exf5ftbpt1tzmcvgb5',
+    slug: 'hpc-ai',
+    titleEn: 'HPC & AI Solutions',
+    descriptionEn: 'High-performance computing infrastructure for AI and complex simulations.',
+    icon: 'Server',
+    color: 'bg-indigo-500',
+    order: 2,
+    features: ['HPC Infrastructure Design', 'GPU Cluster Management', 'AI/ML Training Infrastructure', 'Performance Optimization', 'Scientific Computing', 'Parallel Processing Solutions'],
+    useCases: [
+      { title: 'Deep Learning Training', description: 'Scale AI model training across multiple GPUs and nodes for faster iterations' },
+      { title: 'Scientific Simulations', description: 'Run complex physics, chemistry, and engineering simulations at scale' },
+      { title: 'Financial Modeling', description: 'Execute high-frequency trading algorithms and risk analysis computations' },
+      { title: 'Genomics Research', description: 'Process large-scale genomic data for medical research and drug discovery' },
+      { title: 'Rendering & VFX', description: 'Accelerate 3D rendering and visual effects processing for media production' },
+      { title: 'Weather Forecasting', description: 'Run complex meteorological models for accurate weather predictions' },
+    ],
+    technologies: ['NVIDIA DGX', 'CUDA', 'TensorFlow', 'PyTorch', 'Slurm', 'OpenMPI', 'InfiniBand', 'NVLink', 'Singularity', 'Kubernetes', 'NVIDIA Triton', 'Ray'],
+    processSteps: [
+      { title: 'Workload Analysis', description: 'Analyze your computational workloads to determine optimal hardware and software configurations.' },
+      { title: 'Infrastructure Design', description: 'Design HPC architecture with appropriate compute, storage, and networking components.' },
+      { title: 'Deployment & Configuration', description: 'Deploy and configure HPC cluster with job schedulers and resource management.' },
+      { title: 'Optimization & Scaling', description: 'Continuously optimize performance and scale resources based on demand.' },
+    ],
+  },
+  {
+    documentId: 'm7jm11roefdijwx6msow4ns8',
+    slug: 'ai-datascience',
+    titleEn: 'AI & Data Science',
+    descriptionEn: 'Advanced analytics and machine learning implementations for data-driven insights.',
+    icon: 'Database',
+    color: 'bg-purple-500',
+    order: 3,
+    features: ['Data Analytics & Business Intelligence', 'Machine Learning Solutions', 'Data Engineering & Pipelines', 'AI Model Development', 'Predictive Analytics', 'Natural Language Processing'],
+    useCases: [
+      { title: 'Customer Analytics', description: 'Understand customer behavior, predict churn, and personalize experiences' },
+      { title: 'Demand Forecasting', description: 'Predict future demand for inventory optimization and resource planning' },
+      { title: 'Fraud Detection', description: 'Identify fraudulent transactions and anomalies in real-time' },
+      { title: 'Recommendation Systems', description: 'Build personalized recommendation engines for products and content' },
+      { title: 'Process Automation', description: 'Automate document processing, data extraction, and workflow optimization' },
+      { title: 'Chatbots & Virtual Assistants', description: 'Deploy AI-powered conversational interfaces for customer support' },
+    ],
+    technologies: ['Python', 'TensorFlow', 'PyTorch', 'Scikit-learn', 'Apache Spark', 'Airflow', 'dbt', 'Snowflake', 'Databricks', 'Power BI', 'Tableau', 'LangChain'],
+    processSteps: [
+      { title: 'Data Assessment', description: 'Evaluate your data sources, quality, and availability to identify opportunities.' },
+      { title: 'Data Engineering', description: 'Build robust data pipelines to collect, transform, and store data efficiently.' },
+      { title: 'Model Development', description: 'Develop and train ML models using best practices and rigorous validation.' },
+      { title: 'Deployment & MLOps', description: 'Deploy models to production with monitoring, versioning, and automated retraining.' },
+    ],
+  },
+  {
+    documentId: 'c4400953wc02h6uc80i18y23',
+    slug: 'cybersecurity',
+    titleEn: 'Cybersecurity',
+    descriptionEn: 'Enterprise-grade security solutions to protect your data and ensure compliance.',
+    icon: 'Shield',
+    color: 'bg-red-500',
+    order: 4,
+    features: ['Security Assessment & Penetration Testing', 'Threat Detection & Response (SOC)', 'Identity & Access Management', 'Compliance & Governance', 'Security Awareness Training', 'Incident Response & Forensics'],
+    useCases: [
+      { title: 'Security Operations Center', description: '24/7 monitoring and rapid response to security threats and incidents' },
+      { title: 'Zero Trust Implementation', description: 'Design and implement zero trust architecture for modern security posture' },
+      { title: 'Compliance Readiness', description: 'Achieve ISO 27001, SOC 2, PDPA, and other regulatory compliance' },
+      { title: 'Cloud Security', description: 'Secure your cloud infrastructure with CSPM, CWPP, and security automation' },
+      { title: 'Application Security', description: 'Integrate security into development lifecycle with DevSecOps practices' },
+      { title: 'Data Protection', description: 'Implement encryption, DLP, and data classification for sensitive information' },
+    ],
+    technologies: ['CrowdStrike', 'Splunk', 'Microsoft Sentinel', 'Palo Alto', 'Fortinet', 'Okta', 'HashiCorp Vault', 'Tenable', 'Qualys', 'Wiz', 'Snyk', 'SentinelOne'],
+    processSteps: [
+      { title: 'Security Assessment', description: 'Comprehensive evaluation of your current security posture and vulnerabilities.' },
+      { title: 'Strategy & Roadmap', description: 'Develop a prioritized security roadmap aligned with business objectives.' },
+      { title: 'Implementation', description: 'Deploy security controls, tools, and processes with minimal disruption.' },
+      { title: 'Continuous Monitoring', description: 'Ongoing monitoring, threat hunting, and security operations support.' },
+    ],
+  },
+  {
+    documentId: 'uvnkkjd8cojdgqpaoi4a5u5p',
+    slug: 'consulting',
+    titleEn: 'IT Consulting',
+    descriptionEn: 'Strategic technology guidance to drive digital transformation and innovation.',
+    icon: 'BarChart',
+    color: 'bg-orange-500',
+    order: 5,
+    features: ['Digital Transformation Strategy', 'IT Strategy & Planning', 'Business Process Optimization', 'Technology Assessment', 'Change Management', 'Vendor Selection & Management'],
+    useCases: [
+      { title: 'Digital Roadmap', description: 'Create a comprehensive digital transformation roadmap with clear milestones' },
+      { title: 'Technology Selection', description: 'Evaluate and select the right technologies for your business needs' },
+      { title: 'IT Governance', description: 'Establish IT governance frameworks and best practices' },
+      { title: 'Process Automation', description: 'Identify and implement automation opportunities across the organization' },
+      { title: 'Cost Optimization', description: 'Analyze IT spending and identify opportunities for cost reduction' },
+      { title: 'Organizational Change', description: 'Guide organizational change with training and communication strategies' },
+    ],
+    technologies: ['TOGAF', 'ITIL', 'Agile', 'SAFe', 'Design Thinking', 'Lean Six Sigma', 'COBIT', 'Prince2', 'Jira', 'Confluence', 'Miro', 'Power Platform'],
+    processSteps: [
+      { title: 'Discovery Workshop', description: 'Understand your business goals, challenges, and current state through facilitated sessions.' },
+      { title: 'Analysis & Recommendations', description: 'Analyze findings and develop actionable recommendations with clear ROI.' },
+      { title: 'Roadmap Development', description: 'Create a prioritized implementation roadmap with timelines and resources.' },
+      { title: 'Implementation Support', description: 'Provide guidance and support throughout the implementation journey.' },
+    ],
+  },
+  {
+    documentId: 'zkob18o0h3b3r9c9fgo27kl4',
+    slug: 'research',
+    titleEn: 'R&D and Research',
+    descriptionEn: 'Advanced research services for academic institutions and enterprise innovation.',
+    icon: 'FlaskConical',
+    color: 'bg-teal-500',
+    order: 6,
+    features: ['Academic Research Collaboration', 'Enterprise R&D Projects', 'Prototype & MVP Development', 'Technology Transfer', 'Innovation Workshops', 'Patent & IP Strategy'],
+    useCases: [
+      { title: 'Joint Research Projects', description: 'Collaborate with universities on cutting-edge technology research' },
+      { title: 'Proof of Concept', description: 'Validate new ideas and technologies before full-scale investment' },
+      { title: 'Innovation Lab', description: 'Set up dedicated innovation labs for continuous experimentation' },
+      { title: 'Technology Scouting', description: 'Identify emerging technologies relevant to your industry' },
+      { title: 'Startup Incubation', description: 'Support internal startups and spin-off initiatives' },
+      { title: 'Grant Applications', description: 'Assist with government and research grant applications' },
+    ],
+    technologies: ['Python', 'Jupyter', 'TensorFlow', 'PyTorch', 'MATLAB', 'R', 'Git', 'Docker', 'AWS SageMaker', 'Weights & Biases', 'MLflow', 'DVC'],
+    processSteps: [
+      { title: 'Ideation & Scoping', description: 'Define research objectives, scope, and success criteria through collaborative workshops.' },
+      { title: 'Research & Experimentation', description: 'Conduct research, experiments, and iterations to validate hypotheses.' },
+      { title: 'Prototype Development', description: 'Build functional prototypes to demonstrate feasibility and value.' },
+      { title: 'Technology Transfer', description: 'Transfer research outcomes to production with documentation and training.' },
+    ],
+  },
+];
+
+async function updateEnglishService(service: ServiceUpdate) {
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${API_TOKEN}`,
+  };
+
+  const data = {
+    data: {
+      title: service.titleEn,
+      slug: service.slug,
+      description: service.descriptionEn,
+      shortDescription: service.descriptionEn,
+      icon: service.icon,
+      color: service.color,
+      order: service.order,
+      features: service.features.map(f => ({ title: f })),
+      useCases: service.useCases.map(uc => ({ title: uc.title, description: uc.description })),
+      technologies: service.technologies.map(t => ({ name: t })),
+      processSteps: service.processSteps.map(ps => ({ title: ps.title, description: ps.description })),
+    },
+  };
+
+  console.log(`Updating English version of ${service.slug}...`);
+
+  const response = await fetch(`${STRAPI_URL}/api/services/${service.documentId}?locale=en`, {
+    method: 'PUT',
+    headers,
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    console.error(`Failed to update ${service.slug}:`, error);
+    return false;
+  }
+
+  console.log(`Updated English ${service.slug}`);
+
+  // Publish
+  await fetch(`${STRAPI_URL}/api/services/${service.documentId}/actions/publish?locale=en`, {
+    method: 'POST',
+    headers,
+  });
+
+  console.log(`Published English ${service.slug}\n`);
+  return true;
+}
+
+async function main() {
+  if (!API_TOKEN) {
+    console.error('Error: STRAPI_API_TOKEN is not set');
+    process.exit(1);
+  }
+
+  console.log('Updating English versions of services...\n');
+
+  for (const service of updates) {
+    await updateEnglishService(service);
+  }
+
+  console.log('Update complete!');
+}
+
+main().catch(console.error);

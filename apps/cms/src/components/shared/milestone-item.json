@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_shared_milestone_items",
+  "info": {
+    "displayName": "Milestone Item",
+    "description": "A milestone event with year and details"
+  },
+  "options": {},
+  "attributes": {
+    "year": {
+      "type": "string",
+      "required": true
+    },
+    "event": {
+      "type": "string",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "detail": {
+      "type": "text",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}

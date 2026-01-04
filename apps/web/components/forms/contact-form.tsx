@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Send, Loader2, CheckCircle } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Send, Loader2, CheckCircle, AlertCircle } from 'lucide-react'
 import { type Locale } from '@/lib/i18n'
 
 interface ContactFormProps {
@@ -65,19 +66,54 @@ export function ContactForm({ locale }: ContactFormProps) {
 
   if (status === 'success') {
     return (
-      <div className="text-center py-8">
-        <div className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-4">
-          <CheckCircle className="w-8 h-8 text-success" />
-        </div>
-        <h3 className="text-xl font-semibold mb-2">{t.success}</h3>
-        <p className="text-base-content/70">{t.successDesc}</p>
-        <button
+      <motion.div
+        className="text-center py-8"
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <motion.div
+          className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-4"
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+        >
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.4, type: 'spring' }}
+          >
+            <CheckCircle className="w-8 h-8 text-success" />
+          </motion.div>
+        </motion.div>
+        <motion.h3
+          className="text-xl font-semibold mb-2"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          {t.success}
+        </motion.h3>
+        <motion.p
+          className="text-base-content/70"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          {t.successDesc}
+        </motion.p>
+        <motion.button
           className="btn btn-outline btn-sm mt-4"
           onClick={() => setStatus('idle')}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
           {t.sendAnother}
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
     )
   }
 
@@ -160,26 +196,36 @@ export function ContactForm({ locale }: ContactFormProps) {
         />
       </div>
 
-      {status === 'error' && (
-        <div className="alert alert-error">
-          <span>{t.error}</span>
-        </div>
-      )}
+      <AnimatePresence>
+        {status === 'error' && (
+          <motion.div
+            className="alert alert-error"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+          >
+            <AlertCircle className="w-5 h-5" />
+            <span>{t.error}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      <button
+      <motion.button
         type="submit"
         disabled={isLoading}
-        className="btn btn-primary w-full md:w-auto"
+        className="btn btn-primary w-full md:w-auto gap-2"
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
       >
         {isLoading ? (
           <Loader2 className="w-5 h-5 animate-spin" />
         ) : (
           <>
             {t.submit}
-            <Send className="w-5 h-5 ml-2" />
+            <Send className="w-5 h-5" />
           </>
         )}
-      </button>
+      </motion.button>
     </form>
   )
 }

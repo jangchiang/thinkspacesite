@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
 import { Menu, X, ChevronDown, Globe } from 'lucide-react'
 import { type Locale, localeNames } from '@/lib/i18n'
@@ -9,9 +10,15 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 type Dict = Record<string, any>
 
+interface ServiceItem {
+  name: string
+  href: string
+}
+
 interface NavbarProps {
   locale: Locale
   dict: Dict
+  services?: ServiceItem[]
 }
 
 interface NavItem {
@@ -24,9 +31,11 @@ interface NavItem {
 function NavDropdown({
   item,
   index,
+  locale,
 }: {
   item: NavItem
   index: number
+  locale: Locale
 }) {
   const [isOpen, setIsOpen] = useState(false)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -122,7 +131,7 @@ function NavDropdown({
                 className="block px-4 py-2 text-sm font-medium text-primary hover:bg-primary/5 rounded-lg transition-colors"
                 onClick={() => setIsOpen(false)}
               >
-                View All Services →
+                {locale === 'th' ? 'ดูบริการทั้งหมด' : 'View All Services'} →
               </Link>
             </div>
           </motion.div>
@@ -132,10 +141,25 @@ function NavDropdown({
   )
 }
 
-export function Navbar({ locale, dict }: NavbarProps) {
+export function Navbar({ locale, dict, services: servicesProp }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const pathname = usePathname()
+
+  // Helper to get path for switching locale while preserving current page
+  const getLocalizedPath = (newLocale: Locale) => {
+    // Replace the current locale in the pathname with the new locale
+    const segments = pathname.split('/')
+    // pathname format: /en/... or /th/...
+    if (segments.length > 1 && (segments[1] === 'en' || segments[1] === 'th')) {
+      segments[1] = newLocale
+    } else {
+      // Fallback: prepend the new locale
+      segments.splice(1, 0, newLocale)
+    }
+    return segments.join('/') || `/${newLocale}`
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -145,23 +169,21 @@ export function Navbar({ locale, dict }: NavbarProps) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Use services from props (Strapi) if available
+  const servicesChildren = servicesProp && servicesProp.length > 0
+    ? servicesProp
+    : []
+
   const navigation: NavItem[] = [
     { name: dict.nav.home, href: `/${locale}` },
     {
       name: dict.nav.services,
       href: `/${locale}/services`,
-      children: [
-        { name: dict.services.cloud.title, href: `/${locale}/services/cloud` },
-        { name: dict.services.software.title, href: `/${locale}/services/software` },
-        { name: dict.services.hpc.title, href: `/${locale}/services/hpc-ai` },
-        { name: dict.services.dataAi.title, href: `/${locale}/services/ai-datascience` },
-        { name: dict.services.security.title, href: `/${locale}/services/cybersecurity` },
-        { name: dict.services.consulting.title, href: `/${locale}/services/consulting` },
-        { name: dict.services.research.title, href: `/${locale}/services/research` },
-      ],
+      children: servicesChildren.length > 0 ? servicesChildren : undefined,
     },
+    { name: dict.nav.works, href: `/${locale}/works` },
+    { name: dict.nav.news, href: `/${locale}/news` },
     { name: dict.nav.about, href: `/${locale}/about` },
-    { name: dict.nav.blog, href: `/${locale}/blog` },
     { name: dict.nav.contact, href: `/${locale}/contact` },
   ]
 
@@ -193,7 +215,7 @@ export function Navbar({ locale, dict }: NavbarProps) {
           <div className="hidden lg:flex lg:items-center lg:gap-8">
             {navigation.map((item, index) =>
               item.children ? (
-                <NavDropdown key={item.name} item={item} index={index} />
+                <NavDropdown key={item.name} item={item} index={index} locale={locale} />
               ) : (
                 <motion.div
                   key={item.name}
@@ -233,7 +255,7 @@ export function Navbar({ locale, dict }: NavbarProps) {
               >
                 <li>
                   <Link
-                    href={`/en`}
+                    href={getLocalizedPath('en')}
                     className={`${locale === 'en' ? 'active bg-primary/10 text-primary' : ''} hover:bg-primary/10`}
                   >
                     English
@@ -241,7 +263,7 @@ export function Navbar({ locale, dict }: NavbarProps) {
                 </li>
                 <li>
                   <Link
-                    href={`/th`}
+                    href={getLocalizedPath('th')}
                     className={`${locale === 'th' ? 'active bg-primary/10 text-primary' : ''} hover:bg-primary/10`}
                   >
                     ไทย
@@ -383,13 +405,13 @@ export function Navbar({ locale, dict }: NavbarProps) {
               >
                 <ThemeToggle />
                 <Link
-                  href="/en"
+                  href={getLocalizedPath('en')}
                   className={`btn btn-sm ${locale === 'en' ? 'btn-primary' : 'btn-ghost'}`}
                 >
                   EN
                 </Link>
                 <Link
-                  href="/th"
+                  href={getLocalizedPath('th')}
                   className={`btn btn-sm ${locale === 'th' ? 'btn-primary' : 'btn-ghost'}`}
                 >
                   TH

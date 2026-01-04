@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_service_process_steps",
+  "info": {
+    "displayName": "Process Step",
+    "description": "A service process step with title and description"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "description": {
+      "type": "text",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}

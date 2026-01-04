@@ -1,0 +1,114 @@
+{
+  "kind": "collectionType",
+  "collectionName": "page_heroes",
+  "info": {
+    "singularName": "page-hero",
+    "pluralName": "page-heroes",
+    "displayName": "Page Hero",
+    "description": "Hero section backgrounds and settings for pages"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "pageIdentifier": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "title": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "subtitle": {
+      "type": "text",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "backgroundType": {
+      "type": "enumeration",
+      "enum": ["none", "image", "video"],
+      "default": "none",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "backgroundImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"],
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "backgroundVideo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["videos"],
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "videoUrl": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "overlayOpacity": {
+      "type": "integer",
+      "default": 60,
+      "min": 0,
+      "max": 100,
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "overlayColor": {
+      "type": "string",
+      "default": "#000000",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "textColor": {
+      "type": "enumeration",
+      "enum": ["light", "dark"],
+      "default": "light",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    }
+  }
+}
