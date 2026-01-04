@@ -22,15 +22,25 @@
       "static/chunks/main-app.js",
       "static/chunks/app/[locale]/(marketing)/page.js"
     ],
+    "/[locale]/(marketing)/services/[slug]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/[locale]/(marketing)/services/[slug]/page.js"
+    ],
     "/[locale]/(marketing)/services/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/[locale]/(marketing)/services/page.js"
     ],
-    "/_not-found/page": [
+    "/[locale]/(marketing)/contact/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/_not-found/page.js"
+      "static/chunks/app/[locale]/(marketing)/contact/page.js"
+    ],
+    "/[locale]/(marketing)/blog/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/[locale]/(marketing)/blog/page.js"
     ]
   }
 }
