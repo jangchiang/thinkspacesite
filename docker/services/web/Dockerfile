@@ -13,6 +13,16 @@ COPY packages/config/package.json ./packages/config/
 COPY packages/ui/package.json ./packages/ui/
 RUN bun install --frozen-lockfile
 
+# Development stage
+FROM base AS development
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+WORKDIR /app/apps/web
+ENV NODE_ENV=development
+EXPOSE 3000
+CMD ["bun", "run", "dev"]
+
 # Build stage
 FROM base AS builder
 WORKDIR /app
@@ -28,7 +38,7 @@ WORKDIR /app/apps/web
 RUN bun run build
 
 # Production stage
-FROM oven/bun:1-slim AS runner
+FROM oven/bun:1-slim AS production
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -51,3 +61,6 @@ ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
 CMD ["bun", "server.js"]
+
+# Alias for backwards compatibility
+FROM production AS runner

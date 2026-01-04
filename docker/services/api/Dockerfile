@@ -11,6 +11,16 @@ COPY apps/api/package.json ./apps/api/
 COPY packages/types/package.json ./packages/types/
 RUN bun install --frozen-lockfile
 
+# Development stage
+FROM base AS development
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+WORKDIR /app/apps/api
+ENV NODE_ENV=development
+EXPOSE 3001
+CMD ["bun", "run", "dev"]
+
 # Build stage
 FROM base AS builder
 WORKDIR /app
@@ -22,7 +32,7 @@ WORKDIR /app/apps/api
 RUN bun run build
 
 # Production stage
-FROM oven/bun:1-slim AS runner
+FROM oven/bun:1-slim AS production
 WORKDIR /app
 
 ENV NODE_ENV=production

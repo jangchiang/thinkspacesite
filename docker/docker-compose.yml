@@ -6,8 +6,8 @@ services:
   # ===================
   web:
     build:
-      context: ../apps/web
-      dockerfile: ../../docker/services/web/Dockerfile
+      context: ..
+      dockerfile: docker/services/web/Dockerfile
     container_name: thinkspace-web
     restart: unless-stopped
     environment:
@@ -32,8 +32,8 @@ services:
   # ===================
   api:
     build:
-      context: ../apps/api
-      dockerfile: ../../docker/services/api/Dockerfile
+      context: ..
+      dockerfile: docker/services/api/Dockerfile
     container_name: thinkspace-api
     restart: unless-stopped
     environment:
@@ -64,12 +64,15 @@ services:
     build:
       context: ../apps/cms
       dockerfile: ../../docker/services/cms/Dockerfile
+      args:
+        - NODE_ENV=${NODE_ENV:-production}
     container_name: thinkspace-cms
     restart: unless-stopped
     environment:
       - NODE_ENV=${NODE_ENV:-production}
       - HOST=0.0.0.0
       - PORT=1337
+      - PUBLIC_URL=${NEXT_PUBLIC_STRAPI_URL:-http://localhost:1337}
       - APP_KEYS=${STRAPI_APP_KEYS}
       - API_TOKEN_SALT=${STRAPI_API_TOKEN_SALT}
       - ADMIN_JWT_SECRET=${STRAPI_ADMIN_JWT_SECRET}
@@ -82,8 +85,6 @@ services:
       - DATABASE_USERNAME=${POSTGRES_USER}
       - DATABASE_PASSWORD=${POSTGRES_PASSWORD}
       - DATABASE_SSL=false
-      - WEBHOOK_URL=${NEXT_PUBLIC_SITE_URL}/api/revalidate
-      - WEBHOOK_SECRET=${REVALIDATION_SECRET}
     volumes:
       - cms-uploads:/app/public/uploads
     depends_on:

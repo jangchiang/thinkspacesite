@@ -1,16 +1,11 @@
 export default ({ env }) => ({
-  i18n: {
-    enabled: true,
+  email: {
     config: {
-      defaultLocale: 'en',
-      locales: ['en', 'th'],
-    },
-  },
-  'users-permissions': {
-    config: {
-      jwt: {
-        expiresIn: '7d',
+      provider: 'sendmail',
+      settings: {
+        defaultFrom: 'no-reply@thinkspace.com',
+        defaultReplyTo: 'no-reply@thinkspace.com',
       },
     },
   },
-})
+});
