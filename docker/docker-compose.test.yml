@@ -1,0 +1,103 @@
+version: '3.9'
+
+# ===========================================
+# Local Production Test Configuration
+# Run: docker compose -f docker-compose.test.yml up --build
+# ===========================================
+
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: docker/services/web/Dockerfile
+      target: production
+    container_name: thinkspace-web-test
+    ports:
+      - "8801:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_SITE_URL=http://localhost:8801
+      - NEXT_PUBLIC_STRAPI_URL=http://localhost:8101
+      - STRAPI_URL=http://cms:1337
+    depends_on:
+      cms:
+        condition: service_healthy
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  cms:
+    build:
+      context: ../apps/cms
+      dockerfile: ../../docker/services/cms/Dockerfile
+      target: production
+    container_name: thinkspace-cms-test
+    ports:
+      - "8101:1337"
+    environment:
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+      - PORT=1337
+      - PUBLIC_URL=http://localhost:8101
+      - APP_KEYS=testkey1,testkey2,testkey3,testkey4
+      - API_TOKEN_SALT=testsalt1234567890123456
+      - ADMIN_JWT_SECRET=testjwtsecret12345678901234
+      - TRANSFER_TOKEN_SALT=testtransfer123456789012
+      - JWT_SECRET=testjwtsecret12345678901234
+      - DATABASE_CLIENT=postgres
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=thinkspace_test
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=testpassword123
+      - DATABASE_SSL=false
+    volumes:
+      - cms-uploads-test:/app/public/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:1337/_health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  db:
+    image: postgres:15-alpine
+    container_name: thinkspace-db-test
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=testpassword123
+      - POSTGRES_DB=thinkspace_test
+    volumes:
+      - postgres-data-test:/var/lib/postgresql/data
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d thinkspace_test"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: thinkspace-redis-test
+    command: redis-server --appendonly yes
+    networks:
+      - test-network
+
+networks:
+  test-network:
+    driver: bridge
+
+volumes:
+  postgres-data-test:
+  cms-uploads-test:
