@@ -1,6 +1,6 @@
 import { type Locale } from '@/lib/i18n'
 import { getDictionary } from '@/lib/dictionary'
-import { getPartners, getStats, getCaseStudies, getBlogPosts } from '@/lib/strapi'
+import { getPartners, getStats, getCaseStudies, getBlogPosts, getHomepage } from '@/lib/strapi'
 import { HeroSection } from '@/components/sections/hero'
 import { ServicesSection } from '@/components/sections/services'
 import { WhyChooseUsSection } from '@/components/sections/why-choose-us'
@@ -8,6 +8,8 @@ import { FeaturedWorksSection } from '@/components/sections/featured-works'
 import { NewsPreviewSection } from '@/components/sections/news-preview'
 import { StatsSection } from '@/components/sections/stats'
 import { CTASection } from '@/components/sections/cta'
+
+export const dynamic = 'force-dynamic'
 
 type Props = {
   params: Promise<{ locale: Locale }>
@@ -62,12 +64,13 @@ interface BlogPost {
 
 export default async function HomePage({ params }: Props) {
   const { locale } = await params
-  const [dict, partnersData, statsData, caseStudiesData, blogData] = await Promise.all([
+  const [dict, partnersData, statsData, caseStudiesData, blogData, homepageData] = await Promise.all([
     getDictionary(locale),
     getPartners().catch(() => []),
     getStats(locale).catch(() => []),
     getCaseStudies(locale, 4).catch(() => []),
-    getBlogPosts(locale, { pageSize: 3 }).catch(() => ({ posts: [] }))
+    getBlogPosts(locale, { pageSize: 3 }).catch(() => ({ posts: [] })),
+    getHomepage(locale).catch(() => null)
   ])
 
   const partners = (partnersData || []) as Partner[]
@@ -75,9 +78,19 @@ export default async function HomePage({ params }: Props) {
   const caseStudies = (caseStudiesData || []) as CaseStudy[]
   const blogPosts = (blogData?.posts || []) as BlogPost[]
 
+  // Build hero data from Strapi or fallback to dict
+  const heroData = homepageData?.heroSection ? {
+    badge: homepageData.heroSection.badge || dict.hero.badge,
+    title: homepageData.heroSection.title || dict.hero.title,
+    titleHighlight: homepageData.heroSection.titleHighlight || dict.hero.titleHighlight,
+    subtitle: homepageData.heroSection.subtitle || dict.hero.subtitle,
+    cta: homepageData.heroSection.ctaButtonText || dict.hero.cta,
+    trustedBy: homepageData.heroSection.trustedByText || dict.hero.trustedBy,
+  } : dict.hero
+
   return (
     <>
-      <HeroSection dict={dict} locale={locale} partners={partners} />
+      <HeroSection dict={{ ...dict, hero: heroData }} locale={locale} partners={partners} />
       <ServicesSection dict={dict} locale={locale} />
       <WhyChooseUsSection locale={locale} />
       <FeaturedWorksSection locale={locale} caseStudies={caseStudies} />
