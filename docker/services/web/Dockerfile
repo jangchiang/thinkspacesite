@@ -55,13 +55,12 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 
-# Copy the entire built application
+# Copy the entire built application and node_modules from builder
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next ./.next
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/package.json ./package.json
-
-# Install production dependencies only
-RUN npm install --omit=dev next react react-dom
+# Copy node_modules from root (where next is installed in monorepo)
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
 
 USER nextjs
 
