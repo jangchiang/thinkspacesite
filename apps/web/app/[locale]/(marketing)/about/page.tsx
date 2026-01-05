@@ -81,41 +81,25 @@ export default async function AboutPage({ params }: Props) {
 
   const heroBackground = buildHeroBackground(heroData)
 
-  // Use Strapi data or fallback
-  const values = aboutData?.values && aboutData.values.length > 0
-    ? aboutData.values.map(v => ({ iconName: v.iconName, title: v.title, description: v.description }))
-    : fallbackValues[locale]
+  // Use Strapi data only (no fallbacks)
+  const values = aboutData?.values?.map(v => ({ iconName: v.iconName, title: v.title, description: v.description })) || []
 
-  const milestones = aboutData?.milestones && aboutData.milestones.length > 0
-    ? aboutData.milestones.map(m => ({ year: m.year, event: m.event, detail: m.detail }))
-    : fallbackMilestones[locale]
+  const milestones = aboutData?.milestones?.map(m => ({ year: m.year, event: m.event, detail: m.detail })) || []
 
-  const teamMembers = aboutData?.teamMembers && aboutData.teamMembers.length > 0
-    ? aboutData.teamMembers.map(t => ({ name: t.name, role: t.role }))
-    : fallbackTeamMembers[locale]
+  const teamMembers = aboutData?.teamMembers?.map(t => ({ name: t.name, role: t.role })) || []
 
-  const storyTitle = aboutData?.storyTitle || (locale === 'th' ? 'เรื่องราวของเรา' : 'Our Story')
-  const storyParagraph1 = aboutData?.storyParagraph1 || (locale === 'th'
-    ? 'Thinkspace Technology เริ่มต้นจากทีมวิศวกรที่มีความหลงใหลในเทคโนโลยี ด้วยเป้าหมายในการช่วยให้องค์กรสามารถใช้ประโยชน์จากเทคโนโลยีได้อย่างเต็มที่'
-    : 'Thinkspace Technology started as a team of engineers passionate about technology, with a goal to help organizations leverage technology to its fullest potential.')
-  const storyParagraph2 = aboutData?.storyParagraph2 || (locale === 'th'
-    ? 'ปัจจุบันเราให้บริการลูกค้ากว่า 500 รายในหลากหลายอุตสาหกรรม ตั้งแต่สตาร์ทอัพจนถึงองค์กรขนาดใหญ่ ด้วยทีมผู้เชี่ยวชาญกว่า 200 คน'
-    : 'Today, we serve over 500 clients across various industries, from startups to large enterprises, with a team of over 200 experts.')
-  const milestonesTitle = aboutData?.milestonesTitle || (locale === 'th' ? 'เหตุการณ์สำคัญ' : 'Key Milestones')
-  const teamSectionTitle = aboutData?.teamSectionTitle || (locale === 'th' ? 'ลูกค้าและพันธมิตรของเรา' : 'Our Customers and Partners')
-  const teamSectionDescription = aboutData?.teamSectionDescription || (locale === 'th'
-    ? 'ได้รับความไว้วางใจจากองค์กรชั้นนำในหลากหลายอุตสาหกรรม'
-    : 'Trusted by leading organizations across various industries.')
+  const storyTitle = aboutData?.storyTitle || ''
+  const storyParagraph1 = aboutData?.storyParagraph1 || ''
+  const storyParagraph2 = aboutData?.storyParagraph2 || ''
+  const milestonesTitle = aboutData?.milestonesTitle || ''
+  const teamSectionTitle = aboutData?.teamSectionTitle || ''
+  const teamSectionDescription = aboutData?.teamSectionDescription || ''
 
   return (
     <>
       <AboutHero
-        title={heroData?.title || (locale === 'th' ? 'เกี่ยวกับเรา' : 'About Us')}
-        description={
-          heroData?.subtitle || (locale === 'th'
-            ? 'Thinkspace Technology เป็นผู้นำด้านโซลูชันเทคโนโลยีสำหรับองค์กร ให้บริการครบวงจรตั้งแต่ Cloud, Security, Data & AI จนถึง Research & Development'
-            : 'Thinkspace Technology is a leading enterprise technology solutions provider, offering end-to-end services from Cloud, Security, Data & AI to Research & Development.')
-        }
+        title={heroData?.title || ''}
+        description={heroData?.subtitle || ''}
         background={heroBackground}
       />
 

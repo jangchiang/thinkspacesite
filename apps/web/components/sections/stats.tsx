@@ -107,8 +107,13 @@ export function StatsSection({ stats }: StatsSectionProps) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
-  // Use provided stats or fallback to defaults
-  const displayStats = stats && stats.length > 0 ? stats : defaultStats
+  // Use provided stats only (no fallbacks)
+  const displayStats = stats || []
+
+  // Don't render section if no stats
+  if (displayStats.length === 0) {
+    return null
+  }
 
   return (
     <section className="py-8 md:py-12 bg-primary text-primary-content overflow-hidden" ref={ref}>

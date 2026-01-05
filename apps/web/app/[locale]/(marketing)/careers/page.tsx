@@ -125,23 +125,9 @@ export default async function CareersPage({ params }: Props) {
     getJobPositions(locale),
   ])
 
-  // Use Strapi data or fallback
-  const benefits: (CareerBenefit | typeof fallbackBenefits[0])[] = strapiBenefits.length > 0
-    ? strapiBenefits
-    : fallbackBenefits.map(b => ({
-        ...b,
-        title: locale === 'th' ? b.title.th : b.title.en,
-        description: locale === 'th' ? b.description.th : b.description.en,
-      }))
-
-  const jobs: (JobPosition | typeof fallbackJobs[0])[] = strapiJobs.length > 0
-    ? strapiJobs
-    : fallbackJobs.map(j => ({
-        ...j,
-        title: locale === 'th' ? j.title.th : j.title.en,
-        department: locale === 'th' ? j.department.th : j.department.en,
-        location: locale === 'th' ? j.location.th : j.location.en,
-      }))
+  // Use Strapi data only (no fallbacks)
+  const benefits = strapiBenefits
+  const jobs = strapiJobs
 
   return (
     <>

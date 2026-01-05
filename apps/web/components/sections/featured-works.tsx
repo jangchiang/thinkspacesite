@@ -129,8 +129,13 @@ export function FeaturedWorksSection({ locale, caseStudies }: FeaturedWorksSecti
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
-  // Use provided case studies or fallback to defaults, limit to 4
-  const works = (caseStudies && caseStudies.length > 0 ? caseStudies : defaultWorks).slice(0, 4)
+  // Use provided case studies only (no fallbacks), limit to 4
+  const works = (caseStudies || []).slice(0, 4)
+
+  // Don't render section if no works
+  if (works.length === 0) {
+    return null
+  }
 
   return (
     <section className="py-16 md:py-20 lg:py-24 bg-base-200" ref={ref}>

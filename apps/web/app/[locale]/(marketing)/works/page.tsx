@@ -108,34 +108,22 @@ export default async function WorksPage({ params }: Props) {
   const strapiWorks = (strapiWorksResult || []) as StrapiWork[]
   const heroBackground = buildHeroBackground(heroData)
 
-  // Use Strapi data if available, otherwise use fallback
-  const works = strapiWorks.length > 0
-    ? strapiWorks.map((work) => ({
-        slug: work.slug,
-        client: work.clientName || '',
-        industry: work.industry || '',
-        title: work.title,
-        challenge: work.excerpt || work.challenge || '',
-        resultValue: work.resultValue || '',
-        resultLabel: work.resultLabel || '',
-        featuredImage: getStrapiImageUrl(
-          work.featuredImage?.formats?.medium?.url || work.featuredImage?.url
-        ),
-        clientLogo: getStrapiImageUrl(
-          work.clientLogo?.formats?.small?.url || work.clientLogo?.url
-        ),
-      }))
-    : fallbackWorks.map((work) => ({
-        slug: work.slug,
-        client: locale === 'th' ? work.client.th : work.client.en,
-        industry: locale === 'th' ? work.industry.th : work.industry.en,
-        title: locale === 'th' ? work.title.th : work.title.en,
-        challenge: locale === 'th' ? work.challenge.th : work.challenge.en,
-        resultValue: work.resultValue,
-        resultLabel: locale === 'th' ? work.resultLabel.th : work.resultLabel.en,
-        featuredImage: undefined,
-        clientLogo: undefined,
-      }))
+  // Use Strapi data only (no fallbacks)
+  const works = strapiWorks.map((work) => ({
+    slug: work.slug,
+    client: work.clientName || '',
+    industry: work.industry || '',
+    title: work.title,
+    challenge: work.excerpt || work.challenge || '',
+    resultValue: work.resultValue || '',
+    resultLabel: work.resultLabel || '',
+    featuredImage: getStrapiImageUrl(
+      work.featuredImage?.formats?.medium?.url || work.featuredImage?.url
+    ),
+    clientLogo: getStrapiImageUrl(
+      work.clientLogo?.formats?.small?.url || work.clientLogo?.url
+    ),
+  }))
 
   return (
     <>
