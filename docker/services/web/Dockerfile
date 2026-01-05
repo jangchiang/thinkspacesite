@@ -68,9 +68,8 @@ EXPOSE 3000
 
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
-ENV PATH="/app/node_modules/.bin:$PATH"
 
-CMD ["next", "start"]
+CMD ["node", "node_modules/next/dist/bin/next", "start"]
 
 # Alias for backwards compatibility
 FROM production AS runner
