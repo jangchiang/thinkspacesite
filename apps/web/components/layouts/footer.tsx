@@ -20,9 +20,10 @@ interface FooterProps {
   dict: Dict
   contactInfo?: ContactInfo | null
   companyName?: string
+  copyrightText?: string
 }
 
-export function Footer({ locale, dict, contactInfo, companyName = 'Thinkspace Technology' }: FooterProps) {
+export function Footer({ locale, dict, contactInfo, companyName = 'Thinkspace Technology', copyrightText }: FooterProps) {
   // Use Strapi data or fallback
   const email = contactInfo?.email || fallbackContact.email
   const phone = contactInfo?.phone || fallbackContact.phone
@@ -156,7 +157,7 @@ export function Footer({ locale, dict, contactInfo, companyName = 'Thinkspace Te
 
         {/* Bottom */}
         <div className="border-t border-base-300 mt-12 pt-8 text-center text-sm text-base-content/60">
-          <p>&copy; {new Date().getFullYear()} {companyName}. {dict.footer.copyright}</p>
+          <p>&copy; {new Date().getFullYear()} {companyName}. {copyrightText || dict.footer.copyright}</p>
         </div>
       </div>
     </footer>

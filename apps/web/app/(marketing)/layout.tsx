@@ -12,14 +12,16 @@ export default async function MarketingLayout({
   children: React.ReactNode
 }) {
   // Fetch site settings from Strapi
-  const siteSettings = await getSiteSettings()
-  const companyName = siteSettings?.companyName || 'Thinkspace Technology'
+  const siteSettings = await getSiteSettings('en')
+  const headerCompanyName = siteSettings?.headerCompanyName || 'Thinkspace Technology'
+  const footerCompanyName = siteSettings?.footerCompanyName || 'Thinkspace Technology'
+  const copyrightText = siteSettings?.copyrightText
 
   return (
     <>
-      <Navbar locale="en" dict={dict} companyName={companyName} />
+      <Navbar locale="en" dict={dict} companyName={headerCompanyName} />
       <main className="min-h-screen">{children}</main>
-      <Footer locale="en" dict={dict} companyName={companyName} />
+      <Footer locale="en" dict={dict} companyName={footerCompanyName} copyrightText={copyrightText} />
     </>
   )
 }

@@ -10,23 +10,56 @@
   "options": {
     "draftAndPublish": true
   },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
   "attributes": {
-    "companyName": {
+    "headerCompanyName": {
       "type": "string",
       "required": true,
-      "default": "Thinkspace Technology"
+      "default": "Thinkspace Technology",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
     },
-    "companyNameShort": {
-      "type": "string"
+    "footerCompanyName": {
+      "type": "string",
+      "required": true,
+      "default": "Thinkspace Technology",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "copyrightText": {
+      "type": "string",
+      "default": "All rights reserved.",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     },
     "tagline": {
-      "type": "string"
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     },
     "logoUrl": {
-      "type": "string"
-    },
-    "faviconUrl": {
-      "type": "string"
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
     }
   }
 }

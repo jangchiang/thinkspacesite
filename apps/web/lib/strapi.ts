@@ -482,17 +482,17 @@ export async function getLegalPage(slug: string, locale: Locale): Promise<LegalP
 export interface SiteSettings {
   id: number
   documentId: string
-  companyName: string
-  companyNameShort?: string
+  headerCompanyName: string
+  footerCompanyName: string
+  copyrightText?: string
   tagline?: string
   logoUrl?: string
-  faviconUrl?: string
 }
 
-export async function getSiteSettings(): Promise<SiteSettings | null> {
+export async function getSiteSettings(locale: Locale): Promise<SiteSettings | null> {
   try {
     const response = await fetchStrapi<SiteSettings>('/site-setting', {
-      locale: null, // Site settings is not localized
+      locale, // Site settings is now localized
       tags: ['site-settings'],
       revalidate: 60, // Cache for 1 minute
     })

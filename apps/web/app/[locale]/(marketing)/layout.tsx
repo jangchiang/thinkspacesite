@@ -28,10 +28,12 @@ export default async function MarketingLayout({ children, params }: Props) {
     getDictionary(locale),
     getServices(locale).catch(() => []) as Promise<StrapiService[]>,
     getContactInfo(locale).catch(() => null),
-    getSiteSettings().catch(() => null)
+    getSiteSettings(locale).catch(() => null)
   ])
 
-  const companyName = siteSettings?.companyName || 'Thinkspace Technology'
+  const headerCompanyName = siteSettings?.headerCompanyName || 'Thinkspace Technology'
+  const footerCompanyName = siteSettings?.footerCompanyName || 'Thinkspace Technology'
+  const copyrightText = siteSettings?.copyrightText
 
   // Transform services for navbar
   const services = (strapiServices || []).map((service) => ({
@@ -41,9 +43,9 @@ export default async function MarketingLayout({ children, params }: Props) {
 
   return (
     <>
-      <Navbar locale={locale} dict={dict} services={services} companyName={companyName} />
+      <Navbar locale={locale} dict={dict} services={services} companyName={headerCompanyName} />
       <main className="min-h-screen page-transition">{children}</main>
-      <Footer locale={locale} dict={dict} contactInfo={contactInfo} companyName={companyName} />
+      <Footer locale={locale} dict={dict} contactInfo={contactInfo} companyName={footerCompanyName} copyrightText={copyrightText} />
     </>
   )
 }
