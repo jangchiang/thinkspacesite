@@ -19,9 +19,10 @@ interface FooterProps {
   locale: Locale
   dict: Dict
   contactInfo?: ContactInfo | null
+  companyName?: string
 }
 
-export function Footer({ locale, dict, contactInfo }: FooterProps) {
+export function Footer({ locale, dict, contactInfo, companyName = 'Thinkspace Technology' }: FooterProps) {
   // Use Strapi data or fallback
   const email = contactInfo?.email || fallbackContact.email
   const phone = contactInfo?.phone || fallbackContact.phone
@@ -65,7 +66,7 @@ export function Footer({ locale, dict, contactInfo }: FooterProps) {
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link href={`/${locale}`} className="flex items-center gap-2 mb-4">
-              <span className="font-bold text-xl text-base-content">Thinkspace Technology</span>
+              <span className="font-bold text-xl text-base-content">{companyName}</span>
             </Link>
             <p className="text-base-content/70 mb-6 max-w-sm">
               {dict.footer.tagline}
@@ -155,7 +156,7 @@ export function Footer({ locale, dict, contactInfo }: FooterProps) {
 
         {/* Bottom */}
         <div className="border-t border-base-300 mt-12 pt-8 text-center text-sm text-base-content/60">
-          <p>&copy; {new Date().getFullYear()} Thinkspace Technology. {dict.footer.copyright}</p>
+          <p>&copy; {new Date().getFullYear()} {companyName}. {dict.footer.copyright}</p>
         </div>
       </div>
     </footer>

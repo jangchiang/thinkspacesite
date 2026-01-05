@@ -1,0 +1,32 @@
+{
+  "kind": "singleType",
+  "collectionName": "site_settings",
+  "info": {
+    "singularName": "site-setting",
+    "pluralName": "site-settings",
+    "displayName": "Site Setting",
+    "description": "Global site settings like company name"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "companyName": {
+      "type": "string",
+      "required": true,
+      "default": "Thinkspace Technology"
+    },
+    "companyNameShort": {
+      "type": "string"
+    },
+    "tagline": {
+      "type": "string"
+    },
+    "logoUrl": {
+      "type": "string"
+    },
+    "faviconUrl": {
+      "type": "string"
+    }
+  }
+}

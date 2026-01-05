@@ -478,6 +478,32 @@ export async function getLegalPage(slug: string, locale: Locale): Promise<LegalP
   }
 }
 
+// Site Settings types and functions
+export interface SiteSettings {
+  id: number
+  documentId: string
+  companyName: string
+  companyNameShort?: string
+  tagline?: string
+  logoUrl?: string
+  faviconUrl?: string
+}
+
+export async function getSiteSettings(): Promise<SiteSettings | null> {
+  try {
+    const response = await fetchStrapi<SiteSettings>('/site-setting', {
+      locale: null, // Site settings is not localized
+      tags: ['site-settings'],
+      revalidate: 60, // Cache for 1 minute
+    })
+
+    return response.data ?? null
+  } catch (error) {
+    console.log('Failed to fetch site settings:', error)
+    return null
+  }
+}
+
 // Homepage types and functions
 export interface HomepageHeroSection {
   badge?: string

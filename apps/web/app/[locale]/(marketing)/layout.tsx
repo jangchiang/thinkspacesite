@@ -1,6 +1,6 @@
 import { type Locale } from '@/lib/i18n'
 import { getDictionary } from '@/lib/dictionary'
-import { getServices, getContactInfo } from '@/lib/strapi'
+import { getServices, getContactInfo, getSiteSettings } from '@/lib/strapi'
 import { Navbar } from '@/components/layouts/navbar'
 import { Footer } from '@/components/layouts/footer'
 
@@ -20,12 +20,15 @@ interface StrapiService {
 export default async function MarketingLayout({ children, params }: Props) {
   const { locale } = await params
 
-  // Fetch dictionary, services, and contact info in parallel
-  const [dict, strapiServices, contactInfo] = await Promise.all([
+  // Fetch dictionary, services, contact info, and site settings in parallel
+  const [dict, strapiServices, contactInfo, siteSettings] = await Promise.all([
     getDictionary(locale),
     getServices(locale).catch(() => []) as Promise<StrapiService[]>,
-    getContactInfo(locale).catch(() => null)
+    getContactInfo(locale).catch(() => null),
+    getSiteSettings().catch(() => null)
   ])
+
+  const companyName = siteSettings?.companyName || 'Thinkspace Technology'
 
   // Transform services for navbar
   const services = (strapiServices || []).map((service) => ({
@@ -35,9 +38,9 @@ export default async function MarketingLayout({ children, params }: Props) {
 
   return (
     <>
-      <Navbar locale={locale} dict={dict} services={services} />
+      <Navbar locale={locale} dict={dict} services={services} companyName={companyName} />
       <main className="min-h-screen page-transition">{children}</main>
-      <Footer locale={locale} dict={dict} contactInfo={contactInfo} />
+      <Footer locale={locale} dict={dict} contactInfo={contactInfo} companyName={companyName} />
     </>
   )
 }

@@ -19,6 +19,7 @@ interface NavbarProps {
   locale: Locale
   dict: Dict
   services?: ServiceItem[]
+  companyName?: string
 }
 
 interface NavItem {
@@ -141,7 +142,7 @@ function NavDropdown({
   )
 }
 
-export function Navbar({ locale, dict, services: servicesProp }: NavbarProps) {
+export function Navbar({ locale, dict, services: servicesProp, companyName = 'Thinkspace Technology' }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -207,7 +208,7 @@ export function Navbar({ locale, dict, services: servicesProp }: NavbarProps) {
               whileHover={{ scale: 1.02 }}
               transition={{ type: 'spring', stiffness: 400, damping: 10 }}
             >
-              Thinkspace Technology
+              {companyName}
             </motion.span>
           </Link>
 
