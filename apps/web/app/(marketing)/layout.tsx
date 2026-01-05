@@ -3,6 +3,9 @@ import { Footer } from '@/components/layouts/footer'
 import { getSiteSettings } from '@/lib/strapi'
 import dict from '@/dictionaries/en.json'
 
+// Force dynamic rendering - don't try to fetch from Strapi during build
+export const dynamic = 'force-dynamic'
+
 export default async function MarketingLayout({
   children,
 }: {

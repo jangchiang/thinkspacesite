@@ -4,6 +4,9 @@ import { getServices, getContactInfo, getSiteSettings } from '@/lib/strapi'
 import { Navbar } from '@/components/layouts/navbar'
 import { Footer } from '@/components/layouts/footer'
 
+// Force dynamic rendering - don't try to fetch from Strapi during build
+export const dynamic = 'force-dynamic'
+
 type Props = {
   children: React.ReactNode
   params: Promise<{ locale: Locale }>
