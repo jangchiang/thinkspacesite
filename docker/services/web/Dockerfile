@@ -29,6 +29,10 @@ CMD ["bun", "run", "dev"]
 # Build stage
 FROM base AS builder
 WORKDIR /app
+
+# Install build dependencies for native modules (better-sqlite3)
+RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
