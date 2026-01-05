@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Mail, Phone, MessageCircle, Linkedin, Twitter, Github, Facebook } from 'lucide-react'
+import { Mail, Phone, MessageCircle, Linkedin, Twitter, Facebook } from 'lucide-react'
 import { type Locale } from '@/lib/i18n'
 import { type ContactInfo } from '@/lib/strapi'
 

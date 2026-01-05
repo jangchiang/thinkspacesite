@@ -1,7 +1,7 @@
 import { type Locale } from '@/lib/i18n'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowLeft, ArrowRight, Building2, Quote, CheckCircle2, Lightbulb, Target, Rocket } from 'lucide-react'
+import { ArrowRight, Building2, Quote, CheckCircle2, Lightbulb, Target, Rocket } from 'lucide-react'
 import type { Metadata } from 'next'
 import { getCaseStudy } from '@/lib/strapi'
 import { notFound } from 'next/navigation'

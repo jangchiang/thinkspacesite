@@ -20,7 +20,7 @@ const headerVariants = {
     y: 0,
     transition: {
       duration: 0.6,
-      ease: [0.22, 1, 0.36, 1],
+      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
     },
   },
 }
@@ -81,7 +81,7 @@ export function ServicesSection({ dict, locale }: ServicesSectionProps) {
         {/* Marquee container */}
         <div className="flex animate-marquee-slow hover:[animation-play-state:paused]">
           {/* First set */}
-          {services.map((service, index) => {
+          {services.map((service) => {
             const IconComponent = iconMap[service.key] || Code
             return (
               <Link
@@ -118,7 +118,7 @@ export function ServicesSection({ dict, locale }: ServicesSectionProps) {
             )
           })}
           {/* Duplicate set for seamless loop */}
-          {services.map((service, index) => {
+          {services.map((service) => {
             const IconComponent = iconMap[service.key] || Code
             return (
               <Link

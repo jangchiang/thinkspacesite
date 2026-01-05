@@ -1,0 +1,8 @@
+User-Agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+
+Host: https://thinkspace.com
+Sitemap: https://thinkspace.com/sitemap.xml

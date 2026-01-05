@@ -27,19 +27,6 @@ interface Milestone {
 }
 
 // Animation variants
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (delay: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      delay,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  }),
-}
-
 const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
@@ -57,7 +44,7 @@ const staggerItem = {
     y: 0,
     transition: {
       duration: 0.5,
-      ease: [0.22, 1, 0.36, 1],
+      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
     },
   },
 }
@@ -240,7 +227,7 @@ interface StorySectionProps {
 }
 
 export function StorySection({
-  locale,
+  locale: _locale,
   storyTitle,
   storyParagraph1,
   storyParagraph2,
@@ -353,7 +340,7 @@ export function TeamSection({ title, description, members }: TeamSectionProps) {
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          {members.map((member, index) => (
+          {members.map((member) => (
             <motion.div
               key={member.name}
               className="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow duration-300"

@@ -1,5 +1,4 @@
 import { type Locale } from '@/lib/i18n'
-import { getDictionary } from '@/lib/dictionary'
 import { ContactForm } from '@/components/forms/contact-form'
 import type { Metadata } from 'next'
 import {
@@ -39,11 +38,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ContactPage({ params }: Props) {
   const { locale } = await params
 
-  // Fetch hero, contact info, and dictionary in parallel
-  const [heroData, strapiContactInfo, dict] = await Promise.all([
+  // Fetch hero and contact info in parallel
+  const [heroData, strapiContactInfo] = await Promise.all([
     getPageHero('contact', locale),
     getContactInfo(locale),
-    getDictionary(locale)
   ])
 
   const heroBackground = buildHeroBackground(heroData)

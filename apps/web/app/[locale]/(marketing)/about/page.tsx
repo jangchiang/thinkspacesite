@@ -73,11 +73,10 @@ const fallbackTeamMembers = {
 export default async function AboutPage({ params }: Props) {
   const { locale } = await params
 
-  // Fetch hero, about page, and dictionary in parallel
-  const [heroData, aboutData, dict] = await Promise.all([
+  // Fetch hero and about page in parallel
+  const [heroData, aboutData] = await Promise.all([
     getPageHero('about', locale),
     getAboutPage(locale),
-    getDictionary(locale)
   ])
 
   const heroBackground = buildHeroBackground(heroData)
