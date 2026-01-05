@@ -6,10 +6,10 @@ import { Send, Loader2, CheckCircle, AlertCircle } from 'lucide-react'
 import { type Locale } from '@/lib/i18n'
 
 interface ContactFormProps {
-  locale: Locale
+  locale?: Locale
 }
 
-export function ContactForm({ locale }: ContactFormProps) {
+export function ContactForm({ locale = 'en' }: ContactFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
 
