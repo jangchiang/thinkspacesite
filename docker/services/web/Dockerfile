@@ -36,8 +36,9 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
-# Build the Next.js app from root (monorepo)
-RUN cd apps/web && /app/node_modules/.bin/next build
+# Install dependencies in apps/web and build
+WORKDIR /app/apps/web
+RUN bun install && bun run build
 
 # Production stage
 FROM oven/bun:1-slim AS production
