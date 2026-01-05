@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   # ===================
   # Frontend - Next.js
@@ -16,11 +14,7 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV:-production}
       - NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
-      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
       - NEXT_PUBLIC_STRAPI_URL=${NEXT_PUBLIC_STRAPI_URL}
-      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
-      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
-      - NEXT_PUBLIC_MEILISEARCH_HOST=${NEXT_PUBLIC_MEILISEARCH_HOST}
       - STRAPI_URL=${STRAPI_URL:-http://cms:1337}
       - STRAPI_API_TOKEN=${STRAPI_API_TOKEN}
       - REVALIDATION_SECRET=${REVALIDATION_SECRET}
@@ -30,40 +24,7 @@ services:
       - thinkspace-network
 
   # ===================
-  # API Server - Elysia/Bun
-  # ===================
-  api:
-    build:
-      context: ..
-      dockerfile: docker/services/api/Dockerfile
-      target: production
-    container_name: thinkspace-api
-    restart: unless-stopped
-    ports:
-      - "3001:3001"
-    environment:
-      - NODE_ENV=${NODE_ENV:-production}
-      - PORT=3001
-      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
-      - SUPABASE_URL=${SUPABASE_URL:-http://rest:3000}
-      - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
-      - REDIS_URL=redis://redis:6379
-      - MEILISEARCH_HOST=http://meilisearch:7700
-      - MEILISEARCH_KEY=${MEILISEARCH_KEY}
-      - RESEND_API_KEY=${RESEND_API_KEY}
-      - CONTACT_EMAIL=${CONTACT_EMAIL}
-      - JWT_SECRET=${JWT_SECRET}
-      - CORS_ORIGINS=${CORS_ORIGINS}
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_started
-    networks:
-      - thinkspace-network
-
-  # ===================
-  # CMS - Strapi 5
+  # CMS - Strapi 5 (SQLite)
   # ===================
   cms:
     build:
@@ -83,70 +44,13 @@ services:
       - API_TOKEN_SALT=${STRAPI_API_TOKEN_SALT}
       - ADMIN_JWT_SECRET=${STRAPI_ADMIN_JWT_SECRET}
       - TRANSFER_TOKEN_SALT=${STRAPI_TRANSFER_TOKEN_SALT}
-      - JWT_SECRET=${STRAPI_JWT_SECRET:-${JWT_SECRET}}
-      - DATABASE_CLIENT=postgres
-      - DATABASE_HOST=db
-      - DATABASE_PORT=5432
-      - DATABASE_NAME=${POSTGRES_DB}
-      - DATABASE_USERNAME=${POSTGRES_USER}
-      - DATABASE_PASSWORD=${POSTGRES_PASSWORD}
-      - DATABASE_SSL=false
+      - JWT_SECRET=${STRAPI_JWT_SECRET}
+      - DATABASE_CLIENT=sqlite
+      - DATABASE_FILENAME=/app/data/data.db
       - GROQ_API_KEY=${GROQ_API_KEY}
     volumes:
       - cms-uploads:/app/public/uploads
-    depends_on:
-      db:
-        condition: service_healthy
-    networks:
-      - thinkspace-network
-
-  # ===================
-  # Database - PostgreSQL
-  # ===================
-  db:
-    image: postgres:15-alpine
-    container_name: thinkspace-db
-    restart: unless-stopped
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-      - ./init-scripts:/docker-entrypoint-initdb.d
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-thinkspace}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - thinkspace-network
-
-  # ===================
-  # Cache - Redis
-  # ===================
-  redis:
-    image: redis:7-alpine
-    container_name: thinkspace-redis
-    restart: unless-stopped
-    command: redis-server --appendonly yes
-    volumes:
-      - redis-data:/data
-    networks:
-      - thinkspace-network
-
-  # ===================
-  # Search - Meilisearch
-  # ===================
-  meilisearch:
-    image: getmeili/meilisearch:v1.6
-    container_name: thinkspace-search
-    restart: unless-stopped
-    environment:
-      - MEILI_MASTER_KEY=${MEILISEARCH_KEY}
-      - MEILI_ENV=${MEILI_ENV:-production}
-    volumes:
-      - meilisearch-data:/meili_data
+      - cms-data:/app/data
     networks:
       - thinkspace-network
 
@@ -155,7 +59,5 @@ networks:
     driver: bridge
 
 volumes:
-  postgres-data:
-  redis-data:
-  meilisearch-data:
   cms-uploads:
+  cms-data:

@@ -8,14 +8,9 @@ FROM node:22-alpine AS base
 RUN apk add --no-cache libc6-compat python3 make g++ vips-dev
 WORKDIR /app
 
-# Install dependencies
-FROM base AS deps
-COPY package.json package-lock.json* ./
-RUN npm ci --only=production && npm cache clean --force
-
 # Development stage
 FROM base AS development
-COPY package.json package-lock.json* ./
+COPY package.json ./
 RUN npm install
 COPY . .
 RUN mkdir -p /app/public/uploads && \
@@ -30,7 +25,7 @@ CMD ["npm", "run", "develop"]
 
 # Build stage
 FROM base AS builder
-COPY package.json package-lock.json* ./
+COPY package.json ./
 RUN npm install
 COPY . .
 ENV NODE_ENV=production
@@ -44,12 +39,14 @@ ENV NODE_ENV=production
 ENV PORT=1337
 ENV HOST=0.0.0.0
 
+# Copy package.json and install production dependencies
+COPY package.json ./
+RUN npm install --omit=dev
+
 # Copy built application
-COPY --from=deps /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/build ./build
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/package.json ./
 COPY --from=builder /app/config ./config
 COPY --from=builder /app/src ./src
 COPY --from=builder /app/database ./database
@@ -60,6 +57,7 @@ COPY --from=builder /app/tsconfig.json ./
 RUN addgroup --system --gid 1001 strapi && \
     adduser --system --uid 1001 strapi && \
     mkdir -p /app/public/uploads && \
+    mkdir -p /app/data && \
     chown -R strapi:strapi /app
 
 USER strapi
