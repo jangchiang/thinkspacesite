@@ -58,50 +58,6 @@ const industryColors: Record<string, string> = {
   'การเงิน': 'from-amber-500/20 to-orange-500/20',
 }
 
-// Default works (fallback)
-const defaultWorks = [
-  {
-    id: 1,
-    clientName: 'Bangkok Bank',
-    title: 'Digital Banking System',
-    slug: 'bangkok-bank',
-    excerpt: 'Developed online banking system serving over 10 million users with highest security standards',
-    industry: 'Banking',
-    resultValue: '10M+',
-    resultLabel: 'Users',
-  },
-  {
-    id: 2,
-    clientName: 'PTT Exploration',
-    title: 'HPC Infrastructure',
-    slug: 'ptt-exploration',
-    excerpt: 'Deployed HPC systems for geological data analysis and oil exploration',
-    industry: 'Energy',
-    resultValue: '50%',
-    resultLabel: 'Faster Processing',
-  },
-  {
-    id: 3,
-    clientName: 'Revenue Department',
-    title: 'Cybersecurity',
-    slug: 'revenue-department',
-    excerpt: 'Designed and implemented comprehensive cybersecurity for citizen tax data',
-    industry: 'Government',
-    resultValue: '99.99%',
-    resultLabel: 'Security Uptime',
-  },
-  {
-    id: 4,
-    clientName: 'Central Group',
-    title: 'Cloud Migration',
-    slug: 'central-group',
-    excerpt: 'Migrated E-commerce to Multi-cloud, reducing costs by 40% and improving performance by 200%',
-    industry: 'Retail',
-    resultValue: '40%',
-    resultLabel: 'Cost Reduction',
-  },
-]
-
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {

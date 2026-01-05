@@ -95,14 +95,6 @@ const itemVariants = {
   },
 }
 
-// Default stats (fallback if no CMS data)
-const defaultStats: Stat[] = [
-  { id: 1, value: '500+', label: 'Enterprise Clients', order: 1 },
-  { id: 2, value: '99.9%', label: 'SLA Uptime', order: 2 },
-  { id: 3, value: '24/7', label: 'Support Available', order: 3 },
-  { id: 4, value: '15+', label: 'Years Experience', order: 4 },
-]
-
 export function StatsSection({ stats }: StatsSectionProps) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })

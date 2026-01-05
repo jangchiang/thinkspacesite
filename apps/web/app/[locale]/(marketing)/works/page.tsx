@@ -49,46 +49,6 @@ interface StrapiWork {
   }
 }
 
-// Fallback data when Strapi is empty
-const fallbackWorks = [
-  {
-    slug: 'fintech-cloud-migration',
-    client: { en: 'FinTech Corp', th: 'FinTech Corp' },
-    industry: { en: 'Financial Services', th: 'การเงิน' },
-    title: { en: 'Cloud Migration for FinTech', th: 'การย้ายระบบสู่คลาวด์สำหรับ FinTech' },
-    challenge: {
-      en: 'Legacy systems unable to support business growth',
-      th: 'ระบบเก่าไม่สามารถรองรับการเติบโตของธุรกิจ'
-    },
-    resultValue: '60%',
-    resultLabel: { en: 'IT Cost Reduction', th: 'ลดค่าใช้จ่าย IT' },
-  },
-  {
-    slug: 'retail-digital-transformation',
-    client: { en: 'RetailMax', th: 'RetailMax' },
-    industry: { en: 'Retail', th: 'ค้าปลีก' },
-    title: { en: 'Digital Transformation for Retail', th: 'การเปลี่ยนแปลงดิจิทัลสำหรับค้าปลีก' },
-    challenge: {
-      en: 'Need to connect online and offline channels',
-      th: 'ต้องการเชื่อมต่อช่องทางออนไลน์และออฟไลน์'
-    },
-    resultValue: '3x',
-    resultLabel: { en: 'Online Sales Increase', th: 'เพิ่มยอดขายออนไลน์' },
-  },
-  {
-    slug: 'healthcare-security',
-    client: { en: 'MediCare Plus', th: 'MediCare Plus' },
-    industry: { en: 'Healthcare', th: 'สุขภาพ' },
-    title: { en: 'Healthcare Data Security', th: 'ความปลอดภัยข้อมูลสุขภาพ' },
-    challenge: {
-      en: 'HIPAA compliance and data security',
-      th: 'ปฏิบัติตามข้อกำหนด HIPAA และรักษาความปลอดภัยข้อมูล'
-    },
-    resultValue: '100%',
-    resultLabel: { en: 'Compliance Achieved', th: 'ปฏิบัติตามข้อกำหนด' },
-  },
-]
-
 // Helper to build Strapi image URL
 function getStrapiImageUrl(url: string | undefined): string | undefined {
   if (!url) return undefined

@@ -2,7 +2,7 @@ import { type Locale } from '@/lib/i18n'
 import Link from 'next/link'
 import { MapPin, Clock, Briefcase, ArrowRight, Heart, Zap, Users, Shield, Globe, Award, Coffee, Target } from 'lucide-react'
 import type { Metadata } from 'next'
-import { getCareerBenefits, getJobPositions, type CareerBenefit, type JobPosition } from '@/lib/strapi'
+import { getCareerBenefits, getJobPositions } from '@/lib/strapi'
 
 type Props = {
   params: Promise<{ locale: Locale }>
@@ -32,81 +32,6 @@ const iconMap = {
   Clock,
   Target,
 }
-
-// Fallback data for when Strapi is unavailable
-const fallbackBenefits = [
-  {
-    id: 1,
-    documentId: '1',
-    iconName: 'Heart' as const,
-    title: { th: 'สวัสดิการครบครัน', en: 'Comprehensive Benefits' },
-    description: { th: 'ประกันสุขภาพ, ทันตกรรม และสายตา', en: 'Health, dental, and vision insurance' },
-    order: 1,
-  },
-  {
-    id: 2,
-    documentId: '2',
-    iconName: 'Zap' as const,
-    title: { th: 'เติบโตอย่างรวดเร็ว', en: 'Fast Growth' },
-    description: { th: 'โอกาสในการพัฒนาและเลื่อนตำแหน่ง', en: 'Development and promotion opportunities' },
-    order: 2,
-  },
-  {
-    id: 3,
-    documentId: '3',
-    iconName: 'Users' as const,
-    title: { th: 'ทีมที่ยอดเยี่ยม', en: 'Great Team' },
-    description: { th: 'ทำงานร่วมกับผู้เชี่ยวชาญชั้นนำ', en: 'Work with top industry experts' },
-    order: 3,
-  },
-]
-
-const fallbackJobs = [
-  {
-    id: 1,
-    documentId: '1',
-    title: { th: 'วิศวกรคลาวด์อาวุโส', en: 'Senior Cloud Engineer' },
-    slug: 'senior-cloud-engineer',
-    department: { th: 'วิศวกรรม', en: 'Engineering' },
-    location: { th: 'กรุงเทพฯ / ทำงานระยะไกล', en: 'Bangkok / Remote' },
-    employmentType: 'full-time' as const,
-    isActive: true,
-    order: 1,
-  },
-  {
-    id: 2,
-    documentId: '2',
-    title: { th: 'นักวิเคราะห์ความปลอดภัย', en: 'Security Analyst' },
-    slug: 'security-analyst',
-    department: { th: 'ความปลอดภัย', en: 'Security' },
-    location: { th: 'กรุงเทพฯ', en: 'Bangkok' },
-    employmentType: 'full-time' as const,
-    isActive: true,
-    order: 2,
-  },
-  {
-    id: 3,
-    documentId: '3',
-    title: { th: 'นักวิทยาศาสตร์ข้อมูล', en: 'Data Scientist' },
-    slug: 'data-scientist',
-    department: { th: 'ข้อมูลและ AI', en: 'Data & AI' },
-    location: { th: 'ทำงานระยะไกล', en: 'Remote' },
-    employmentType: 'full-time' as const,
-    isActive: true,
-    order: 3,
-  },
-  {
-    id: 4,
-    documentId: '4',
-    title: { th: 'ผู้จัดการโครงการ', en: 'Project Manager' },
-    slug: 'project-manager',
-    department: { th: 'ปฏิบัติการ', en: 'Operations' },
-    location: { th: 'กรุงเทพฯ', en: 'Bangkok' },
-    employmentType: 'full-time' as const,
-    isActive: true,
-    order: 4,
-  },
-]
 
 // Employment type labels
 const employmentTypeLabels = {
@@ -156,8 +81,6 @@ export default async function CareersPage({ params }: Props) {
           <div className="grid md:grid-cols-3 gap-8">
             {benefits.map((benefit) => {
               const IconComponent = iconMap[benefit.iconName as keyof typeof iconMap] || Heart
-              const title = typeof benefit.title === 'string' ? benefit.title : (locale === 'th' ? benefit.title.th : benefit.title.en)
-              const description = typeof benefit.description === 'string' ? benefit.description : (locale === 'th' ? benefit.description.th : benefit.description.en)
 
               return (
                 <div key={benefit.id} className="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow">
@@ -165,8 +88,8 @@ export default async function CareersPage({ params }: Props) {
                     <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                       <IconComponent className="w-8 h-8 text-primary" />
                     </div>
-                    <h3 className="card-title">{title}</h3>
-                    <p className="text-base-content/70">{description}</p>
+                    <h3 className="card-title">{benefit.title}</h3>
+                    <p className="text-base-content/70">{benefit.description}</p>
                   </div>
                 </div>
               )
@@ -183,9 +106,6 @@ export default async function CareersPage({ params }: Props) {
           </h2>
           <div className="space-y-4">
             {jobs.map((job) => {
-              const title = typeof job.title === 'string' ? job.title : (locale === 'th' ? job.title.th : job.title.en)
-              const department = typeof job.department === 'string' ? job.department : (locale === 'th' ? job.department.th : job.department.en)
-              const location = typeof job.location === 'string' ? job.location : (locale === 'th' ? job.location.th : job.location.en)
               const typeLabel = employmentTypeLabels[job.employmentType]
 
               return (
@@ -197,15 +117,15 @@ export default async function CareersPage({ params }: Props) {
                   <div className="card-body">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div>
-                        <h3 className="card-title text-xl group-hover:text-primary">{title}</h3>
+                        <h3 className="card-title text-xl group-hover:text-primary">{job.title}</h3>
                         <div className="flex flex-wrap gap-4 mt-2 text-sm text-base-content/70">
                           <span className="flex items-center gap-1">
                             <Briefcase className="w-4 h-4" />
-                            {department}
+                            {job.department}
                           </span>
                           <span className="flex items-center gap-1">
                             <MapPin className="w-4 h-4" />
-                            {location}
+                            {job.location}
                           </span>
                           <span className="flex items-center gap-1">
                             <Clock className="w-4 h-4" />
