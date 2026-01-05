@@ -5,6 +5,8 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Calendar, ArrowRight, Clock } from 'lucide-react'
 
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
+
 interface BlogPost {
   slug: string
   title: string
@@ -80,7 +82,7 @@ export function NewsGrid({ posts, locale }: NewsGridProps) {
               <div className="aspect-video bg-base-200 relative overflow-hidden">
                 {post.featuredImage ? (
                   <Image
-                    src={`http://localhost:1337${post.featuredImage}`}
+                    src={`${STRAPI_URL}${post.featuredImage}`}
                     alt={post.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500"

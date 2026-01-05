@@ -1,19 +1,62 @@
 # syntax=docker/dockerfile:1
 
-FROM node:22-alpine
+# ===========================================
+# Strapi CMS - Production Dockerfile
+# ===========================================
+
+FROM node:22-alpine AS base
 RUN apk add --no-cache libc6-compat python3 make g++ vips-dev
 WORKDIR /app
 
-# Copy package files
-COPY package.json ./
-
 # Install dependencies
+FROM base AS deps
+COPY package.json package-lock.json* ./
+RUN npm ci --only=production && npm cache clean --force
+
+# Development stage
+FROM base AS development
+COPY package.json package-lock.json* ./
 RUN npm install
-
-# Copy source
 COPY . .
+RUN mkdir -p /app/public/uploads && \
+    addgroup --system --gid 1001 strapi && \
+    adduser --system --uid 1001 strapi && \
+    chown -R strapi:strapi /app
+USER strapi
+EXPOSE 1337
+ENV PORT=1337
+ENV HOST=0.0.0.0
+CMD ["npm", "run", "develop"]
 
-# Create non-root user
+# Build stage
+FROM base AS builder
+COPY package.json package-lock.json* ./
+RUN npm install
+COPY . .
+ENV NODE_ENV=production
+RUN npm run build
+
+# Production stage
+FROM base AS production
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV PORT=1337
+ENV HOST=0.0.0.0
+
+# Copy built application
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/build ./build
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/config ./config
+COPY --from=builder /app/src ./src
+COPY --from=builder /app/database ./database
+COPY --from=builder /app/types ./types
+COPY --from=builder /app/tsconfig.json ./
+
+# Create non-root user and set permissions
 RUN addgroup --system --gid 1001 strapi && \
     adduser --system --uid 1001 strapi && \
     mkdir -p /app/public/uploads && \
@@ -23,8 +66,5 @@ USER strapi
 
 EXPOSE 1337
 
-ENV PORT=1337
-ENV HOST=0.0.0.0
-
-# Run in development mode (builds admin on startup)
-CMD ["npm", "run", "develop"]
+# Run production server
+CMD ["npm", "run", "start"]

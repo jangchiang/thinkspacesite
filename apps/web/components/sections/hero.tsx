@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight, Play } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { type Locale } from '@/lib/i18n'
 import { motion } from 'framer-motion'
 import { BackgroundPaths } from '@/components/backgrounds/background-paths'
@@ -97,15 +97,6 @@ export function HeroSection({ dict, locale, partners = [] }: HeroSectionProps) {
                   {dict.hero.cta}
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <button className="btn btn-lg gap-2 group bg-base-100/80 backdrop-blur-md border border-base-content/10 hover:bg-base-100 hover:border-primary/30 shadow-lg">
-                  <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                  {dict.hero.watchDemo}
-                </button>
               </motion.div>
             </motion.div>
 

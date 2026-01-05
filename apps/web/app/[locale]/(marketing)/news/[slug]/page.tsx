@@ -2,9 +2,11 @@ import { type Locale } from '@/lib/i18n'
 import { getBlogPost } from '@/lib/strapi'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Calendar, ArrowLeft, User } from 'lucide-react'
+import { Calendar, User, ArrowLeft } from 'lucide-react'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
+import { MarkdownRenderer } from '@/components/markdown-renderer'
+import { Breadcrumb } from '@/components/ui/breadcrumb'
 
 type Props = {
   params: Promise<{ locale: Locale; slug: string }>
@@ -60,14 +62,15 @@ export default async function BlogPostPage({ params }: Props) {
   return (
     <article className="py-12 md:py-20">
       <div className="container-custom">
-        {/* Back Link */}
-        <Link
-          href={`/${locale}/news`}
-          className="inline-flex items-center gap-2 text-primary hover:underline mb-8"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          {locale === 'th' ? 'กลับไปข่าวสาร' : 'Back to News'}
-        </Link>
+        {/* Breadcrumb */}
+        <Breadcrumb
+          items={[
+            { label: locale === 'th' ? 'ข่าวสาร' : 'News', href: `/${locale}/news` },
+            { label: post.title }
+          ]}
+          locale={locale}
+          className="mb-8"
+        />
 
         {/* Header */}
         <header className="max-w-3xl mx-auto text-center mb-12">
@@ -99,7 +102,7 @@ export default async function BlogPostPage({ params }: Props) {
         {imageUrl && (
           <div className="relative aspect-video max-w-4xl mx-auto mb-12 rounded-2xl overflow-hidden">
             <Image
-              src={`http://localhost:1337${imageUrl}`}
+              src={`${process.env.STRAPI_URL || 'http://localhost:1337'}${imageUrl}`}
               alt={post.title}
               fill
               className="object-cover"
@@ -109,9 +112,9 @@ export default async function BlogPostPage({ params }: Props) {
         )}
 
         {/* Content */}
-        <div className="max-w-3xl mx-auto prose prose-lg prose-green">
+        <div className="max-w-3xl mx-auto">
           {post.content ? (
-            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+            <MarkdownRenderer content={post.content} />
           ) : (
             <p className="text-base-content/70">
               {locale === 'th' ? 'ไม่มีเนื้อหา' : 'No content available'}

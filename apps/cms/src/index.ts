@@ -394,13 +394,12 @@ async function seedStats(strapi: Core.Strapi) {
 
       strapi.log.info(`Created Thai stat: ${stat.value} - ${stat.label.th}`);
 
-      // Create English localization
+      // Create English localization (only update localized fields - label)
+      // value and order are non-localized, so they're shared from the Thai entry
       await strapi.documents('api::stat.stat').update({
         documentId: thEntry.documentId,
         data: {
-          value: stat.value,
           label: stat.label.en,
-          order: stat.order,
         },
         locale: 'en',
         status: 'published',
@@ -528,10 +527,10 @@ const aboutPageData: AboutPageSeedData = {
     en: 'Today, we serve over 500 clients across various industries, from startups to large enterprises, with a team of over 200 experts.',
   },
   milestonesTitle: { th: 'เหตุการณ์สำคัญ', en: 'Key Milestones' },
-  teamSectionTitle: { th: 'ทีมผู้บริหาร', en: 'Leadership Team' },
+  teamSectionTitle: { th: 'ลูกค้าและพันธมิตรของเรา', en: 'Our Customers and Partners' },
   teamSectionDescription: {
-    th: 'ทีมผู้บริหารที่มีประสบการณ์กว่า 20 ปีในอุตสาหกรรมเทคโนโลยี',
-    en: 'Experienced leadership with over 20 years in the technology industry.',
+    th: 'ได้รับความไว้วางใจจากองค์กรชั้นนำในหลากหลายอุตสาหกรรม',
+    en: 'Trusted by leading organizations across various industries.',
   },
   values: [
     {
@@ -611,16 +610,16 @@ const aboutPageData: AboutPageSeedData = {
   ],
   teamMembers: [
     {
-      name: 'John Smith',
-      role: { th: 'ประธานเจ้าหน้าที่บริหาร', en: 'CEO & Founder' },
+      name: 'Bangkok Bank',
+      role: { th: 'พันธมิตรด้านธนาคาร', en: 'Banking Partner' },
     },
     {
-      name: 'Sarah Chen',
-      role: { th: 'ประธานเจ้าหน้าที่ฝ่ายเทคโนโลยี', en: 'CTO' },
+      name: 'PTT Exploration',
+      role: { th: 'พันธมิตรด้านพลังงาน', en: 'Energy Partner' },
     },
     {
-      name: 'Michael Wong',
-      role: { th: 'ประธานเจ้าหน้าที่ฝ่ายปฏิบัติการ', en: 'COO' },
+      name: 'Revenue Department',
+      role: { th: 'พันธมิตรภาครัฐ', en: 'Government Partner' },
     },
   ],
 };
@@ -718,6 +717,769 @@ async function seedAboutPage(strapi: Core.Strapi) {
   }
 }
 
+interface CareerBenefitSeedData {
+  iconName: 'Heart' | 'Zap' | 'Users' | 'Shield' | 'Globe' | 'Award' | 'Coffee' | 'Briefcase' | 'Clock' | 'Target';
+  title: { th: string; en: string };
+  description: { th: string; en: string };
+  order: number;
+}
+
+interface JobPositionSeedData {
+  title: { th: string; en: string };
+  slug: string;
+  department: { th: string; en: string };
+  location: { th: string; en: string };
+  employmentType: 'full-time' | 'part-time' | 'contract' | 'internship';
+  description?: { th: string; en: string };
+  requirements?: { th: string; en: string };
+  dateOpen?: string;
+  dateClose?: string;
+  isActive: boolean;
+  order: number;
+}
+
+const careerBenefitsData: CareerBenefitSeedData[] = [
+  {
+    iconName: 'Heart',
+    title: { th: 'สวัสดิการครบครัน', en: 'Comprehensive Benefits' },
+    description: { th: 'ประกันสุขภาพ, ทันตกรรม และสายตา', en: 'Health, dental, and vision insurance' },
+    order: 1,
+  },
+  {
+    iconName: 'Zap',
+    title: { th: 'เติบโตอย่างรวดเร็ว', en: 'Fast Growth' },
+    description: { th: 'โอกาสในการพัฒนาและเลื่อนตำแหน่ง', en: 'Development and promotion opportunities' },
+    order: 2,
+  },
+  {
+    iconName: 'Users',
+    title: { th: 'ทีมที่ยอดเยี่ยม', en: 'Great Team' },
+    description: { th: 'ทำงานร่วมกับผู้เชี่ยวชาญชั้นนำ', en: 'Work with top industry experts' },
+    order: 3,
+  },
+  {
+    iconName: 'Coffee',
+    title: { th: 'สมดุลชีวิต-การทำงาน', en: 'Work-Life Balance' },
+    description: { th: 'ชั่วโมงทำงานยืดหยุ่นและทำงานจากที่ไหนก็ได้', en: 'Flexible hours and remote work options' },
+    order: 4,
+  },
+  {
+    iconName: 'Award',
+    title: { th: 'การเรียนรู้ตลอดชีวิต', en: 'Continuous Learning' },
+    description: { th: 'งบประมาณสำหรับการฝึกอบรมและ Certification', en: 'Training budget and certification support' },
+    order: 5,
+  },
+  {
+    iconName: 'Globe',
+    title: { th: 'โปรเจกต์ระดับโลก', en: 'Global Projects' },
+    description: { th: 'ทำงานกับลูกค้าจากทั่วโลก', en: 'Work with clients from around the world' },
+    order: 6,
+  },
+];
+
+const jobPositionsData: JobPositionSeedData[] = [
+  {
+    title: { th: 'วิศวกรคลาวด์อาวุโส', en: 'Senior Cloud Engineer' },
+    slug: 'senior-cloud-engineer',
+    department: { th: 'วิศวกรรม', en: 'Engineering' },
+    location: { th: 'กรุงเทพฯ / ทำงานระยะไกล', en: 'Bangkok / Remote' },
+    employmentType: 'full-time',
+    description: {
+      th: 'เรากำลังมองหาวิศวกรคลาวด์อาวุโสที่มีประสบการณ์ในการออกแบบและพัฒนาระบบ Cloud Infrastructure สำหรับลูกค้าองค์กรขนาดใหญ่ คุณจะทำงานร่วมกับทีมเพื่อสร้างโซลูชันที่มีความยืดหยุ่นและปลอดภัย',
+      en: 'We are looking for a Senior Cloud Engineer with experience in designing and developing Cloud Infrastructure for large enterprise clients. You will work with the team to build flexible and secure solutions.',
+    },
+    requirements: {
+      th: 'ประสบการณ์ 5+ ปีในด้าน Cloud Engineering (AWS, Azure, หรือ GCP)\nความเชี่ยวชาญใน Kubernetes และ Docker\nประสบการณ์ใน Infrastructure as Code (Terraform, CloudFormation)\nทักษะการเขียนโปรแกรม Python, Go หรือ similar\nประสบการณ์ในการออกแบบระบบ High Availability\nทักษะการสื่อสารและทำงานเป็นทีมที่ดี',
+      en: '5+ years experience in Cloud Engineering (AWS, Azure, or GCP)\nExpertise in Kubernetes and Docker\nExperience with Infrastructure as Code (Terraform, CloudFormation)\nProgramming skills in Python, Go or similar\nExperience designing High Availability systems\nStrong communication and teamwork skills',
+    },
+    dateOpen: '2025-01-01',
+    dateClose: '2025-03-31',
+    isActive: true,
+    order: 1,
+  },
+  {
+    title: { th: 'นักวิเคราะห์ความปลอดภัย', en: 'Security Analyst' },
+    slug: 'security-analyst',
+    department: { th: 'ความปลอดภัย', en: 'Security' },
+    location: { th: 'กรุงเทพฯ', en: 'Bangkok' },
+    employmentType: 'full-time',
+    description: {
+      th: 'ร่วมทีม Security Operations Center (SOC) ของเราเพื่อปกป้องลูกค้าจากภัยคุกคามทางไซเบอร์ คุณจะวิเคราะห์และตอบสนองต่อเหตุการณ์ด้านความปลอดภัยตลอด 24/7',
+      en: 'Join our Security Operations Center (SOC) team to protect clients from cyber threats. You will analyze and respond to security incidents 24/7.',
+    },
+    requirements: {
+      th: 'ประสบการณ์ 3+ ปีในด้าน Cybersecurity\nความรู้เกี่ยวกับ SIEM tools และ Security frameworks\nประสบการณ์ในการวิเคราะห์ภัยคุกคาม\nCertifications เช่น Security+, CEH, หรือ CISSP\nทักษะการวิเคราะห์และแก้ปัญหาที่ดี',
+      en: '3+ years experience in Cybersecurity\nKnowledge of SIEM tools and Security frameworks\nExperience in threat analysis\nCertifications such as Security+, CEH, or CISSP\nStrong analytical and problem-solving skills',
+    },
+    dateOpen: '2025-01-05',
+    dateClose: '2025-02-28',
+    isActive: true,
+    order: 2,
+  },
+  {
+    title: { th: 'นักวิทยาศาสตร์ข้อมูล', en: 'Data Scientist' },
+    slug: 'data-scientist',
+    department: { th: 'ข้อมูลและ AI', en: 'Data & AI' },
+    location: { th: 'ทำงานระยะไกล', en: 'Remote' },
+    employmentType: 'full-time',
+    description: {
+      th: 'พัฒนาโมเดล Machine Learning และ AI solutions สำหรับลูกค้าในหลากหลายอุตสาหกรรม คุณจะทำงานกับข้อมูลขนาดใหญ่และสร้าง insights ที่มีคุณค่า',
+      en: 'Develop Machine Learning models and AI solutions for clients across various industries. You will work with large datasets and create valuable insights.',
+    },
+    requirements: {
+      th: 'ปริญญาโทหรือเอกในสาขา Data Science, Statistics, หรือที่เกี่ยวข้อง\nประสบการณ์ 3+ ปีในการพัฒนา ML models\nความเชี่ยวชาญใน Python, TensorFlow/PyTorch\nประสบการณ์ใน Big Data technologies (Spark, Hadoop)\nทักษะการสื่อสารผลลัพธ์ให้ผู้ไม่เชี่ยวชาญเข้าใจ',
+      en: "Master's or PhD in Data Science, Statistics, or related field\n3+ years experience developing ML models\nExpertise in Python, TensorFlow/PyTorch\nExperience with Big Data technologies (Spark, Hadoop)\nAbility to communicate results to non-technical stakeholders",
+    },
+    dateOpen: '2024-12-15',
+    dateClose: '2025-02-15',
+    isActive: true,
+    order: 3,
+  },
+  {
+    title: { th: 'ผู้จัดการโครงการ', en: 'Project Manager' },
+    slug: 'project-manager',
+    department: { th: 'ปฏิบัติการ', en: 'Operations' },
+    location: { th: 'กรุงเทพฯ', en: 'Bangkok' },
+    employmentType: 'full-time',
+    description: {
+      th: 'บริหารจัดการโครงการ IT สำหรับลูกค้าองค์กร ประสานงานระหว่างทีมเทคนิคและลูกค้าเพื่อส่งมอบโครงการตรงเวลาและตามงบประมาณ',
+      en: 'Manage IT projects for enterprise clients. Coordinate between technical teams and clients to deliver projects on time and within budget.',
+    },
+    requirements: {
+      th: 'ประสบการณ์ 5+ ปีในการบริหารโครงการ IT\nPMP หรือ Scrum Master certification\nความเข้าใจเทคโนโลยี Cloud และ Enterprise systems\nทักษะการสื่อสารและ Stakeholder management\nประสบการณ์ใน Agile methodologies',
+      en: '5+ years experience managing IT projects\nPMP or Scrum Master certification\nUnderstanding of Cloud and Enterprise systems\nStrong communication and Stakeholder management\nExperience with Agile methodologies',
+    },
+    dateOpen: '2025-01-10',
+    dateClose: '2025-03-15',
+    isActive: true,
+    order: 4,
+  },
+  {
+    title: { th: 'นักพัฒนา Full-Stack', en: 'Full-Stack Developer' },
+    slug: 'full-stack-developer',
+    department: { th: 'วิศวกรรม', en: 'Engineering' },
+    location: { th: 'กรุงเทพฯ / ทำงานระยะไกล', en: 'Bangkok / Remote' },
+    employmentType: 'full-time',
+    description: {
+      th: 'พัฒนาเว็บแอปพลิเคชันและระบบ Backend สำหรับลูกค้าองค์กร ใช้เทคโนโลยีสมัยใหม่และ Best practices ในการพัฒนา',
+      en: 'Develop web applications and backend systems for enterprise clients. Use modern technologies and best practices in development.',
+    },
+    requirements: {
+      th: 'ประสบการณ์ 3+ ปีในการพัฒนา Full-Stack\nความเชี่ยวชาญใน React/Next.js และ Node.js\nประสบการณ์กับ databases (PostgreSQL, MongoDB)\nความรู้เกี่ยวกับ CI/CD และ DevOps practices\nทักษะการเขียน Clean code และ Testing',
+      en: '3+ years experience in Full-Stack development\nExpertise in React/Next.js and Node.js\nExperience with databases (PostgreSQL, MongoDB)\nKnowledge of CI/CD and DevOps practices\nClean code and Testing skills',
+    },
+    dateOpen: '2025-01-01',
+    dateClose: '2025-04-30',
+    isActive: true,
+    order: 5,
+  },
+  {
+    title: { th: 'นักศึกษาฝึกงาน DevOps', en: 'DevOps Intern' },
+    slug: 'devops-intern',
+    department: { th: 'วิศวกรรม', en: 'Engineering' },
+    location: { th: 'กรุงเทพฯ', en: 'Bangkok' },
+    employmentType: 'internship',
+    description: {
+      th: 'โอกาสฝึกงานสำหรับนักศึกษาที่สนใจ DevOps และ Cloud Infrastructure เรียนรู้จากทีมผู้เชี่ยวชาญและทำงานกับโปรเจกต์จริง',
+      en: 'Internship opportunity for students interested in DevOps and Cloud Infrastructure. Learn from expert teams and work on real projects.',
+    },
+    requirements: {
+      th: 'กำลังศึกษาหรือจบใหม่สาขา Computer Science หรือที่เกี่ยวข้อง\nความรู้พื้นฐาน Linux และ Networking\nความสนใจใน Cloud technologies และ Automation\nทักษะการเรียนรู้และทำงานเป็นทีม\nสามารถฝึกงานได้อย่างน้อย 3 เดือน',
+      en: 'Currently studying or recently graduated in Computer Science or related field\nBasic knowledge of Linux and Networking\nInterest in Cloud technologies and Automation\nLearning ability and teamwork skills\nAvailable for at least 3 months internship',
+    },
+    dateOpen: '2025-01-15',
+    dateClose: '2025-05-31',
+    isActive: true,
+    order: 6,
+  },
+];
+
+async function seedCareerBenefits(strapi: Core.Strapi) {
+  const existingBenefits = await strapi.documents('api::career-benefit.career-benefit').findMany({
+    locale: 'th-TH',
+  });
+
+  if (existingBenefits.length > 0) {
+    strapi.log.info(`${existingBenefits.length} career benefits already exist, skipping seed`);
+    return;
+  }
+
+  strapi.log.info('Seeding career benefits...');
+
+  for (const benefit of careerBenefitsData) {
+    try {
+      // Create Thai version (default locale)
+      const thEntry = await strapi.documents('api::career-benefit.career-benefit').create({
+        data: {
+          iconName: benefit.iconName,
+          title: benefit.title.th,
+          description: benefit.description.th,
+          order: benefit.order,
+        },
+        locale: 'th-TH',
+        status: 'published',
+      });
+
+      strapi.log.info(`Created Thai career benefit: ${benefit.title.th}`);
+
+      // Create English localization
+      await strapi.documents('api::career-benefit.career-benefit').update({
+        documentId: thEntry.documentId,
+        data: {
+          iconName: benefit.iconName,
+          title: benefit.title.en,
+          description: benefit.description.en,
+          order: benefit.order,
+        },
+        locale: 'en',
+        status: 'published',
+      });
+
+      strapi.log.info(`Created English career benefit: ${benefit.title.en}`);
+    } catch (error) {
+      strapi.log.error(`Failed to create career benefit ${benefit.title.en}:`, error);
+    }
+  }
+
+  strapi.log.info('Career benefits seeding complete!');
+}
+
+// Contact Info seed data
+interface ContactInfoSeedData {
+  email: string;
+  phone: string;
+  lineId: string;
+  address: { th: string; en: string };
+  workingHours: { th: string; en: string };
+  facebookUrl?: string;
+  linkedinUrl?: string;
+  twitterUrl?: string;
+  googleMapsUrl?: string;
+}
+
+const contactInfoData: ContactInfoSeedData = {
+  email: 'info@techthinkspace.com',
+  phone: '+66 082-808-7666',
+  lineId: '@techthinkspace',
+  address: {
+    th: 'กรุงเทพมหานคร, ประเทศไทย',
+    en: 'Bangkok, Thailand',
+  },
+  workingHours: {
+    th: 'จันทร์ - ศุกร์: 9:00 - 18:00',
+    en: 'Mon - Fri: 9:00 AM - 6:00 PM',
+  },
+  facebookUrl: 'https://facebook.com/techthinkspace',
+  linkedinUrl: 'https://linkedin.com/company/techthinkspace',
+};
+
+// Legal Pages seed data
+interface LegalPageSeedData {
+  slug: string;
+  title: { th: string; en: string };
+  content: { th: string; en: string };
+  lastUpdated: string;
+}
+
+const legalPagesData: LegalPageSeedData[] = [
+  {
+    slug: 'privacy-policy',
+    title: { th: 'นโยบายความเป็นส่วนตัว', en: 'Privacy Policy' },
+    content: {
+      th: `## 1. ข้อมูลที่เราเก็บรวบรวม
+
+เราเก็บรวบรวมข้อมูลที่คุณให้โดยตรง เช่น ชื่อ อีเมล และข้อมูลติดต่ออื่นๆ เมื่อคุณกรอกแบบฟอร์มติดต่อหรือสมัครรับข่าวสาร
+
+## 2. การใช้ข้อมูล
+
+เราใช้ข้อมูลที่เก็บรวบรวมเพื่อให้บริการ ปรับปรุงผลิตภัณฑ์ และสื่อสารกับคุณเกี่ยวกับบริการของเรา
+
+## 3. การแบ่งปันข้อมูล
+
+เราไม่ขายหรือให้เช่าข้อมูลส่วนบุคคลของคุณแก่บุคคลที่สาม เราอาจแบ่งปันข้อมูลกับผู้ให้บริการที่ช่วยเราดำเนินธุรกิจ
+
+## 4. ความปลอดภัยของข้อมูล
+
+เราใช้มาตรการรักษาความปลอดภัยที่เหมาะสมเพื่อปกป้องข้อมูลของคุณจากการเข้าถึงโดยไม่ได้รับอนุญาต
+
+## 5. สิทธิ์ของคุณ
+
+คุณมีสิทธิ์เข้าถึง แก้ไข หรือลบข้อมูลส่วนบุคคลของคุณ ติดต่อเราที่ info@techthinkspace.com
+
+## 6. ติดต่อเรา
+
+หากคุณมีคำถามเกี่ยวกับนโยบายความเป็นส่วนตัวนี้ กรุณาติดต่อเราที่ info@techthinkspace.com`,
+      en: `## 1. Information We Collect
+
+We collect information you provide directly, such as name, email, and other contact information when you fill out contact forms or subscribe to our newsletter.
+
+## 2. How We Use Information
+
+We use the information collected to provide services, improve our products, and communicate with you about our services.
+
+## 3. Information Sharing
+
+We do not sell or rent your personal information to third parties. We may share information with service providers who help us operate our business.
+
+## 4. Data Security
+
+We implement appropriate security measures to protect your information from unauthorized access.
+
+## 5. Your Rights
+
+You have the right to access, correct, or delete your personal information. Contact us at info@techthinkspace.com
+
+## 6. Contact Us
+
+If you have questions about this privacy policy, please contact us at info@techthinkspace.com`,
+    },
+    lastUpdated: '2025-01-01',
+  },
+  {
+    slug: 'terms-of-service',
+    title: { th: 'ข้อกำหนดการใช้บริการ', en: 'Terms of Service' },
+    content: {
+      th: `## 1. การยอมรับข้อกำหนด
+
+การใช้บริการของเราถือว่าคุณยอมรับข้อกำหนดเหล่านี้ หากคุณไม่เห็นด้วย กรุณาหยุดใช้บริการ
+
+## 2. คำอธิบายบริการ
+
+Thinkspace Technology ให้บริการด้านเทคโนโลยีและที่ปรึกษา รวมถึง Cloud Services, Software Development, Cybersecurity และอื่นๆ
+
+## 3. ความรับผิดชอบของผู้ใช้
+
+คุณต้องใช้บริการของเราอย่างถูกกฎหมายและไม่ละเมิดสิทธิ์ของผู้อื่น
+
+## 4. ทรัพย์สินทางปัญญา
+
+เนื้อหาและซอฟต์แวร์ทั้งหมดบนเว็บไซต์นี้เป็นทรัพย์สินของ Thinkspace Technology
+
+## 5. การจำกัดความรับผิด
+
+เราจะไม่รับผิดชอบต่อความเสียหายทางอ้อมหรือความเสียหายพิเศษใดๆ
+
+## 6. การเปลี่ยนแปลงข้อกำหนด
+
+เราอาจแก้ไขข้อกำหนดเหล่านี้ได้ตลอดเวลา การเปลี่ยนแปลงจะมีผลเมื่อประกาศบนเว็บไซต์`,
+      en: `## 1. Acceptance of Terms
+
+By using our services, you agree to these terms. If you do not agree, please stop using our services.
+
+## 2. Service Description
+
+Thinkspace Technology provides technology and consulting services, including Cloud Services, Software Development, Cybersecurity, and more.
+
+## 3. User Responsibilities
+
+You must use our services legally and not infringe on the rights of others.
+
+## 4. Intellectual Property
+
+All content and software on this website are property of Thinkspace Technology.
+
+## 5. Limitation of Liability
+
+We will not be liable for indirect or special damages of any kind.
+
+## 6. Changes to Terms
+
+We may modify these terms at any time. Changes will be effective when posted on the website.`,
+    },
+    lastUpdated: '2025-01-01',
+  },
+  {
+    slug: 'cookie-policy',
+    title: { th: 'นโยบายคุกกี้', en: 'Cookie Policy' },
+    content: {
+      th: `## 1. คุกกี้คืออะไร
+
+คุกกี้คือไฟล์ข้อความขนาดเล็กที่เก็บไว้ในอุปกรณ์ของคุณเมื่อเข้าชมเว็บไซต์
+
+## 2. ประเภทของคุกกี้ที่เราใช้
+
+- **คุกกี้ที่จำเป็น**: จำเป็นสำหรับการทำงานของเว็บไซต์
+- **คุกกี้วิเคราะห์**: ช่วยให้เราเข้าใจการใช้งานเว็บไซต์
+- **คุกกี้การตลาด**: ใช้เพื่อแสดงโฆษณาที่เกี่ยวข้อง
+
+## 3. การจัดการคุกกี้
+
+คุณสามารถควบคุมหรือลบคุกกี้ผ่านการตั้งค่าเบราว์เซอร์ของคุณ
+
+## 4. คุกกี้ของบุคคลที่สาม
+
+เราอาจใช้บริการของบุคคลที่สาม เช่น Google Analytics ซึ่งอาจตั้งค่าคุกกี้ของตนเอง
+
+## 5. ติดต่อเรา
+
+หากคุณมีคำถามเกี่ยวกับนโยบายคุกกี้นี้ กรุณาติดต่อเราที่ info@techthinkspace.com`,
+      en: `## 1. What Are Cookies
+
+Cookies are small text files stored on your device when you visit a website.
+
+## 2. Types of Cookies We Use
+
+- **Essential Cookies**: Required for website functionality
+- **Analytics Cookies**: Help us understand website usage
+- **Marketing Cookies**: Used to display relevant advertisements
+
+## 3. Managing Cookies
+
+You can control or delete cookies through your browser settings.
+
+## 4. Third-Party Cookies
+
+We may use third-party services like Google Analytics, which may set their own cookies.
+
+## 5. Contact Us
+
+If you have questions about this cookie policy, please contact us at info@techthinkspace.com`,
+    },
+    lastUpdated: '2025-01-01',
+  },
+];
+
+async function seedContactInfo(strapi: Core.Strapi) {
+  try {
+    const existingContact = await strapi.documents('api::contact-info.contact-info').findFirst({
+      locale: 'th-TH',
+    });
+
+    if (existingContact) {
+      strapi.log.info('Contact info already exists, skipping seed');
+      return;
+    }
+
+    strapi.log.info('Seeding contact info...');
+
+    // Create Thai version
+    const thEntry = await strapi.documents('api::contact-info.contact-info').create({
+      data: {
+        email: contactInfoData.email,
+        phone: contactInfoData.phone,
+        lineId: contactInfoData.lineId,
+        address: contactInfoData.address.th,
+        workingHours: contactInfoData.workingHours.th,
+        facebookUrl: contactInfoData.facebookUrl,
+        linkedinUrl: contactInfoData.linkedinUrl,
+        twitterUrl: contactInfoData.twitterUrl,
+        googleMapsUrl: contactInfoData.googleMapsUrl,
+      },
+      locale: 'th-TH',
+      status: 'published',
+    });
+
+    strapi.log.info('Created Thai contact info');
+
+    // Create English version
+    await strapi.documents('api::contact-info.contact-info').update({
+      documentId: thEntry.documentId,
+      data: {
+        address: contactInfoData.address.en,
+        workingHours: contactInfoData.workingHours.en,
+      },
+      locale: 'en',
+      status: 'published',
+    });
+
+    strapi.log.info('Created English contact info');
+    strapi.log.info('Contact info seeding complete!');
+  } catch (error) {
+    strapi.log.error('Failed to seed contact info:', error);
+  }
+}
+
+async function seedLegalPages(strapi: Core.Strapi) {
+  const existingLegalPages = await strapi.documents('api::legal-page.legal-page').findMany({
+    locale: 'th-TH',
+  });
+
+  if (existingLegalPages.length > 0) {
+    strapi.log.info(`${existingLegalPages.length} legal pages already exist, skipping seed`);
+    return;
+  }
+
+  strapi.log.info('Seeding legal pages...');
+
+  for (const legalPage of legalPagesData) {
+    try {
+      // Create Thai version
+      const thEntry = await strapi.documents('api::legal-page.legal-page').create({
+        data: {
+          title: legalPage.title.th,
+          slug: legalPage.slug,
+          content: legalPage.content.th,
+          lastUpdated: legalPage.lastUpdated,
+        },
+        locale: 'th-TH',
+        status: 'published',
+      });
+
+      strapi.log.info(`Created Thai legal page: ${legalPage.slug}`);
+
+      // Create English version
+      await strapi.documents('api::legal-page.legal-page').update({
+        documentId: thEntry.documentId,
+        data: {
+          title: legalPage.title.en,
+          slug: legalPage.slug,
+          content: legalPage.content.en,
+          lastUpdated: legalPage.lastUpdated,
+        },
+        locale: 'en',
+        status: 'published',
+      });
+
+      strapi.log.info(`Created English legal page: ${legalPage.slug}`);
+    } catch (error) {
+      strapi.log.error(`Failed to create legal page ${legalPage.slug}:`, error);
+    }
+  }
+
+  strapi.log.info('Legal pages seeding complete!');
+}
+
+async function seedJobPositions(strapi: Core.Strapi) {
+  const existingJobs = await strapi.documents('api::job-position.job-position').findMany({
+    locale: 'th-TH',
+  });
+
+  if (existingJobs.length > 0) {
+    strapi.log.info(`${existingJobs.length} job positions already exist, skipping seed`);
+    return;
+  }
+
+  strapi.log.info('Seeding job positions...');
+
+  for (const job of jobPositionsData) {
+    try {
+      // Create Thai version (default locale)
+      const thEntry = await strapi.documents('api::job-position.job-position').create({
+        data: {
+          title: job.title.th,
+          slug: job.slug,
+          department: job.department.th,
+          location: job.location.th,
+          employmentType: job.employmentType,
+          description: job.description?.th,
+          requirements: job.requirements?.th,
+          dateOpen: job.dateOpen,
+          dateClose: job.dateClose,
+          isActive: job.isActive,
+          order: job.order,
+        },
+        locale: 'th-TH',
+        status: 'published',
+      });
+
+      strapi.log.info(`Created Thai job position: ${job.title.th}`);
+
+      // Create English localization
+      await strapi.documents('api::job-position.job-position').update({
+        documentId: thEntry.documentId,
+        data: {
+          title: job.title.en,
+          slug: job.slug,
+          department: job.department.en,
+          location: job.location.en,
+          employmentType: job.employmentType,
+          description: job.description?.en,
+          requirements: job.requirements?.en,
+          dateOpen: job.dateOpen,
+          dateClose: job.dateClose,
+          isActive: job.isActive,
+          order: job.order,
+        },
+        locale: 'en',
+        status: 'published',
+      });
+
+      strapi.log.info(`Created English job position: ${job.title.en}`);
+    } catch (error) {
+      strapi.log.error(`Failed to create job position ${job.title.en}:`, error);
+    }
+  }
+
+  strapi.log.info('Job positions seeding complete!');
+}
+
+// Homepage seed data
+const homepageData = {
+  heroSection: {
+    th: {
+      badge: 'พันธมิตรเทคโนโลยีชั้นนำ',
+      title: 'เปลี่ยนธุรกิจของคุณด้วย',
+      titleHighlight: 'เทคโนโลยีที่ทันสมัย',
+      subtitle: 'เราช่วยองค์กรชั้นนำในการนำเทคโนโลยีมาขับเคลื่อนธุรกิจ ด้วยทีมผู้เชี่ยวชาญและโซลูชันที่ครบครัน',
+      ctaButtonText: 'เริ่มต้นเลย',
+      secondaryButtonText: 'ดูวิดีโอ',
+      trustedByText: 'ได้รับความไว้วางใจจากองค์กรชั้นนำ',
+    },
+    en: {
+      badge: 'Leading Technology Partner',
+      title: 'Transform Your Business with',
+      titleHighlight: 'Modern Technology',
+      subtitle: 'We help leading organizations drive their business with technology through our expert team and comprehensive solutions.',
+      ctaButtonText: 'Get Started',
+      secondaryButtonText: 'Watch Demo',
+      trustedByText: 'Trusted by leading organizations',
+    },
+  },
+  servicesSectionTitle: { th: 'บริการของเรา', en: 'Our Services' },
+  servicesSectionSubtitle: {
+    th: 'โซลูชันเทคโนโลยีครบวงจรสำหรับทุกความต้องการทางธุรกิจ',
+    en: 'Complete technology solutions for all your business needs',
+  },
+  whyChooseUsSection: {
+    th: {
+      title: 'ทำไมต้องเลือกเรา',
+      subtitle: 'เราพร้อมสนับสนุนการเปลี่ยนแปลงทางดิจิทัลของคุณด้วยทีมผู้เชี่ยวชาญและเทคโนโลยีชั้นนำ',
+      features: [
+        { icon: 'Shield', title: 'ความปลอดภัยระดับองค์กร', description: 'มาตรฐานความปลอดภัยสูงสุดพร้อมการรับรอง ISO 27001' },
+        { icon: 'Clock', title: 'ส่งมอบตรงเวลา', description: '99% ของโปรเจกต์ส่งมอบตามกำหนดเวลา' },
+        { icon: 'Users', title: 'ทีมผู้เชี่ยวชาญ', description: 'วิศวกรและที่ปรึกษาที่มีประสบการณ์มากกว่า 15 ปี' },
+        { icon: 'Award', title: 'พันธมิตรระดับพรีเมียม', description: 'พันธมิตรอย่างเป็นทางการของ AWS, Microsoft, Google Cloud' },
+        { icon: 'Headphones', title: 'สนับสนุน 24/7', description: 'ทีมสนับสนุนพร้อมให้บริการตลอด 24 ชั่วโมง' },
+        { icon: 'TrendingUp', title: 'ปรับขนาดได้ยืดหยุ่น', description: 'โซลูชันที่เติบโตไปพร้อมกับธุรกิจของคุณ' },
+      ],
+    },
+    en: {
+      title: 'Why Choose Us',
+      subtitle: 'We are ready to support your digital transformation with our expert team and leading technology',
+      features: [
+        { icon: 'Shield', title: 'Enterprise Security', description: 'Highest security standards with ISO 27001 certification' },
+        { icon: 'Clock', title: 'On-Time Delivery', description: '99% of projects delivered on schedule' },
+        { icon: 'Users', title: 'Expert Team', description: 'Engineers and consultants with 15+ years experience' },
+        { icon: 'Award', title: 'Premium Partners', description: 'Official partners of AWS, Microsoft, Google Cloud' },
+        { icon: 'Headphones', title: '24/7 Support', description: 'Support team available around the clock' },
+        { icon: 'TrendingUp', title: 'Scalable Solutions', description: 'Solutions that grow with your business' },
+      ],
+    },
+  },
+  featuredWorksTitle: { th: 'ผลงานที่โดดเด่น', en: 'Featured Works' },
+  featuredWorksSubtitle: {
+    th: 'โครงการที่เราภูมิใจนำเสนอ',
+    en: 'Projects we are proud to present',
+  },
+  newsSectionTitle: { th: 'ข่าวสารล่าสุด', en: 'Latest News' },
+  newsSectionSubtitle: {
+    th: 'อัพเดทข่าวสารและบทความจากทีมของเรา',
+    en: 'Updates and articles from our team',
+  },
+  statsSectionTitle: { th: 'ตัวเลขที่พูดแทนเรา', en: 'Numbers That Speak' },
+  ctaSection: {
+    th: {
+      title: 'พร้อมที่จะเริ่มต้นโปรเจกต์ของคุณ?',
+      subtitle: 'ติดต่อเราวันนี้เพื่อรับคำปรึกษาฟรีและเริ่มต้นการเปลี่ยนแปลงทางดิจิทัลของคุณ',
+      primaryButtonText: 'นัดหมายปรึกษา',
+      secondaryButtonText: 'ดูผลงาน',
+    },
+    en: {
+      title: 'Ready to Start Your Project?',
+      subtitle: 'Contact us today for a free consultation and begin your digital transformation',
+      primaryButtonText: 'Schedule Consultation',
+      secondaryButtonText: 'View Our Work',
+    },
+  },
+};
+
+async function seedHomepage(strapi: Core.Strapi) {
+  try {
+    const existingHomepage = await strapi.documents('api::homepage.homepage').findFirst({
+      locale: 'th-TH',
+    });
+
+    if (existingHomepage) {
+      strapi.log.info('Homepage already exists, skipping seed');
+      return;
+    }
+
+    strapi.log.info('Seeding homepage...');
+
+    // Create Thai version
+    const thEntry = await strapi.documents('api::homepage.homepage').create({
+      data: {
+        heroSection: {
+          ...homepageData.heroSection.th,
+          ctaButtonLink: '/contact',
+          showPartners: true,
+        },
+        showServicesSection: true,
+        servicesSectionTitle: homepageData.servicesSectionTitle.th,
+        servicesSectionSubtitle: homepageData.servicesSectionSubtitle.th,
+        whyChooseUsSection: {
+          title: homepageData.whyChooseUsSection.th.title,
+          subtitle: homepageData.whyChooseUsSection.th.subtitle,
+          features: homepageData.whyChooseUsSection.th.features as any,
+          isVisible: true,
+        },
+        showFeaturedWorks: true,
+        featuredWorksTitle: homepageData.featuredWorksTitle.th,
+        featuredWorksSubtitle: homepageData.featuredWorksSubtitle.th,
+        featuredWorksCount: 4,
+        showNewsSection: true,
+        newsSectionTitle: homepageData.newsSectionTitle.th,
+        newsSectionSubtitle: homepageData.newsSectionSubtitle.th,
+        newsCount: 3,
+        showStatsSection: true,
+        statsSectionTitle: homepageData.statsSectionTitle.th,
+        ctaSection: {
+          ...homepageData.ctaSection.th,
+          primaryButtonLink: '/contact',
+          secondaryButtonLink: '/works',
+        },
+      },
+      locale: 'th-TH',
+      status: 'published',
+    });
+
+    strapi.log.info('Created Thai homepage');
+
+    // Create English version
+    await strapi.documents('api::homepage.homepage').update({
+      documentId: thEntry.documentId,
+      data: {
+        heroSection: {
+          ...homepageData.heroSection.en,
+          ctaButtonLink: '/contact',
+          showPartners: true,
+        },
+        showServicesSection: true,
+        servicesSectionTitle: homepageData.servicesSectionTitle.en,
+        servicesSectionSubtitle: homepageData.servicesSectionSubtitle.en,
+        whyChooseUsSection: {
+          title: homepageData.whyChooseUsSection.en.title,
+          subtitle: homepageData.whyChooseUsSection.en.subtitle,
+          features: homepageData.whyChooseUsSection.en.features as any,
+          isVisible: true,
+        },
+        showFeaturedWorks: true,
+        featuredWorksTitle: homepageData.featuredWorksTitle.en,
+        featuredWorksSubtitle: homepageData.featuredWorksSubtitle.en,
+        featuredWorksCount: 4,
+        showNewsSection: true,
+        newsSectionTitle: homepageData.newsSectionTitle.en,
+        newsSectionSubtitle: homepageData.newsSectionSubtitle.en,
+        newsCount: 3,
+        showStatsSection: true,
+        statsSectionTitle: homepageData.statsSectionTitle.en,
+        ctaSection: {
+          ...homepageData.ctaSection.en,
+          primaryButtonLink: '/contact',
+          secondaryButtonLink: '/works',
+        },
+      },
+      locale: 'en',
+      status: 'published',
+    });
+
+    strapi.log.info('Created English homepage');
+    strapi.log.info('Homepage seeding complete!');
+  } catch (error) {
+    strapi.log.error('Failed to seed homepage:', error);
+  }
+}
+
 export default {
   /**
    * An asynchronous register function that runs before
@@ -739,5 +1501,10 @@ export default {
     await seedStats(strapi);
     await seedCaseStudies(strapi);
     await seedAboutPage(strapi);
+    await seedCareerBenefits(strapi);
+    await seedJobPositions(strapi);
+    await seedContactInfo(strapi);
+    await seedLegalPages(strapi);
+    await seedHomepage(strapi);
   },
 };

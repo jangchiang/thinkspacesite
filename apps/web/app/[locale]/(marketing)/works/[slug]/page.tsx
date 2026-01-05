@@ -5,6 +5,8 @@ import { ArrowLeft, ArrowRight, Building2, Quote, CheckCircle2, Lightbulb, Targe
 import type { Metadata } from 'next'
 import { getCaseStudy } from '@/lib/strapi'
 import { notFound } from 'next/navigation'
+import { MarkdownRenderer } from '@/components/markdown-renderer'
+import { Breadcrumb } from '@/components/ui/breadcrumb'
 
 type Props = {
   params: Promise<{ locale: Locale; slug: string }>
@@ -349,13 +351,14 @@ export default async function WorkDetailPage({ params }: Props) {
         )}
 
         <div className="container-custom relative z-10 py-20">
-          <Link
-            href={`/${locale}/works`}
-            className="inline-flex items-center text-white/70 hover:text-white transition-colors mb-8 group"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
-            {locale === 'th' ? 'ผลงานทั้งหมด' : 'All Works'}
-          </Link>
+          <Breadcrumb
+            items={[
+              { label: locale === 'th' ? 'ผลงาน' : 'Works', href: `/${locale}/works` },
+              { label: work.title }
+            ]}
+            locale={locale}
+            className="mb-8 [&_a]:text-white/70 [&_a:hover]:text-white [&_span]:text-white [&_svg]:text-white/40"
+          />
 
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
@@ -480,9 +483,9 @@ export default async function WorkDetailPage({ params }: Props) {
               </h2>
             </div>
             <div className="pl-0 md:pl-16">
-              <p className="text-lg text-base-content/80 leading-relaxed">
-                {work.challenge}
-              </p>
+              {work.challenge && (
+                <MarkdownRenderer content={work.challenge} />
+              )}
             </div>
           </div>
         </div>
@@ -501,9 +504,11 @@ export default async function WorkDetailPage({ params }: Props) {
               </h2>
             </div>
             <div className="pl-0 md:pl-16">
-              <p className="text-lg text-base-content/80 leading-relaxed mb-8">
-                {work.solution}
-              </p>
+              {work.solution && (
+                <div className="mb-8">
+                  <MarkdownRenderer content={work.solution} />
+                </div>
+              )}
 
               {/* Technologies Used */}
               {work.technologies && work.technologies.length > 0 && (

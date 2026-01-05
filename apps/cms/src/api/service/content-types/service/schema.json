@@ -98,6 +98,15 @@
           "localized": true
         }
       }
+    },
+    "autoTranslate": {
+      "type": "boolean",
+      "default": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
     }
   }
 }

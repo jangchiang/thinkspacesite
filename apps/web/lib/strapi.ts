@@ -346,4 +346,208 @@ export async function getAboutPage(locale: Locale): Promise<AboutPage | null> {
   }
 }
 
+// Career types and functions
+export interface CareerBenefit {
+  id: number
+  documentId: string
+  iconName: 'Heart' | 'Zap' | 'Users' | 'Shield' | 'Globe' | 'Award' | 'Coffee' | 'Briefcase' | 'Clock' | 'Target'
+  title: string
+  description: string
+  order: number
+}
+
+export interface JobPosition {
+  id: number
+  documentId: string
+  title: string
+  slug: string
+  department: string
+  location: string
+  employmentType: 'full-time' | 'part-time' | 'contract' | 'internship'
+  description?: string
+  requirements?: string
+  salaryRange?: string
+  isActive: boolean
+  dateOpen?: string
+  dateClose?: string
+  order: number
+}
+
+export async function getCareerBenefits(locale: Locale): Promise<CareerBenefit[]> {
+  try {
+    const response = await fetchStrapi<CareerBenefit[]>('/career-benefits', {
+      locale,
+      sort: 'order:asc',
+      tags: ['career-benefits'],
+      revalidate: 0,
+    })
+
+    return response.data ?? []
+  } catch (error) {
+    console.log('Failed to fetch career benefits:', error)
+    return []
+  }
+}
+
+export async function getJobPositions(locale: Locale): Promise<JobPosition[]> {
+  try {
+    const response = await fetchStrapi<JobPosition[]>('/job-positions', {
+      locale,
+      filters: { isActive: { $eq: true } },
+      sort: 'order:asc',
+      tags: ['job-positions'],
+      revalidate: 0,
+    })
+
+    return response.data ?? []
+  } catch (error) {
+    console.log('Failed to fetch job positions:', error)
+    return []
+  }
+}
+
+export async function getJobPosition(slug: string, locale: Locale): Promise<JobPosition | null> {
+  try {
+    const response = await fetchStrapi<JobPosition[]>('/job-positions', {
+      locale,
+      filters: { slug: { $eq: slug } },
+      tags: ['job-positions', `job-${slug}`],
+      revalidate: 0,
+    })
+
+    return response.data?.[0] ?? null
+  } catch (error) {
+    console.log('Failed to fetch job position:', error)
+    return null
+  }
+}
+
+// Contact Info types and functions
+export interface ContactInfo {
+  id: number
+  documentId: string
+  email: string
+  phone?: string
+  address?: string
+  googleMapsUrl?: string
+  facebookUrl?: string
+  linkedinUrl?: string
+  twitterUrl?: string
+  lineId?: string
+  workingHours?: string
+}
+
+export async function getContactInfo(locale: Locale): Promise<ContactInfo | null> {
+  try {
+    const response = await fetchStrapi<ContactInfo>('/contact-info', {
+      locale,
+      tags: ['contact-info'],
+      revalidate: 0,
+    })
+
+    return response.data ?? null
+  } catch (error) {
+    console.log('Failed to fetch contact info:', error)
+    return null
+  }
+}
+
+// Legal Page types and functions
+export interface LegalPage {
+  id: number
+  documentId: string
+  title: string
+  slug: string
+  content: string
+  lastUpdated?: string
+}
+
+export async function getLegalPage(slug: string, locale: Locale): Promise<LegalPage | null> {
+  try {
+    const response = await fetchStrapi<LegalPage[]>('/legal-pages', {
+      locale,
+      filters: { slug: { $eq: slug } },
+      tags: ['legal-pages', `legal-${slug}`],
+      revalidate: 0,
+    })
+
+    return response.data?.[0] ?? null
+  } catch (error) {
+    console.log('Failed to fetch legal page:', error)
+    return null
+  }
+}
+
+// Homepage types and functions
+export interface HomepageHeroSection {
+  badge?: string
+  title: string
+  titleHighlight?: string
+  subtitle?: string
+  ctaButtonText?: string
+  ctaButtonLink?: string
+  secondaryButtonText?: string
+  trustedByText?: string
+  showPartners?: boolean
+}
+
+export interface HomepageFeatureItem {
+  icon: 'Shield' | 'Clock' | 'Users' | 'Award' | 'Headphones' | 'TrendingUp' | 'CheckCircle' | 'Zap' | 'Target' | 'Heart'
+  title: string
+  description?: string
+}
+
+export interface HomepageWhyChooseUsSection {
+  title: string
+  subtitle?: string
+  features?: HomepageFeatureItem[]
+  isVisible?: boolean
+}
+
+export interface HomepageCTASection {
+  title: string
+  subtitle?: string
+  primaryButtonText?: string
+  primaryButtonLink?: string
+  secondaryButtonText?: string
+  secondaryButtonLink?: string
+}
+
+export interface Homepage {
+  id: number
+  documentId: string
+  heroSection?: HomepageHeroSection
+  showServicesSection?: boolean
+  servicesSectionTitle?: string
+  servicesSectionSubtitle?: string
+  whyChooseUsSection?: HomepageWhyChooseUsSection
+  showFeaturedWorks?: boolean
+  featuredWorksTitle?: string
+  featuredWorksSubtitle?: string
+  featuredWorksCount?: number
+  showNewsSection?: boolean
+  newsSectionTitle?: string
+  newsSectionSubtitle?: string
+  newsCount?: number
+  showStatsSection?: boolean
+  statsSectionTitle?: string
+  ctaSection?: HomepageCTASection
+}
+
+export async function getHomepage(locale: Locale): Promise<Homepage | null> {
+  try {
+    const response = await fetchStrapi<Homepage>('/homepage', {
+      locale,
+      populate: ['heroSection', 'whyChooseUsSection', 'whyChooseUsSection.features', 'ctaSection'],
+      tags: ['homepage'],
+      revalidate: 0,
+    })
+
+    return response.data ?? null
+  } catch (error) {
+    console.log('Failed to fetch homepage:', error)
+    return null
+  }
+}
+
 export { fetchStrapi }

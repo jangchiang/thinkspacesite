@@ -59,14 +59,14 @@ const fallbackMilestones = {
 
 const fallbackTeamMembers = {
   th: [
-    { name: 'John Smith', role: 'ประธานเจ้าหน้าที่บริหาร' },
-    { name: 'Sarah Chen', role: 'ประธานเจ้าหน้าที่ฝ่ายเทคโนโลยี' },
-    { name: 'Michael Wong', role: 'ประธานเจ้าหน้าที่ฝ่ายปฏิบัติการ' },
+    { name: 'Bangkok Bank', role: 'พันธมิตรด้านธนาคาร' },
+    { name: 'PTT Exploration', role: 'พันธมิตรด้านพลังงาน' },
+    { name: 'Revenue Department', role: 'พันธมิตรภาครัฐ' },
   ],
   en: [
-    { name: 'John Smith', role: 'CEO & Founder' },
-    { name: 'Sarah Chen', role: 'CTO' },
-    { name: 'Michael Wong', role: 'COO' },
+    { name: 'Bangkok Bank', role: 'Banking Partner' },
+    { name: 'PTT Exploration', role: 'Energy Partner' },
+    { name: 'Revenue Department', role: 'Government Partner' },
   ],
 }
 
@@ -103,10 +103,10 @@ export default async function AboutPage({ params }: Props) {
     ? 'ปัจจุบันเราให้บริการลูกค้ากว่า 500 รายในหลากหลายอุตสาหกรรม ตั้งแต่สตาร์ทอัพจนถึงองค์กรขนาดใหญ่ ด้วยทีมผู้เชี่ยวชาญกว่า 200 คน'
     : 'Today, we serve over 500 clients across various industries, from startups to large enterprises, with a team of over 200 experts.')
   const milestonesTitle = aboutData?.milestonesTitle || (locale === 'th' ? 'เหตุการณ์สำคัญ' : 'Key Milestones')
-  const teamSectionTitle = aboutData?.teamSectionTitle || (locale === 'th' ? 'ทีมผู้บริหาร' : 'Leadership Team')
+  const teamSectionTitle = aboutData?.teamSectionTitle || (locale === 'th' ? 'ลูกค้าและพันธมิตรของเรา' : 'Our Customers and Partners')
   const teamSectionDescription = aboutData?.teamSectionDescription || (locale === 'th'
-    ? 'ทีมผู้บริหารที่มีประสบการณ์กว่า 20 ปีในอุตสาหกรรมเทคโนโลยี'
-    : 'Experienced leadership with over 20 years in the technology industry.')
+    ? 'ได้รับความไว้วางใจจากองค์กรชั้นนำในหลากหลายอุตสาหกรรม'
+    : 'Trusted by leading organizations across various industries.')
 
   return (
     <>

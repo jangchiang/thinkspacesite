@@ -6,11 +6,23 @@ import {
   ContactHero,
   ContactInfoSection,
 } from '@/components/sections/contact-sections'
-import { getPageHero } from '@/lib/strapi'
+import { getPageHero, getContactInfo } from '@/lib/strapi'
 import { buildHeroBackground } from '@/lib/hero-utils'
 
 type Props = {
   params: Promise<{ locale: Locale }>
+}
+
+// Fallback contact info
+const fallbackContactInfo = {
+  email: 'info@techthinkspace.com',
+  phone: '+66 082-808-7666',
+  lineId: '@techthinkspace',
+  lineUrl: 'https://lin.ee/PYH3ViE',
+  workingHours: {
+    th: 'จันทร์ - ศุกร์: 9:00 - 18:00',
+    en: 'Mon - Fri: 9:00 AM - 6:00 PM',
+  },
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -27,39 +39,44 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ContactPage({ params }: Props) {
   const { locale } = await params
 
-  // Fetch hero and dictionary in parallel
-  const [heroData, dict] = await Promise.all([
+  // Fetch hero, contact info, and dictionary in parallel
+  const [heroData, strapiContactInfo, dict] = await Promise.all([
     getPageHero('contact', locale),
+    getContactInfo(locale),
     getDictionary(locale)
   ])
 
   const heroBackground = buildHeroBackground(heroData)
 
+  // Use Strapi data or fallback
+  const email = strapiContactInfo?.email || fallbackContactInfo.email
+  const phone = strapiContactInfo?.phone || fallbackContactInfo.phone
+  const lineId = strapiContactInfo?.lineId || fallbackContactInfo.lineId
+  const workingHours = strapiContactInfo?.workingHours || (locale === 'th' ? fallbackContactInfo.workingHours.th : fallbackContactInfo.workingHours.en)
+
   const contactInfo = [
     {
       iconName: 'Mail',
       label: locale === 'th' ? 'อีเมล' : 'Email',
-      value: 'info@techthinkspace.com',
-      href: 'mailto:info@techthinkspace.com',
+      value: email,
+      href: `mailto:${email}`,
     },
     {
       iconName: 'Phone',
       label: locale === 'th' ? 'โทรศัพท์' : 'Phone',
-      value: '+66 082-808-7666',
-      href: 'tel:+66828087666',
+      value: phone,
+      href: `tel:${phone.replace(/\s/g, '')}`,
     },
     {
       iconName: 'MessageCircle',
       label: 'Line',
-      value: '@techthinkspace',
-      href: 'https://lin.ee/PYH3ViE',
+      value: lineId,
+      href: fallbackContactInfo.lineUrl,
     },
     {
       iconName: 'Clock',
       label: locale === 'th' ? 'เวลาทำการ' : 'Business Hours',
-      value: locale === 'th'
-        ? 'จันทร์ - ศุกร์: 9:00 - 18:00'
-        : 'Mon - Fri: 9:00 AM - 6:00 PM',
+      value: workingHours,
       href: '#',
     },
   ]

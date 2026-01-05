@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
+    "@tailwindcss/typography": "^0.5.19",
     "@thinkspace/types": "workspace:*",
     "@thinkspace/ui": "workspace:*",
     "framer-motion": "^12.23.26",
@@ -19,6 +20,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.49.0",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
     "zod": "^3.22.4",
     "zustand": "^5.0.0"
   },

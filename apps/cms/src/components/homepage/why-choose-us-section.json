@@ -1,0 +1,41 @@
+{
+  "collectionName": "components_homepage_why_choose_us_sections",
+  "info": {
+    "displayName": "Why Choose Us Section",
+    "description": "Why Choose Us section with header and features"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "subtitle": {
+      "type": "text",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "features": {
+      "type": "component",
+      "repeatable": true,
+      "component": "homepage.feature-item",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "isVisible": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

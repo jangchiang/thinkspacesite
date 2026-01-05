@@ -13,6 +13,7 @@ import {
   BenefitsSection,
   ServiceCTA,
 } from '@/components/sections/service-detail-sections'
+import { Breadcrumb } from '@/components/ui/breadcrumb'
 
 type Props = {
   params: Promise<{ locale: Locale; slug: string }>
@@ -586,6 +587,19 @@ export default async function ServiceDetailPage({ params }: Props) {
 
   return (
     <>
+      {/* Breadcrumb */}
+      <div className="bg-base-200 py-4">
+        <div className="container-custom">
+          <Breadcrumb
+            items={[
+              { label: locale === 'th' ? 'บริการ' : 'Services', href: `/${locale}/services` },
+              { label: title }
+            ]}
+            locale={locale}
+          />
+        </div>
+      </div>
+
       <ServiceHero
         iconName={iconName}
         color={color}

@@ -6,6 +6,8 @@ import { motion } from 'framer-motion'
 import { Calendar, ArrowRight, Clock } from 'lucide-react'
 import { type Locale } from '@/lib/i18n'
 
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
+
 interface BlogPost {
   id: number
   title: string
@@ -59,8 +61,6 @@ export function NewsPreviewSection({ locale, posts }: NewsPreviewSectionProps) {
   if (posts.length === 0) return null
 
   const latestPosts = posts.slice(0, 3)
-  const featuredPost = latestPosts[0]
-  const otherPosts = latestPosts.slice(1)
 
   return (
     <section className="section-padding bg-base-200/30">
@@ -92,123 +92,70 @@ export function NewsPreviewSection({ locale, posts }: NewsPreviewSectionProps) {
           </Link>
         </motion.div>
 
-        {/* News Grid */}
+        {/* News Grid - 3 equal columns */}
         <motion.div
-          className="grid lg:grid-cols-2 gap-8"
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
         >
-          {/* Featured Post */}
-          <motion.article
-            variants={itemVariants}
-            className="group"
-          >
-            <Link href={`/${locale}/news/${featuredPost.slug}`}>
-              <div className="relative overflow-hidden rounded-2xl bg-base-100 shadow-lg hover:shadow-xl transition-all duration-300 border border-base-300 hover:border-primary/30">
-                <div className="aspect-video relative overflow-hidden">
-                  {featuredPost.featuredImage ? (
-                    <Image
-                      src={`http://localhost:1337${
-                        featuredPost.featuredImage.formats?.medium?.url ||
-                        featuredPost.featuredImage.url
-                      }`}
-                      alt={featuredPost.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-                      <span className="text-6xl opacity-20">📰</span>
-                    </div>
-                  )}
-                  <div className="absolute top-4 left-4">
-                    <span className="badge badge-primary">
-                      {featuredPost.category || 'General'}
-                    </span>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center gap-4 text-sm text-base-content/60 mb-3">
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4" />
-                      {new Date(featuredPost.publishedAt).toLocaleDateString(
-                        locale === 'th' ? 'th-TH' : 'en-US',
-                        { year: 'numeric', month: 'short', day: 'numeric' }
-                      )}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-4 h-4" />
-                      {estimateReadTime(featuredPost.excerpt)}{' '}
-                      {locale === 'th' ? 'นาที' : 'min read'}
-                    </span>
-                  </div>
-                  <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                    {featuredPost.title}
-                  </h3>
-                  <p className="text-base-content/70 line-clamp-2">
-                    {featuredPost.excerpt}
-                  </p>
-                </div>
-              </div>
-            </Link>
-          </motion.article>
-
-          {/* Other Posts */}
-          <div className="flex flex-col gap-6">
-            {otherPosts.map((post) => (
-              <motion.article
-                key={post.id}
-                variants={itemVariants}
-                className="group"
-              >
-                <Link href={`/${locale}/news/${post.slug}`}>
-                  <div className="flex gap-4 p-4 rounded-xl bg-base-100 shadow-md hover:shadow-lg transition-all duration-300 border border-base-300 hover:border-primary/30">
-                    <div className="relative w-24 h-24 md:w-32 md:h-32 flex-shrink-0 rounded-lg overflow-hidden">
-                      {post.featuredImage ? (
-                        <Image
-                          src={`http://localhost:1337${
-                            post.featuredImage.formats?.small?.url ||
-                            post.featuredImage.url
-                          }`}
-                          alt={post.title}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-                          <span className="text-2xl opacity-20">📰</span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex flex-col justify-center">
-                      <span className="text-xs text-primary font-medium mb-1">
+          {latestPosts.map((post) => (
+            <motion.article
+              key={post.id}
+              variants={itemVariants}
+              className="group"
+            >
+              <Link href={`/${locale}/news/${post.slug}`}>
+                <div className="relative overflow-hidden rounded-xl bg-base-100 shadow-md hover:shadow-lg transition-all duration-300 border border-base-300 hover:border-primary/30 h-full">
+                  <div className="aspect-[4/3] relative overflow-hidden">
+                    {post.featuredImage ? (
+                      <Image
+                        src={`${STRAPI_URL}${
+                          post.featuredImage.formats?.small?.url ||
+                          post.featuredImage.url
+                        }`}
+                        alt={post.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
+                        <span className="text-4xl opacity-20">📰</span>
+                      </div>
+                    )}
+                    <div className="absolute top-3 left-3">
+                      <span className="badge badge-primary badge-sm">
                         {post.category || 'General'}
                       </span>
-                      <h3 className="font-semibold text-base md:text-lg group-hover:text-primary transition-colors line-clamp-2 mb-1">
-                        {post.title}
-                      </h3>
-                      <div className="flex items-center gap-3 text-xs text-base-content/60">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3" />
-                          {new Date(post.publishedAt).toLocaleDateString(
-                            locale === 'th' ? 'th-TH' : 'en-US',
-                            { month: 'short', day: 'numeric' }
-                          )}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-3 h-3" />
-                          {estimateReadTime(post.excerpt)}{' '}
-                          {locale === 'th' ? 'นาที' : 'min'}
-                        </span>
-                      </div>
                     </div>
                   </div>
-                </Link>
-              </motion.article>
-            ))}
-          </div>
+                  <div className="p-4">
+                    <div className="flex items-center gap-3 text-xs text-base-content/60 mb-2">
+                      <span className="flex items-center gap-1">
+                        <Calendar className="w-3 h-3" />
+                        {new Date(post.publishedAt).toLocaleDateString(
+                          locale === 'th' ? 'th-TH' : 'en-US',
+                          { month: 'short', day: 'numeric' }
+                        )}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        {estimateReadTime(post.excerpt)}{' '}
+                        {locale === 'th' ? 'นาที' : 'min'}
+                      </span>
+                    </div>
+                    <h3 className="text-base font-semibold group-hover:text-primary transition-colors line-clamp-2 mb-1">
+                      {post.title}
+                    </h3>
+                    <p className="text-sm text-base-content/70 line-clamp-2">
+                      {post.excerpt}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            </motion.article>
+          ))}
         </motion.div>
       </div>
     </section>

@@ -4,9 +4,13 @@ import { getBlogPosts, getPageHero } from '@/lib/strapi'
 import { HeroSection } from '@/components/sections/hero-section'
 import { buildHeroBackground } from '@/lib/hero-utils'
 import { NewsGrid } from './news-grid'
+import { CategoryFilter } from '@/components/ui/category-filter'
+import { Pagination } from '@/components/ui/pagination'
+import { Suspense } from 'react'
 
 type Props = {
   params: Promise<{ locale: Locale }>
+  searchParams: Promise<{ category?: string; page?: string }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -39,16 +43,31 @@ interface BlogPost {
   }
 }
 
-export default async function NewsPage({ params }: Props) {
+const PAGE_SIZE = 6
+
+export default async function NewsPage({ params, searchParams }: Props) {
   const { locale } = await params
+  const { category, page } = await searchParams
+  const currentPage = Number(page) || 1
 
   // Fetch hero and posts in parallel
-  const [heroData, { posts: strapiPosts }] = await Promise.all([
+  const [heroData, { posts: strapiPosts, pagination }] = await Promise.all([
     getPageHero('news', locale),
-    getBlogPosts(locale)
+    getBlogPosts(locale, {
+      page: currentPage,
+      pageSize: PAGE_SIZE,
+      category: category || undefined
+    })
   ])
 
   const heroBackground = buildHeroBackground(heroData)
+
+  // Get unique categories from all posts (fetch all for category list)
+  const { posts: allPosts } = await getBlogPosts(locale, { pageSize: 100 })
+  const categories = [...new Set((allPosts as BlogPost[])
+    .map(p => p.category)
+    .filter((c): c is string => Boolean(c))
+  )].sort()
 
   // Map Strapi data to our format
   const posts = (strapiPosts as BlogPost[]).map((post) => ({
@@ -59,6 +78,8 @@ export default async function NewsPage({ params }: Props) {
     category: post.category || 'General',
     featuredImage: post.featuredImage?.formats?.medium?.url || post.featuredImage?.url || null,
   }))
+
+  const totalPages = pagination?.pageCount || 1
 
   return (
     <>
@@ -79,7 +100,28 @@ export default async function NewsPage({ params }: Props) {
       {/* News Grid */}
       <section className="section-padding">
         <div className="container-custom">
+          {/* Category Filter */}
+          {categories.length > 0 && (
+            <Suspense fallback={<div className="h-10 mb-8" />}>
+              <CategoryFilter
+                categories={categories}
+                locale={locale}
+                basePath={`/${locale}/news`}
+              />
+            </Suspense>
+          )}
+
           <NewsGrid posts={posts} locale={locale} />
+
+          {/* Pagination */}
+          <Suspense fallback={null}>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              basePath={`/${locale}/news`}
+              locale={locale}
+            />
+          </Suspense>
         </div>
       </section>
     </>

@@ -1,15 +1,34 @@
 import Link from 'next/link'
-import { Mail, Phone, MessageCircle, Linkedin, Twitter, Github } from 'lucide-react'
+import { Mail, Phone, MessageCircle, Linkedin, Twitter, Github, Facebook } from 'lucide-react'
 import { type Locale } from '@/lib/i18n'
+import { type ContactInfo } from '@/lib/strapi'
 
 type Dict = Record<string, any>
+
+// Fallback contact info if Strapi is unavailable
+const fallbackContact = {
+  email: 'info@techthinkspace.com',
+  phone: '+66 082-808-7666',
+  lineId: '@techthinkspace',
+  lineUrl: 'https://lin.ee/PYH3ViE',
+  facebookUrl: 'https://facebook.com/techthinkspace',
+  linkedinUrl: 'https://linkedin.com/company/techthinkspace',
+}
 
 interface FooterProps {
   locale: Locale
   dict: Dict
+  contactInfo?: ContactInfo | null
 }
 
-export function Footer({ locale, dict }: FooterProps) {
+export function Footer({ locale, dict, contactInfo }: FooterProps) {
+  // Use Strapi data or fallback
+  const email = contactInfo?.email || fallbackContact.email
+  const phone = contactInfo?.phone || fallbackContact.phone
+  const lineId = contactInfo?.lineId || fallbackContact.lineId
+  const facebookUrl = contactInfo?.facebookUrl || fallbackContact.facebookUrl
+  const linkedinUrl = contactInfo?.linkedinUrl || fallbackContact.linkedinUrl
+  const twitterUrl = contactInfo?.twitterUrl
   const navigation = {
     services: [
       { name: dict.services.cloud.title, href: `/${locale}/services/cloud` },
@@ -33,9 +52,9 @@ export function Footer({ locale, dict }: FooterProps) {
       { name: dict.footer.cookies, href: `/${locale}/cookies` },
     ],
     social: [
-      { name: 'LinkedIn', href: '#', icon: Linkedin },
-      { name: 'Twitter', href: '#', icon: Twitter },
-      { name: 'GitHub', href: '#', icon: Github },
+      ...(facebookUrl ? [{ name: 'Facebook', href: facebookUrl, icon: Facebook }] : []),
+      ...(linkedinUrl ? [{ name: 'LinkedIn', href: linkedinUrl, icon: Linkedin }] : []),
+      ...(twitterUrl ? [{ name: 'Twitter', href: twitterUrl, icon: Twitter }] : []),
     ],
   }
 
@@ -54,15 +73,15 @@ export function Footer({ locale, dict }: FooterProps) {
             <div className="space-y-2 text-sm">
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-primary" />
-                <a href="mailto:info@techthinkspace.com" className="hover:text-primary">info@techthinkspace.com</a>
+                <a href={`mailto:${email}`} className="hover:text-primary">{email}</a>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-primary" />
-                <a href="tel:+66828087666" className="hover:text-primary">+66 082-808-7666</a>
+                <a href={`tel:${phone.replace(/\s/g, '')}`} className="hover:text-primary">{phone}</a>
               </div>
               <div className="flex items-center gap-2">
                 <MessageCircle className="w-4 h-4 text-primary" />
-                <a href="https://lin.ee/PYH3ViE" target="_blank" rel="noopener noreferrer" className="hover:text-primary">@techthinkspace</a>
+                <a href={fallbackContact.lineUrl} target="_blank" rel="noopener noreferrer" className="hover:text-primary">{lineId}</a>
               </div>
             </div>
           </div>

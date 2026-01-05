@@ -1,5 +1,168 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface HomepageCtaSection extends Struct.ComponentSchema {
+  collectionName: 'components_homepage_cta_sections';
+  info: {
+    description: 'Call to action section content';
+    displayName: 'CTA Section';
+  };
+  attributes: {
+    primaryButtonLink: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'/contact'>;
+    primaryButtonText: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    secondaryButtonLink: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'/works'>;
+    secondaryButtonText: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    subtitle: Schema.Attribute.Text &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+  };
+}
+
+export interface HomepageFeatureItem extends Struct.ComponentSchema {
+  collectionName: 'components_homepage_feature_items';
+  info: {
+    description: 'A feature item for Why Choose Us section';
+    displayName: 'Feature Item';
+  };
+  attributes: {
+    description: Schema.Attribute.Text &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    icon: Schema.Attribute.Enumeration<
+      [
+        'Shield',
+        'Clock',
+        'Users',
+        'Award',
+        'Headphones',
+        'TrendingUp',
+        'CheckCircle',
+        'Zap',
+        'Target',
+        'Heart',
+      ]
+    > &
+      Schema.Attribute.DefaultTo<'CheckCircle'>;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+  };
+}
+
+export interface HomepageHeroSection extends Struct.ComponentSchema {
+  collectionName: 'components_homepage_hero_sections';
+  info: {
+    description: 'Homepage hero section content';
+    displayName: 'Hero Section';
+  };
+  attributes: {
+    badge: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    ctaButtonLink: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'/contact'>;
+    ctaButtonText: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    secondaryButtonText: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    showPartners: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    subtitle: Schema.Attribute.Text &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    titleHighlight: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    trustedByText: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+  };
+}
+
+export interface HomepageWhyChooseUsSection extends Struct.ComponentSchema {
+  collectionName: 'components_homepage_why_choose_us_sections';
+  info: {
+    description: 'Why Choose Us section with header and features';
+    displayName: 'Why Choose Us Section';
+  };
+  attributes: {
+    features: Schema.Attribute.Component<'homepage.feature-item', true> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    isVisible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    subtitle: Schema.Attribute.Text &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+  };
+}
+
 export interface ServiceFeature extends Struct.ComponentSchema {
   collectionName: 'components_service_features';
   info: {
@@ -182,6 +345,10 @@ export interface SharedValueItem extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'homepage.cta-section': HomepageCtaSection;
+      'homepage.feature-item': HomepageFeatureItem;
+      'homepage.hero-section': HomepageHeroSection;
+      'homepage.why-choose-us-section': HomepageWhyChooseUsSection;
       'service.feature': ServiceFeature;
       'service.process-step': ServiceProcessStep;
       'service.technology': ServiceTechnology;

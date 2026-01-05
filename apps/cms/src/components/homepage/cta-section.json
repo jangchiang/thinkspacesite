@@ -1,0 +1,51 @@
+{
+  "collectionName": "components_homepage_cta_sections",
+  "info": {
+    "displayName": "CTA Section",
+    "description": "Call to action section content"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "subtitle": {
+      "type": "text",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "primaryButtonText": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "primaryButtonLink": {
+      "type": "string",
+      "default": "/contact"
+    },
+    "secondaryButtonText": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "secondaryButtonLink": {
+      "type": "string",
+      "default": "/works"
+    }
+  }
+}

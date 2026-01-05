@@ -1,0 +1,57 @@
+{
+  "kind": "collectionType",
+  "collectionName": "career_benefits",
+  "info": {
+    "singularName": "career-benefit",
+    "pluralName": "career-benefits",
+    "displayName": "Career Benefit",
+    "description": "Benefits displayed on the careers page"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "iconName": {
+      "type": "enumeration",
+      "enum": ["Heart", "Zap", "Users", "Shield", "Globe", "Award", "Coffee", "Briefcase", "Clock", "Target"],
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "description": {
+      "type": "text",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "order": {
+      "type": "integer",
+      "default": 0,
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    }
+  }
+}

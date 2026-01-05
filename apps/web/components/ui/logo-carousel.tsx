@@ -3,6 +3,8 @@
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
+
 interface Partner {
   id: number
   name: string
@@ -65,7 +67,7 @@ export function LogoCarousel({ partners, title }: LogoCarouselProps) {
               >
                 {logoUrl && (
                   <Image
-                    src={`http://localhost:1337${logoUrl}`}
+                    src={`${STRAPI_URL}${logoUrl}`}
                     alt={partner.name}
                     fill
                     className="object-contain"

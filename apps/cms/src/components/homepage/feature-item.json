@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_homepage_feature_items",
+  "info": {
+    "displayName": "Feature Item",
+    "description": "A feature item for Why Choose Us section"
+  },
+  "options": {},
+  "attributes": {
+    "icon": {
+      "type": "enumeration",
+      "enum": ["Shield", "Clock", "Users", "Award", "Headphones", "TrendingUp", "CheckCircle", "Zap", "Target", "Heart"],
+      "default": "CheckCircle"
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "description": {
+      "type": "text",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}

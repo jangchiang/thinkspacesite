@@ -1,6 +1,6 @@
 import { type Locale } from '@/lib/i18n'
 import { getDictionary } from '@/lib/dictionary'
-import { getServices } from '@/lib/strapi'
+import { getServices, getContactInfo } from '@/lib/strapi'
 import { Navbar } from '@/components/layouts/navbar'
 import { Footer } from '@/components/layouts/footer'
 
@@ -20,10 +20,11 @@ interface StrapiService {
 export default async function MarketingLayout({ children, params }: Props) {
   const { locale } = await params
 
-  // Fetch dictionary and services in parallel
-  const [dict, strapiServices] = await Promise.all([
+  // Fetch dictionary, services, and contact info in parallel
+  const [dict, strapiServices, contactInfo] = await Promise.all([
     getDictionary(locale),
-    getServices(locale).catch(() => []) as Promise<StrapiService[]>
+    getServices(locale).catch(() => []) as Promise<StrapiService[]>,
+    getContactInfo(locale).catch(() => null)
   ])
 
   // Transform services for navbar
@@ -36,7 +37,7 @@ export default async function MarketingLayout({ children, params }: Props) {
     <>
       <Navbar locale={locale} dict={dict} services={services} />
       <main className="min-h-screen page-transition">{children}</main>
-      <Footer locale={locale} dict={dict} />
+      <Footer locale={locale} dict={dict} contactInfo={contactInfo} />
     </>
   )
 }

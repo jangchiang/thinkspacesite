@@ -111,10 +111,10 @@ export function StatsSection({ stats }: StatsSectionProps) {
   const displayStats = stats && stats.length > 0 ? stats : defaultStats
 
   return (
-    <section className="section-padding bg-primary text-primary-content overflow-hidden" ref={ref}>
+    <section className="py-8 md:py-12 bg-primary text-primary-content overflow-hidden" ref={ref}>
       <div className="container-custom">
         <motion.div
-          className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8"
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
           variants={containerVariants}
@@ -129,7 +129,7 @@ export function StatsSection({ stats }: StatsSectionProps) {
                 variants={itemVariants}
               >
                 <motion.div
-                  className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2"
+                  className="text-3xl md:text-4xl lg:text-5xl font-bold mb-1"
                   whileHover={{ scale: 1.05 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 10 }}
                 >
@@ -140,7 +140,7 @@ export function StatsSection({ stats }: StatsSectionProps) {
                   )}
                 </motion.div>
                 <motion.div
-                  className="text-primary-content/80 text-sm md:text-base"
+                  className="text-primary-content/80 text-xs md:text-sm"
                   initial={{ opacity: 0 }}
                   animate={isInView ? { opacity: 1 } : { opacity: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
