@@ -1,3 +1,3 @@
 import { factories } from '@strapi/strapi';
 
-export default factories.createCoreRouter('api::site-setting.site-setting');
+export default factories.createCoreRouter('api::site-setting.site-setting' as any);
