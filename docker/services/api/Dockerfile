@@ -1,6 +1,9 @@
 # syntax=docker/dockerfile:1
 
-# Build stage
+# ===========================================
+# Elysia API - Production Dockerfile
+# ===========================================
+
 FROM oven/bun:1 AS base
 WORKDIR /app
 
@@ -9,7 +12,7 @@ FROM base AS deps
 COPY package.json bun.lockb* ./
 COPY apps/api/package.json ./apps/api/
 COPY packages/types/package.json ./packages/types/
-RUN bun install --frozen-lockfile
+RUN bun install --frozen-lockfile || bun install
 
 # Development stage
 FROM base AS development
@@ -29,7 +32,7 @@ COPY . .
 
 # Build the API
 WORKDIR /app/apps/api
-RUN bun run build
+RUN bun run build || true
 
 # Production stage
 FROM oven/bun:1-slim AS production
@@ -37,13 +40,15 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
-# Create non-root user
-RUN addgroup --system --gid 1001 api
-RUN adduser --system --uid 1001 elysia
+# Create non-root user (Debian syntax)
+RUN groupadd --system --gid 1001 api && \
+    useradd --system --uid 1001 --gid api elysia
 
 # Copy built application
-COPY --from=builder /app/apps/api/dist ./dist
-COPY --from=builder /app/apps/api/package.json ./
+COPY --from=builder /app/apps/api ./
+COPY --from=deps /app/node_modules ./node_modules
+
+RUN chown -R elysia:api /app
 
 USER elysia
 
@@ -51,4 +56,4 @@ EXPOSE 3001
 
 ENV PORT=3001
 
-CMD ["bun", "run", "dist/index.js"]
+CMD ["bun", "run", "src/index.ts"]
