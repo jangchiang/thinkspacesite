@@ -44,23 +44,24 @@ ENV NODE_ENV=production
 WORKDIR /app/apps/web
 RUN bun install && bun run build
 
-# Production stage - Use Node.js for Next.js standalone output
+# Production stage - Use Node.js to run Next.js
 FROM node:22-alpine AS production
 WORKDIR /app
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Create non-root user (Alpine syntax)
+# Create non-root user
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 
-# Copy built standalone application (preserves monorepo structure)
-COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
-# Copy static files to the correct location within the monorepo structure
-COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
-# Copy public folder
-COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
+# Copy the entire built application
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next ./.next
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/package.json ./package.json
+
+# Install production dependencies only
+RUN npm install --omit=dev next react react-dom
 
 USER nextjs
 
@@ -69,9 +70,7 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-# Run from the monorepo app location
-WORKDIR /app/apps/web
-CMD ["node", "server.js"]
+CMD ["npx", "next", "start"]
 
 # Alias for backwards compatibility
 FROM production AS runner

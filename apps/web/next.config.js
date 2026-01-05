@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  // output: 'standalone', // Disabled for simpler Docker deployment
   transpilePackages: ['@thinkspace/ui', '@thinkspace/types'],
   images: {
     remotePatterns: [
