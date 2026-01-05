@@ -55,12 +55,14 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 
-# Copy the entire built application and node_modules from builder
+# Copy the built .next folder and public
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next ./.next
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/apps/web/package.json ./package.json
-# Copy node_modules from root (where next is installed in monorepo)
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
+
+# Create a clean package.json without workspace dependencies and install
+RUN echo '{"name":"thinkspace-web","private":true,"dependencies":{"next":"15.0.0","react":"^18.2.0","react-dom":"^18.2.0"}}' > package.json && \
+    npm install --omit=dev && \
+    chown -R nextjs:nodejs /app
 
 USER nextjs
 
