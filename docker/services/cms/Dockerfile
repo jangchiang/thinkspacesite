@@ -45,7 +45,6 @@ RUN npm install --omit=dev
 
 # Copy built application
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/build ./build
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/config ./config
 COPY --from=builder /app/src ./src
