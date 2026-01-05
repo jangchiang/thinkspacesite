@@ -37,7 +37,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
 # Build the Next.js app from root (monorepo)
-RUN cd apps/web && bun run build
+RUN cd apps/web && ../../node_modules/.bin/next build
 
 # Production stage
 FROM oven/bun:1-slim AS production
