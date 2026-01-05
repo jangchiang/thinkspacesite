@@ -44,16 +44,16 @@ ENV NODE_ENV=production
 WORKDIR /app/apps/web
 RUN bun install && bun run build
 
-# Production stage
-FROM oven/bun:1-slim AS production
+# Production stage - Use Node.js for Next.js standalone output
+FROM node:22-alpine AS production
 WORKDIR /app
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Create non-root user (Debian syntax)
-RUN groupadd --system --gid 1001 nodejs && \
-    useradd --system --uid 1001 --gid nodejs nextjs
+# Create non-root user (Alpine syntax)
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
 
 # Copy built application
 COPY --from=builder /app/apps/web/public ./public
@@ -67,7 +67,7 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-CMD ["bun", "server.js"]
+CMD ["node", "server.js"]
 
 # Alias for backwards compatibility
 FROM production AS runner
