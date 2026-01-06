@@ -14,7 +14,8 @@ COPY apps/web/package.json ./apps/web/
 COPY packages/types/package.json ./packages/types/
 COPY packages/config/package.json ./packages/config/
 COPY packages/ui/package.json ./packages/ui/
-RUN bun install --frozen-lockfile || bun install
+# Clear cache and install fresh
+RUN bun pm cache rm 2>/dev/null || true && bun install
 
 # Development stage
 FROM base AS development
