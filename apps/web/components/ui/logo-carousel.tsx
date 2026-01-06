@@ -71,6 +71,7 @@ export function LogoCarousel({ partners, title }: LogoCarouselProps) {
                     alt={partner.name}
                     fill
                     className="object-contain"
+                    unoptimized
                   />
                 )}
               </div>

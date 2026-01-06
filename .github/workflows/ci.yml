@@ -102,25 +102,23 @@ jobs:
           cache-to: type=gha,mode=max
 
   # ===========================================
-  # Deploy to Production
+  # Deploy to Production (Self-hosted Runner)
   # ===========================================
   deploy:
     name: Deploy to Production
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build-images
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     environment: production
 
     steps:
-      - name: Deploy to server
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            cd ${{ secrets.PROJECT_PATH || '/home/thinkspace/thinkspacesite' }}
-            git pull origin main
-            docker compose -f docker/docker-compose.yml -f docker/docker-compose.prod.yml pull
-            docker compose -f docker/docker-compose.yml -f docker/docker-compose.prod.yml up -d --build
-            docker system prune -f
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy
+        run: |
+          cd ${{ secrets.PROJECT_PATH || '/home/thinkspace/thinkspacesite' }}
+          git pull origin main
+          docker compose -f docker/docker-compose.yml -f docker/docker-compose.prod.yml build
+          docker compose -f docker/docker-compose.yml -f docker/docker-compose.prod.yml up -d
+          docker system prune -f
