@@ -3,8 +3,6 @@
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
-
 interface Partner {
   id: number
   name: string
@@ -21,9 +19,10 @@ interface Partner {
 interface LogoCarouselProps {
   partners: Partner[]
   title?: string
+  strapiUrl?: string
 }
 
-export function LogoCarousel({ partners, title }: LogoCarouselProps) {
+export function LogoCarousel({ partners, title, strapiUrl = '' }: LogoCarouselProps) {
   if (partners.length === 0) return null
 
   // Double the partners for seamless infinite scroll
@@ -60,14 +59,16 @@ export function LogoCarousel({ partners, title }: LogoCarouselProps) {
             const logoUrl = partner.logo?.formats?.small?.url ||
                             partner.logo?.formats?.thumbnail?.url ||
                             partner.logo?.url
+            // Build full URL - strapiUrl is passed from server component
+            const fullLogoUrl = logoUrl ? `${strapiUrl}${logoUrl}` : null
             return (
               <div
                 key={`${partner.id}-${index}`}
                 className="relative h-12 w-32 md:h-16 md:w-40 flex-shrink-0 opacity-70 hover:opacity-100 transition-all duration-300"
               >
-                {logoUrl && (
+                {fullLogoUrl && (
                   <Image
-                    src={`${STRAPI_URL}${logoUrl}`}
+                    src={fullLogoUrl}
                     alt={partner.name}
                     fill
                     className="object-contain"

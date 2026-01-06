@@ -306,8 +306,6 @@ export function StorySection({
 }
 
 // Team Section
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
-
 interface TeamMember {
   name: string
   role: string
@@ -324,9 +322,10 @@ interface TeamSectionProps {
   title: string
   description: string
   members: TeamMember[]
+  strapiUrl?: string
 }
 
-export function TeamSection({ title, description, members }: TeamSectionProps) {
+export function TeamSection({ title, description, members, strapiUrl = '' }: TeamSectionProps) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
@@ -367,7 +366,7 @@ export function TeamSection({ title, description, members }: TeamSectionProps) {
                   >
                     {photoUrl && (
                       <Image
-                        src={`${STRAPI_URL}${photoUrl}`}
+                        src={`${strapiUrl}${photoUrl}`}
                         alt={member.name}
                         fill
                         className="object-contain"

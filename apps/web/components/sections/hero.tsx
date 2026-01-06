@@ -26,9 +26,10 @@ interface HeroSectionProps {
   dict: Dict
   locale: Locale
   partners?: Partner[]
+  strapiUrl?: string
 }
 
-export function HeroSection({ dict, locale, partners = [] }: HeroSectionProps) {
+export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: HeroSectionProps) {
   return (
     <section className="relative overflow-hidden min-h-[90vh] flex items-center">
       {/* Animated Paths Background */}
@@ -111,6 +112,7 @@ export function HeroSection({ dict, locale, partners = [] }: HeroSectionProps) {
                 <LogoCarousel
                   partners={partners}
                   title={dict.hero.trustedBy}
+                  strapiUrl={strapiUrl}
                 />
               </motion.div>
             )}

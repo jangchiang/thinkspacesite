@@ -5,8 +5,6 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Calendar, ArrowRight, Clock } from 'lucide-react'
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
-
 interface BlogPost {
   slug: string
   title: string
@@ -19,6 +17,7 @@ interface BlogPost {
 interface NewsGridProps {
   posts: BlogPost[]
   locale: string
+  strapiUrl?: string
 }
 
 const containerVariants = {
@@ -48,7 +47,7 @@ function estimateReadTime(excerpt: string): number {
   return Math.max(2, Math.ceil(words / 200) + 2)
 }
 
-export function NewsGrid({ posts, locale }: NewsGridProps) {
+export function NewsGrid({ posts, locale, strapiUrl = '' }: NewsGridProps) {
   if (posts.length === 0) {
     return (
       <motion.div
@@ -82,7 +81,7 @@ export function NewsGrid({ posts, locale }: NewsGridProps) {
               <div className="aspect-video bg-base-200 relative overflow-hidden">
                 {post.featuredImage ? (
                   <Image
-                    src={`${STRAPI_URL}${post.featuredImage}`}
+                    src={`${strapiUrl}${post.featuredImage}`}
                     alt={post.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500"

@@ -81,6 +81,9 @@ export default async function NewsPage({ params, searchParams }: Props) {
 
   const totalPages = pagination?.pageCount || 1
 
+  // Get STRAPI_URL for client components
+  const strapiUrl = process.env.STRAPI_URL || 'http://localhost:1337'
+
   return (
     <>
       {/* Hero Section */}
@@ -111,7 +114,7 @@ export default async function NewsPage({ params, searchParams }: Props) {
             </Suspense>
           )}
 
-          <NewsGrid posts={posts} locale={locale} />
+          <NewsGrid posts={posts} locale={locale} strapiUrl={strapiUrl} />
 
           {/* Pagination */}
           <Suspense fallback={null}>

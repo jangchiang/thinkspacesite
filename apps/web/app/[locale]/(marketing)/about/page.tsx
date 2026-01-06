@@ -49,6 +49,9 @@ export default async function AboutPage({ params }: Props) {
   const teamSectionTitle = aboutData?.teamSectionTitle || ''
   const teamSectionDescription = aboutData?.teamSectionDescription || ''
 
+  // Get STRAPI_URL for client components
+  const strapiUrl = process.env.STRAPI_URL || 'http://localhost:1337'
+
   return (
     <>
       <AboutHero
@@ -72,6 +75,7 @@ export default async function AboutPage({ params }: Props) {
         title={teamSectionTitle}
         description={teamSectionDescription}
         members={teamMembers}
+        strapiUrl={strapiUrl}
       />
     </>
   )

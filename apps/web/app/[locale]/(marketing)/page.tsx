@@ -78,6 +78,9 @@ export default async function HomePage({ params }: Props) {
   const caseStudies = (caseStudiesData || []) as CaseStudy[]
   const blogPosts = (blogData?.posts || []) as BlogPost[]
 
+  // Get STRAPI_URL for client components (server-side has access to env vars)
+  const strapiUrl = process.env.STRAPI_URL || 'http://localhost:1337'
+
   // Helper function to check if a string is valid (not empty, not just "?")
   const isValidText = (text: string | undefined | null): text is string => {
     return !!text && text.trim() !== '' && text.trim() !== '?'
@@ -95,11 +98,11 @@ export default async function HomePage({ params }: Props) {
 
   return (
     <>
-      <HeroSection dict={{ ...dict, hero: heroData }} locale={locale} partners={partners} />
+      <HeroSection dict={{ ...dict, hero: heroData }} locale={locale} partners={partners} strapiUrl={strapiUrl} />
       <ServicesSection dict={dict} locale={locale} />
       <WhyChooseUsSection locale={locale} data={homepageData?.whyChooseUsSection} />
       <FeaturedWorksSection locale={locale} caseStudies={caseStudies} />
-      <NewsPreviewSection locale={locale} posts={blogPosts} />
+      <NewsPreviewSection locale={locale} posts={blogPosts} strapiUrl={strapiUrl} />
       <StatsSection stats={stats} />
       <CTASection dict={dict} locale={locale} />
     </>

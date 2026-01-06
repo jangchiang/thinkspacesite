@@ -6,8 +6,6 @@ import { motion } from 'framer-motion'
 import { Calendar, ArrowRight, Clock } from 'lucide-react'
 import { type Locale } from '@/lib/i18n'
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
-
 interface BlogPost {
   id: number
   title: string
@@ -27,6 +25,7 @@ interface BlogPost {
 interface NewsPreviewSectionProps {
   locale: Locale
   posts: BlogPost[]
+  strapiUrl?: string
 }
 
 const containerVariants = {
@@ -57,7 +56,7 @@ function estimateReadTime(excerpt: string | null): number {
   return Math.max(2, Math.ceil(words / 200) + 2)
 }
 
-export function NewsPreviewSection({ locale, posts }: NewsPreviewSectionProps) {
+export function NewsPreviewSection({ locale, posts, strapiUrl = '' }: NewsPreviewSectionProps) {
   if (posts.length === 0) return null
 
   const latestPosts = posts.slice(0, 3)
@@ -111,7 +110,7 @@ export function NewsPreviewSection({ locale, posts }: NewsPreviewSectionProps) {
                   <div className="aspect-[4/3] relative overflow-hidden">
                     {post.featuredImage ? (
                       <Image
-                        src={`${STRAPI_URL}${
+                        src={`${strapiUrl}${
                           post.featuredImage.formats?.small?.url ||
                           post.featuredImage.url
                         }`}
