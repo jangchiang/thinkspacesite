@@ -7,7 +7,7 @@
 export {};
 
 const STRAPI_URL = process.env.STRAPI_URL || 'http://localhost:1337'
-const STRAPI_API_TOKEN = process.env.STRAPI_API_TOKEN || ''
+const API_TOKEN = process.env.STRAPI_API_TOKEN || ''
 
 interface StatData {
   value: string
@@ -44,60 +44,76 @@ const stats: StatData[] = [
 ]
 
 async function createStat(stat: StatData) {
-  const headers: Record<string, string> = {
+  const headers = {
     'Content-Type': 'application/json',
+    'Authorization': `Bearer ${API_TOKEN}`,
   }
 
-  if (STRAPI_API_TOKEN) {
-    headers['Authorization'] = `Bearer ${STRAPI_API_TOKEN}`
+  // Create Thai version first
+  const thData = {
+    data: {
+      value: stat.value,
+      label: stat.labelTh,
+      order: stat.order,
+    },
   }
 
-  // Create Thai version first (default locale)
+  console.log(`Creating Thai stat: ${stat.value}...`)
+
   const thResponse = await fetch(`${STRAPI_URL}/api/stats`, {
     method: 'POST',
     headers,
-    body: JSON.stringify({
-      data: {
-        value: stat.value,
-        label: stat.labelTh,
-        order: stat.order,
-        locale: 'th-TH',
-        publishedAt: new Date().toISOString(),
-      },
-    }),
+    body: JSON.stringify(thData),
   })
 
   if (!thResponse.ok) {
     const error = await thResponse.text()
     console.error(`Failed to create Thai stat ${stat.value}:`, error)
-    return
+    return null
   }
 
-  const thData = await thResponse.json() as { data: { documentId: string } }
-  const thId = thData.data.documentId
-
+  const thResult = await thResponse.json() as { data: { documentId: string } }
+  const documentId = thResult.data.documentId
   console.log(`Created Thai stat: ${stat.value} - ${stat.labelTh}`)
 
-  // Create English localization
-  const enResponse = await fetch(`${STRAPI_URL}/api/stats/${thId}/localizations`, {
+  // Publish Thai version
+  await fetch(`${STRAPI_URL}/api/stats/${documentId}/actions/publish`, {
     method: 'POST',
     headers,
-    body: JSON.stringify({
-      locale: 'en',
+  })
+  console.log(`Published Thai stat: ${stat.value}`)
+
+  // Create English localization using PUT with locale query param (Strapi 5 pattern)
+  const enData = {
+    data: {
       value: stat.value,
       label: stat.label,
       order: stat.order,
-      publishedAt: new Date().toISOString(),
-    }),
+    },
+  }
+
+  const enResponse = await fetch(`${STRAPI_URL}/api/stats/${documentId}?locale=en`, {
+    method: 'PUT',
+    headers,
+    body: JSON.stringify(enData),
   })
 
   if (!enResponse.ok) {
     const error = await enResponse.text()
     console.error(`Failed to create English stat ${stat.value}:`, error)
-    return
+    return documentId
   }
 
   console.log(`Created English stat: ${stat.value} - ${stat.label}`)
+
+  // Publish English version
+  await fetch(`${STRAPI_URL}/api/stats/${documentId}/actions/publish?locale=en`, {
+    method: 'POST',
+    headers,
+  })
+  console.log(`Published English stat: ${stat.value}\n`)
+
+  return documentId
 }
 
 async function seedStats() {

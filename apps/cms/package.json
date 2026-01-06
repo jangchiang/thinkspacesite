@@ -12,7 +12,11 @@
     "start": "strapi start",
     "strapi": "strapi",
     "upgrade": "npx @strapi/upgrade latest",
-    "upgrade:dry": "npx @strapi/upgrade latest --dry"
+    "upgrade:dry": "npx @strapi/upgrade latest --dry",
+    "seed": "npx ts-node scripts/seed-all.ts",
+    "seed:services": "npx ts-node scripts/seed-services.ts",
+    "seed:stats": "npx ts-node scripts/seed-stats.ts",
+    "seed:heroes": "npx ts-node scripts/seed-page-heroes.ts"
   },
   "dependencies": {
     "@strapi/email": "5.33.1",

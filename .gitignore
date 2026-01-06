@@ -35,3 +35,8 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 SESSION_NOTES.md
 ImmuniWeb Website Security Test Report - ppfuRNM4.pdf
+apps/cms/scripts/seed-all.ts
+apps/cms/scripts/seed-services.ts
+apps/cms/scripts/seed-stats.ts
+apps/cms/scripts/seed-stats.ts
+apps/cms/scripts/seed-stats.ts

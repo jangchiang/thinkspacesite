@@ -19,6 +19,11 @@ const iconMap: Record<string, LucideIcon> = {
   BarChart,
   Server,
   FlaskConical,
+  // Fallback key mappings (matching homepage)
+  cloud: Cloud,
+  software: Code,
+  security: Shield,
+  dataAi: Database,
 }
 
 interface ServiceItem {
@@ -91,7 +96,15 @@ export function ServicesPageContent({ locale, dict, heroBackground, heroTitle, h
     backgroundColor: `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${overlayOpacity / 100})`,
   }
 
-  // Use services from props (Strapi) or fall back to empty array
+  // Fallback services from dictionary (same as homepage)
+  const fallbackServiceKeys = [
+    { key: 'cloud', slug: 'cloud' },
+    { key: 'software', slug: 'software' },
+    { key: 'security', slug: 'cybersecurity' },
+    { key: 'dataAi', slug: 'ai-datascience' },
+  ]
+
+  // Use services from props (Strapi) or fall back to dictionary services
   const services = servicesProp && servicesProp.length > 0
     ? servicesProp.map(service => ({
         slug: service.slug,
@@ -101,7 +114,14 @@ export function ServicesPageContent({ locale, dict, heroBackground, heroTitle, h
         color: service.color || 'bg-primary',
         href: `/${locale}/services/${service.slug}`,
       }))
-    : []
+    : fallbackServiceKeys.map(service => ({
+        slug: service.slug,
+        title: dict.services?.[service.key]?.title || service.key,
+        description: dict.services?.[service.key]?.description || '',
+        icon: iconMap[service.key] || Code,
+        color: 'bg-primary',
+        href: `/${locale}/services/${service.slug}`,
+      }))
 
   const defaultTitle = dict.services?.title || (locale === 'th' ? 'บริการของเรา' : 'Our Services')
   const defaultSubtitle = dict.services?.subtitle || (locale === 'th'
