@@ -78,21 +78,26 @@ export default async function HomePage({ params }: Props) {
   const caseStudies = (caseStudiesData || []) as CaseStudy[]
   const blogPosts = (blogData?.posts || []) as BlogPost[]
 
+  // Helper function to check if a string is valid (not empty, not just "?")
+  const isValidText = (text: string | undefined | null): text is string => {
+    return !!text && text.trim() !== '' && text.trim() !== '?'
+  }
+
   // Build hero data from Strapi or fallback to dict
   const heroData = homepageData?.heroSection ? {
-    badge: homepageData.heroSection.badge || dict.hero.badge,
-    title: homepageData.heroSection.title || dict.hero.title,
-    titleHighlight: homepageData.heroSection.titleHighlight || dict.hero.titleHighlight,
-    subtitle: homepageData.heroSection.subtitle || dict.hero.subtitle,
-    cta: homepageData.heroSection.ctaButtonText || dict.hero.cta,
-    trustedBy: homepageData.heroSection.trustedByText || dict.hero.trustedBy,
+    badge: isValidText(homepageData.heroSection.badge) ? homepageData.heroSection.badge : dict.hero.badge,
+    title: isValidText(homepageData.heroSection.title) ? homepageData.heroSection.title : dict.hero.title,
+    titleHighlight: isValidText(homepageData.heroSection.titleHighlight) ? homepageData.heroSection.titleHighlight : dict.hero.titleHighlight,
+    subtitle: isValidText(homepageData.heroSection.subtitle) ? homepageData.heroSection.subtitle : dict.hero.subtitle,
+    cta: isValidText(homepageData.heroSection.ctaButtonText) ? homepageData.heroSection.ctaButtonText : dict.hero.cta,
+    trustedBy: isValidText(homepageData.heroSection.trustedByText) ? homepageData.heroSection.trustedByText : dict.hero.trustedBy,
   } : dict.hero
 
   return (
     <>
       <HeroSection dict={{ ...dict, hero: heroData }} locale={locale} partners={partners} />
       <ServicesSection dict={dict} locale={locale} />
-      <WhyChooseUsSection locale={locale} />
+      <WhyChooseUsSection locale={locale} data={homepageData?.whyChooseUsSection} />
       <FeaturedWorksSection locale={locale} caseStudies={caseStudies} />
       <NewsPreviewSection locale={locale} posts={blogPosts} />
       <StatsSection stats={stats} />

@@ -2,14 +2,43 @@
 
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { Shield, Clock, Users, Award, Headphones, TrendingUp } from 'lucide-react'
+import { Shield, Clock, Users, Award, Headphones, TrendingUp, CheckCircle, Zap, Target, Heart, LucideIcon } from 'lucide-react'
 import { type Locale } from '@/lib/i18n'
+
+// Icon mapping for Strapi data
+const iconMap: Record<string, LucideIcon> = {
+  Shield,
+  Clock,
+  Users,
+  Award,
+  Headphones,
+  TrendingUp,
+  CheckCircle,
+  Zap,
+  Target,
+  Heart,
+}
+
+interface FeatureItem {
+  icon: string
+  title: string
+  description?: string
+}
+
+interface WhyChooseUsData {
+  title?: string
+  subtitle?: string
+  features?: FeatureItem[]
+  isVisible?: boolean
+}
 
 interface WhyChooseUsSectionProps {
   locale: Locale
+  data?: WhyChooseUsData | null
 }
 
-const features = [
+// Default features as fallback
+const defaultFeatures = [
   {
     icon: Shield,
     titleTh: 'ความปลอดภัยระดับองค์กร',
@@ -77,9 +106,21 @@ const itemVariants = {
   },
 }
 
-export function WhyChooseUsSection({ locale }: WhyChooseUsSectionProps) {
+export function WhyChooseUsSection({ locale, data }: WhyChooseUsSectionProps) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+
+  // Check if section should be hidden
+  if (data?.isVisible === false) {
+    return null
+  }
+
+  // Use Strapi data if available, otherwise fallback to defaults
+  const hasStapiFeatures = data?.features && data.features.length > 0
+  const sectionTitle = data?.title || (locale === 'th' ? 'ทำไมต้องเลือกเรา' : 'Why Choose Us')
+  const sectionSubtitle = data?.subtitle || (locale === 'th'
+    ? 'เราพร้อมสนับสนุนการเปลี่ยนแปลงทางดิจิทัลของคุณด้วยทีมผู้เชี่ยวชาญและเทคโนโลยีชั้นนำ'
+    : 'We are ready to support your digital transformation with our expert team and leading technology')
 
   return (
     <section className="py-16 md:py-20 lg:py-24 bg-base-100" ref={ref}>
@@ -92,12 +133,10 @@ export function WhyChooseUsSection({ locale }: WhyChooseUsSectionProps) {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            {locale === 'th' ? 'ทำไมต้องเลือกเรา' : 'Why Choose Us'}
+            {sectionTitle}
           </h2>
           <p className="text-lg md:text-xl text-base-content/70">
-            {locale === 'th'
-              ? 'เราพร้อมสนับสนุนการเปลี่ยนแปลงทางดิจิทัลของคุณด้วยทีมผู้เชี่ยวชาญและเทคโนโลยีชั้นนำ'
-              : 'We are ready to support your digital transformation with our expert team and leading technology'}
+            {sectionSubtitle}
           </p>
         </motion.div>
 
@@ -108,28 +147,58 @@ export function WhyChooseUsSection({ locale }: WhyChooseUsSectionProps) {
           animate={isInView ? 'visible' : 'hidden'}
           variants={containerVariants}
         >
-          {features.map((feature, index) => (
-            <motion.div
-              key={index}
-              className="group p-6 rounded-2xl bg-base-200/50 hover:bg-base-200 border border-base-300 hover:border-primary/30 transition-all duration-300"
-              variants={itemVariants}
-              whileHover={{ y: -5 }}
-            >
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-all duration-300 flex-shrink-0">
-                  <feature.icon className="w-6 h-6 text-primary group-hover:text-primary-content transition-colors" />
+          {hasStapiFeatures ? (
+            // Render Strapi features
+            data.features!.map((feature, index) => {
+              const IconComponent = iconMap[feature.icon] || Shield
+              return (
+                <motion.div
+                  key={index}
+                  className="group p-6 rounded-2xl bg-base-200/50 hover:bg-base-200 border border-base-300 hover:border-primary/30 transition-all duration-300"
+                  variants={itemVariants}
+                  whileHover={{ y: -5 }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-all duration-300 flex-shrink-0">
+                      <IconComponent className="w-6 h-6 text-primary group-hover:text-primary-content transition-colors" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-lg mb-2">
+                        {feature.title}
+                      </h3>
+                      <p className="text-base-content/60 text-sm">
+                        {feature.description}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              )
+            })
+          ) : (
+            // Render default features
+            defaultFeatures.map((feature, index) => (
+              <motion.div
+                key={index}
+                className="group p-6 rounded-2xl bg-base-200/50 hover:bg-base-200 border border-base-300 hover:border-primary/30 transition-all duration-300"
+                variants={itemVariants}
+                whileHover={{ y: -5 }}
+              >
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-all duration-300 flex-shrink-0">
+                    <feature.icon className="w-6 h-6 text-primary group-hover:text-primary-content transition-colors" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg mb-2">
+                      {locale === 'th' ? feature.titleTh : feature.titleEn}
+                    </h3>
+                    <p className="text-base-content/60 text-sm">
+                      {locale === 'th' ? feature.descTh : feature.descEn}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-bold text-lg mb-2">
-                    {locale === 'th' ? feature.titleTh : feature.titleEn}
-                  </h3>
-                  <p className="text-base-content/60 text-sm">
-                    {locale === 'th' ? feature.descTh : feature.descEn}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))
+          )}
         </motion.div>
       </div>
     </section>
