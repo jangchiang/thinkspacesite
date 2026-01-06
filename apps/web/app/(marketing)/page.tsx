@@ -4,7 +4,7 @@ import { StatsSection } from '@/components/sections/stats'
 import { CTASection } from '@/components/sections/cta'
 import dict from '@/dictionaries/en.json'
 
-export default function HomePage() {
+export default function HomePage(): React.JSX.Element {
   return (
     <>
       <HeroSection dict={dict} locale="en" />

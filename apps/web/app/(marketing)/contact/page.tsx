@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     'Get in touch with Think Space. Contact our team for inquiries about our enterprise technology solutions.',
 }
 
-export default function ContactPage() {
+export default function ContactPage(): React.JSX.Element {
   return (
     <div className="container-custom section-padding">
       <div className="max-w-3xl mx-auto text-center mb-16">

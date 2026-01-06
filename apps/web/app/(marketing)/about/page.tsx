@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     'Learn about Think Space, our mission, values, and the team behind our enterprise technology solutions.',
 }
 
-export default function AboutPage() {
+export default function AboutPage(): React.JSX.Element {
   return (
     <div className="container-custom section-padding">
       <div className="max-w-3xl mx-auto text-center">

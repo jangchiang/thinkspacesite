@@ -53,7 +53,7 @@ const services = [
   },
 ]
 
-export default function ServicesPage() {
+export default function ServicesPage(): React.JSX.Element {
   return (
     <div className="container-custom section-padding">
       <div className="max-w-3xl mx-auto text-center mb-16">
