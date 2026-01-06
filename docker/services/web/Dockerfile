@@ -60,7 +60,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next ./.next
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./public
 
 # Create a clean package.json without workspace dependencies and install
-RUN echo '{"name":"thinkspace-web","private":true,"dependencies":{"next":"15.0.0","react":"^18.2.0","react-dom":"^18.2.0"}}' > package.json && \
+# IMPORTANT: Versions must match what the app was built with (React 19.0.1, Next.js 15.0.7)
+RUN echo '{"name":"thinkspace-web","private":true,"dependencies":{"next":"15.0.7","react":"19.0.1","react-dom":"19.0.1"}}' > package.json && \
     npm install --omit=dev && \
     chown -R nextjs:nodejs /app
 
