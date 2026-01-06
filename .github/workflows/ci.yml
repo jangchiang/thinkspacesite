@@ -119,9 +119,8 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            cd /path/to/thinkspacesite
+            cd ${{ secrets.PROJECT_PATH || '/home/thinkspace/thinkspacesite' }}
             git pull origin main
-            cd docker
-            docker compose pull
-            docker compose up -d
+            docker compose -f docker/docker-compose.yml -f docker/docker-compose.prod.yml pull
+            docker compose -f docker/docker-compose.yml -f docker/docker-compose.prod.yml up -d --build
             docker system prune -f
