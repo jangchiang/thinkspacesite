@@ -63,7 +63,7 @@ export function LogoCarousel({ partners, title }: LogoCarouselProps) {
             return (
               <div
                 key={`${partner.id}-${index}`}
-                className="relative h-12 w-32 md:h-16 md:w-40 flex-shrink-0 grayscale hover:grayscale-0 opacity-50 hover:opacity-100 transition-all duration-300"
+                className="relative h-12 w-32 md:h-16 md:w-40 flex-shrink-0 opacity-70 hover:opacity-100 transition-all duration-300"
               >
                 {logoUrl && (
                   <Image
