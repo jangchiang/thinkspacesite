@@ -306,9 +306,18 @@ export function StorySection({
 }
 
 // Team Section
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
+
 interface TeamMember {
   name: string
   role: string
+  photo?: {
+    url: string
+    formats?: {
+      thumbnail?: { url: string }
+      small?: { url: string }
+    }
+  }
 }
 
 interface TeamSectionProps {
@@ -340,23 +349,38 @@ export function TeamSection({ title, description, members }: TeamSectionProps) {
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          {members.map((member) => (
-            <motion.div
-              key={member.name}
-              className="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow duration-300"
-              variants={staggerItem}
-              whileHover={{ y: -5 }}
-            >
-              <div className="card-body items-center text-center">
-                <motion.div
-                  className="w-24 h-24 rounded-full bg-base-300 mb-4"
-                  whileHover={{ scale: 1.05 }}
-                />
-                <h3 className="card-title">{member.name}</h3>
-                <p className="text-base-content/70">{member.role}</p>
-              </div>
-            </motion.div>
-          ))}
+          {members.map((member) => {
+            const photoUrl = member.photo?.formats?.small?.url ||
+                             member.photo?.formats?.thumbnail?.url ||
+                             member.photo?.url
+            return (
+              <motion.div
+                key={member.name}
+                className="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow duration-300"
+                variants={staggerItem}
+                whileHover={{ y: -5 }}
+              >
+                <div className="card-body items-center text-center">
+                  <motion.div
+                    className="w-24 h-24 rounded-full bg-base-300 mb-4 overflow-hidden relative"
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    {photoUrl && (
+                      <Image
+                        src={`${STRAPI_URL}${photoUrl}`}
+                        alt={member.name}
+                        fill
+                        className="object-contain"
+                        unoptimized
+                      />
+                    )}
+                  </motion.div>
+                  <h3 className="card-title">{member.name}</h3>
+                  <p className="text-base-content/70">{member.role}</p>
+                </div>
+              </motion.div>
+            )
+          })}
         </motion.div>
       </div>
     </section>

@@ -40,7 +40,7 @@ export default async function AboutPage({ params }: Props) {
 
   const milestones = aboutData?.milestones?.map(m => ({ year: m.year, event: m.event, detail: m.detail })) || []
 
-  const teamMembers = aboutData?.teamMembers?.map(t => ({ name: t.name, role: t.role })) || []
+  const teamMembers = aboutData?.teamMembers?.map(t => ({ name: t.name, role: t.role, photo: t.photo })) || []
 
   const storyTitle = aboutData?.storyTitle || ''
   const storyParagraph1 = aboutData?.storyParagraph1 || ''
