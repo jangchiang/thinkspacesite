@@ -8,9 +8,21 @@ import { useRef } from 'react'
 
 type Dict = Record<string, any>
 
+interface StrapiService {
+  id: number
+  documentId: string
+  title: string
+  slug: string
+  shortDescription?: string
+  icon?: string
+  color?: string
+  order?: number
+}
+
 interface ServicesSectionProps {
   dict: Dict
   locale: Locale
+  services?: StrapiService[]
 }
 
 const headerVariants = {
@@ -36,17 +48,35 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   research: FlaskConical,
 }
 
-export function ServicesSection({ dict, locale }: ServicesSectionProps): React.JSX.Element {
+export function ServicesSection({ dict, locale, services: strapiServices }: ServicesSectionProps): React.JSX.Element {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
-  // Show only 4 main services for the marquee
-  const services = [
+  // Fallback services from dictionary
+  const fallbackServices = [
     { key: 'cloud', slug: 'cloud' },
     { key: 'software', slug: 'software' },
     { key: 'security', slug: 'cybersecurity' },
     { key: 'dataAi', slug: 'ai-datascience' },
   ]
+
+  // Use Strapi services if available, otherwise use dictionary fallback
+  // For homepage marquee, show first 4 services
+  const services = strapiServices && strapiServices.length > 0
+    ? strapiServices.slice(0, 4).map(s => ({
+        key: s.icon?.toLowerCase() || 'code',
+        slug: s.slug,
+        title: s.title,
+        description: s.shortDescription || '',
+        icon: s.icon || 'Code',
+      }))
+    : fallbackServices.map(s => ({
+        key: s.key,
+        slug: s.slug,
+        title: dict.services[s.key]?.title || s.key,
+        description: dict.services[s.key]?.description || '',
+        icon: s.key,
+      }))
 
   return (
     <section className="py-16 md:py-20 lg:py-24 bg-base-200 overflow-hidden" ref={ref}>
@@ -81,11 +111,11 @@ export function ServicesSection({ dict, locale }: ServicesSectionProps): React.J
         {/* Marquee container */}
         <div className="flex animate-marquee-slow hover:[animation-play-state:paused]">
           {/* First set */}
-          {services.map((service) => {
-            const IconComponent = iconMap[service.key] || Code
+          {services.map((service, index) => {
+            const IconComponent = iconMap[service.icon] || iconMap[service.key] || Code
             return (
               <Link
-                key={`first-${service.key}`}
+                key={`first-${service.slug}-${index}`}
                 href={`/${locale}/services/${service.slug}`}
                 className="flex-shrink-0 mx-4 group"
               >
@@ -100,10 +130,10 @@ export function ServicesSection({ dict, locale }: ServicesSectionProps): React.J
                     </div>
                     <div className="flex-1">
                       <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors">
-                        {dict.services[service.key].title}
+                        {service.title}
                       </h3>
                       <p className="text-sm text-base-content/60 line-clamp-2">
-                        {dict.services[service.key].description}
+                        {service.description}
                       </p>
                     </div>
                   </div>
@@ -118,11 +148,11 @@ export function ServicesSection({ dict, locale }: ServicesSectionProps): React.J
             )
           })}
           {/* Duplicate set for seamless loop */}
-          {services.map((service) => {
-            const IconComponent = iconMap[service.key] || Code
+          {services.map((service, index) => {
+            const IconComponent = iconMap[service.icon] || iconMap[service.key] || Code
             return (
               <Link
-                key={`second-${service.key}`}
+                key={`second-${service.slug}-${index}`}
                 href={`/${locale}/services/${service.slug}`}
                 className="flex-shrink-0 mx-4 group"
               >
@@ -137,10 +167,10 @@ export function ServicesSection({ dict, locale }: ServicesSectionProps): React.J
                     </div>
                     <div className="flex-1">
                       <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors">
-                        {dict.services[service.key].title}
+                        {service.title}
                       </h3>
                       <p className="text-sm text-base-content/60 line-clamp-2">
-                        {dict.services[service.key].description}
+                        {service.description}
                       </p>
                     </div>
                   </div>

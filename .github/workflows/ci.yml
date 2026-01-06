@@ -117,6 +117,8 @@ jobs:
           cd ~/thinkspacesite
           git fetch origin main
           git reset --hard origin/main
-          docker compose -f docker/docker-compose.yml -f docker/docker-compose.prod.yml build
-          docker compose -f docker/docker-compose.yml -f docker/docker-compose.prod.yml up -d
-          docker system prune -f
+          # Use explicit project name to ensure consistent volume names
+          docker compose -p thinkspace -f docker/docker-compose.yml -f docker/docker-compose.prod.yml build
+          docker compose -p thinkspace -f docker/docker-compose.yml -f docker/docker-compose.prod.yml up -d
+          # Only prune images/containers, NOT volumes (removed --volumes flag is safe)
+          docker image prune -f

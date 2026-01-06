@@ -1,6 +1,6 @@
 import { type Locale } from '@/lib/i18n'
 import { getDictionary } from '@/lib/dictionary'
-import { getPartners, getStats, getCaseStudies, getBlogPosts, getHomepage } from '@/lib/strapi'
+import { getPartners, getStats, getCaseStudies, getBlogPosts, getHomepage, getServices } from '@/lib/strapi'
 import { HeroSection } from '@/components/sections/hero'
 import { ServicesSection } from '@/components/sections/services'
 import { WhyChooseUsSection } from '@/components/sections/why-choose-us'
@@ -62,21 +62,34 @@ interface BlogPost {
   }
 }
 
+interface Service {
+  id: number
+  documentId: string
+  title: string
+  slug: string
+  shortDescription?: string
+  icon?: string
+  color?: string
+  order?: number
+}
+
 export default async function HomePage({ params }: Props): Promise<React.JSX.Element> {
   const { locale } = await params
-  const [dict, partnersData, statsData, caseStudiesData, blogData, homepageData] = await Promise.all([
+  const [dict, partnersData, statsData, caseStudiesData, blogData, homepageData, servicesData] = await Promise.all([
     getDictionary(locale),
     getPartners().catch(() => []),
     getStats(locale).catch(() => []),
     getCaseStudies(locale, 4).catch(() => []),
     getBlogPosts(locale, { pageSize: 3 }).catch(() => ({ posts: [] })),
-    getHomepage(locale).catch(() => null)
+    getHomepage(locale).catch(() => null),
+    getServices(locale).catch(() => [])
   ])
 
   const partners = (partnersData || []) as Partner[]
   const stats = (statsData || []) as Stat[]
   const caseStudies = (caseStudiesData || []) as CaseStudy[]
   const blogPosts = (blogData?.posts || []) as BlogPost[]
+  const services = (servicesData || []) as Service[]
 
   // Get PUBLIC Strapi URL for client components (images need to be accessible from browser)
   // STRAPI_URL is internal (http://cms:1337), but images need public URL
@@ -100,7 +113,7 @@ export default async function HomePage({ params }: Props): Promise<React.JSX.Ele
   return (
     <>
       <HeroSection dict={{ ...dict, hero: heroData }} locale={locale} partners={partners} strapiUrl={strapiUrl} />
-      <ServicesSection dict={dict} locale={locale} />
+      <ServicesSection dict={dict} locale={locale} services={services} />
       <WhyChooseUsSection locale={locale} data={homepageData?.whyChooseUsSection} />
       <FeaturedWorksSection locale={locale} caseStudies={caseStudies} />
       <NewsPreviewSection locale={locale} posts={blogPosts} strapiUrl={strapiUrl} />
