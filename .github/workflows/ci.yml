@@ -112,13 +112,11 @@ jobs:
     environment: production
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Deploy
+      - name: Deploy to production directory
         run: |
-          cd ${{ secrets.PROJECT_PATH || '/home/thinkspace/thinkspacesite' }}
-          git pull origin main
+          cd ~/thinkspacesite
+          git fetch origin main
+          git reset --hard origin/main
           docker compose -f docker/docker-compose.yml -f docker/docker-compose.prod.yml build
           docker compose -f docker/docker-compose.yml -f docker/docker-compose.prod.yml up -d
           docker system prune -f
