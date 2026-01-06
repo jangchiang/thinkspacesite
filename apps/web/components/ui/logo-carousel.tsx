@@ -29,20 +29,20 @@ export function LogoCarousel({ partners, title, strapiUrl = '' }: LogoCarouselPr
   const doubledPartners = [...partners, ...partners]
 
   return (
-    <div className="w-full overflow-hidden py-8">
+    <div className="w-full overflow-hidden py-4 sm:py-6 md:py-8">
       {title && (
-        <p className="text-sm text-base-content/50 text-center mb-8">
+        <p className="text-xs sm:text-sm text-base-content/50 text-center mb-4 sm:mb-6 md:mb-8">
           {title}
         </p>
       )}
       <div className="relative">
-        {/* Gradient overlays */}
-        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-base-100 to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-base-100 to-transparent z-10 pointer-events-none" />
+        {/* Gradient overlays - smaller on mobile */}
+        <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-20 md:w-32 bg-gradient-to-r from-base-100 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-20 md:w-32 bg-gradient-to-l from-base-100 to-transparent z-10 pointer-events-none" />
 
         {/* Scrolling container */}
         <motion.div
-          className="flex items-center gap-12 md:gap-16"
+          className="flex items-center gap-6 sm:gap-10 md:gap-16"
           animate={{
             x: ['0%', '-50%'],
           }}
@@ -64,7 +64,7 @@ export function LogoCarousel({ partners, title, strapiUrl = '' }: LogoCarouselPr
             return (
               <div
                 key={`${partner.id}-${index}`}
-                className="relative h-12 w-32 md:h-16 md:w-40 flex-shrink-0 opacity-70 hover:opacity-100 transition-all duration-300"
+                className="relative h-8 w-20 sm:h-10 sm:w-28 md:h-14 md:w-36 lg:h-16 lg:w-40 flex-shrink-0 opacity-60 hover:opacity-100 transition-all duration-300"
               >
                 {fullLogoUrl && (
                   <Image

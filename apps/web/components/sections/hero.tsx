@@ -31,16 +31,16 @@ interface HeroSectionProps {
 
 export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: HeroSectionProps): React.JSX.Element {
   return (
-    <section className="relative overflow-hidden min-h-[80vh] sm:min-h-[90vh] flex items-center">
+    <section className="relative overflow-hidden min-h-[auto] sm:min-h-[85vh] flex items-center">
       {/* Animated Paths Background */}
       <BackgroundPaths />
 
       <div className="container-custom relative z-10 px-4 sm:px-6">
-        <div className="py-16 sm:py-24 md:py-32 lg:py-40">
+        <div className="py-8 sm:py-16 md:py-24 lg:py-32">
           <div className="max-w-4xl mx-auto text-center">
             {/* Badge */}
             <motion.div
-              className="inline-flex items-center px-4 py-2 rounded-full bg-base-100/80 backdrop-blur-md border border-primary/20 text-primary text-sm font-medium mb-8 shadow-lg shadow-primary/5"
+              className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-base-100/80 backdrop-blur-md border border-primary/20 text-primary text-xs sm:text-sm font-medium mb-4 sm:mb-8 shadow-lg shadow-primary/5"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
@@ -50,7 +50,7 @@ export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: Her
 
             {/* Headline */}
             <motion.h1
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-normal leading-[1.25] sm:leading-[1.2] md:leading-[1.15] mb-4 sm:mb-6"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-normal leading-[1.4] sm:leading-[1.3] md:leading-[1.2] mb-3 sm:mb-4 md:mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
@@ -72,7 +72,7 @@ export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: Her
 
             {/* Subheadline */}
             <motion.p
-              className="text-base sm:text-lg md:text-xl text-base-content/70 max-w-2xl mx-auto mb-8 sm:mb-10 px-2 sm:px-0"
+              className="text-sm sm:text-base md:text-lg lg:text-xl text-base-content/70 max-w-2xl mx-auto mb-6 sm:mb-8 md:mb-10 px-2 sm:px-0"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -82,7 +82,7 @@ export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: Her
 
             {/* CTAs */}
             <motion.div
-              className="flex flex-col sm:flex-row items-center justify-center gap-4"
+              className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
@@ -93,10 +93,10 @@ export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: Her
               >
                 <Link
                   href={`/${locale}/contact`}
-                  className="btn btn-primary btn-lg gap-2 group shadow-xl shadow-primary/30"
+                  className="btn btn-primary btn-md sm:btn-lg gap-2 group shadow-xl shadow-primary/30"
                 >
                   {dict.hero.cta}
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </motion.div>
             </motion.div>
@@ -104,7 +104,7 @@ export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: Her
             {/* Trust Indicators with Logo Carousel */}
             {partners.length > 0 && (
               <motion.div
-                className="mt-16 pt-8 border-t border-base-content/10"
+                className="mt-8 sm:mt-12 md:mt-16 pt-6 sm:pt-8 border-t border-base-content/10"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
