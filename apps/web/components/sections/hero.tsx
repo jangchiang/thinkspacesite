@@ -31,12 +31,12 @@ interface HeroSectionProps {
 
 export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: HeroSectionProps) {
   return (
-    <section className="relative overflow-hidden min-h-[90vh] flex items-center">
+    <section className="relative overflow-hidden min-h-[80vh] sm:min-h-[90vh] flex items-center">
       {/* Animated Paths Background */}
       <BackgroundPaths />
 
-      <div className="container-custom relative z-10">
-        <div className="py-24 md:py-32 lg:py-40">
+      <div className="container-custom relative z-10 px-4 sm:px-6">
+        <div className="py-16 sm:py-24 md:py-32 lg:py-40">
           <div className="max-w-4xl mx-auto text-center">
             {/* Badge */}
             <motion.div
@@ -50,7 +50,7 @@ export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: Her
 
             {/* Headline */}
             <motion.h1
-              className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-normal leading-[1.2] md:leading-[1.15] mb-6"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-normal leading-[1.25] sm:leading-[1.2] md:leading-[1.15] mb-4 sm:mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
@@ -58,7 +58,7 @@ export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: Her
               {dict.hero.title}
               <br />
               <span
-                className="inline-block mt-2"
+                className="inline-block mt-1 sm:mt-2"
                 style={{
                   background: 'linear-gradient(to right, #22c55e, #16a34a)',
                   WebkitBackgroundClip: 'text',
@@ -72,7 +72,7 @@ export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: Her
 
             {/* Subheadline */}
             <motion.p
-              className="text-lg md:text-xl text-base-content/70 max-w-2xl mx-auto mb-10"
+              className="text-base sm:text-lg md:text-xl text-base-content/70 max-w-2xl mx-auto mb-8 sm:mb-10 px-2 sm:px-0"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
