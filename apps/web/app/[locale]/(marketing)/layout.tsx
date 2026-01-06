@@ -20,7 +20,7 @@ interface StrapiService {
   shortDescription?: string
 }
 
-export default async function MarketingLayout({ children, params }: Props) {
+export default async function MarketingLayout({ children, params }: Props): Promise<React.JSX.Element> {
   const { locale } = await params
 
   // Fetch dictionary, services, contact info, and site settings in parallel

@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default async function BlogPostPage({ params }: Props) {
+export default async function BlogPostPage({ params }: Props): Promise<React.JSX.Element> {
   const { locale, slug } = await params
   const post = await getBlogPost(slug, locale) as BlogPost | null
 

@@ -237,7 +237,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default async function WorkDetailPage({ params }: Props) {
+export default async function WorkDetailPage({ params }: Props): Promise<React.JSX.Element> {
   const { locale, slug } = await params
 
   let strapiWork: StrapiWork | null = null

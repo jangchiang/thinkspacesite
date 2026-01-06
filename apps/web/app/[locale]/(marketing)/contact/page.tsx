@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default async function ContactPage({ params }: Props) {
+export default async function ContactPage({ params }: Props): Promise<React.JSX.Element> {
   const { locale } = await params
 
   // Fetch hero and contact info in parallel

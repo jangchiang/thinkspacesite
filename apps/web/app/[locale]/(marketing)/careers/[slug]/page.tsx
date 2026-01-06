@@ -112,7 +112,7 @@ const fallbackJobs: Record<string, {
   },
 }
 
-export default async function JobDetailPage({ params }: Props) {
+export default async function JobDetailPage({ params }: Props): Promise<React.JSX.Element> {
   const { locale, slug } = await params
 
   // Fetch job from Strapi

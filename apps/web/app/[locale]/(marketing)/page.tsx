@@ -62,7 +62,7 @@ interface BlogPost {
   }
 }
 
-export default async function HomePage({ params }: Props) {
+export default async function HomePage({ params }: Props): Promise<React.JSX.Element> {
   const { locale } = await params
   const [dict, partnersData, statsData, caseStudiesData, blogData, homepageData] = await Promise.all([
     getDictionary(locale),

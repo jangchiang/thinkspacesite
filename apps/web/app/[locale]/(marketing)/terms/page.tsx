@@ -66,7 +66,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default async function TermsPage({ params }: Props) {
+export default async function TermsPage({ params }: Props): Promise<React.JSX.Element> {
   const { locale } = await params
   const page = await getLegalPage('terms-of-service', locale)
 

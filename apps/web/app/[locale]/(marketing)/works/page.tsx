@@ -56,7 +56,7 @@ function getStrapiImageUrl(url: string | undefined): string | undefined {
   return `${baseUrl}${url}`
 }
 
-export default async function WorksPage({ params }: Props) {
+export default async function WorksPage({ params }: Props): Promise<React.JSX.Element> {
   const { locale } = await params
 
   // Fetch hero and works in parallel

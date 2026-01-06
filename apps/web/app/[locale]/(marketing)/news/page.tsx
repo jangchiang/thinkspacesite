@@ -45,7 +45,7 @@ interface BlogPost {
 
 const PAGE_SIZE = 6
 
-export default async function NewsPage({ params, searchParams }: Props) {
+export default async function NewsPage({ params, searchParams }: Props): Promise<React.JSX.Element> {
   const { locale } = await params
   const { category, page } = await searchParams
   const currentPage = Number(page) || 1

@@ -509,7 +509,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default async function ServiceDetailPage({ params }: Props) {
+export default async function ServiceDetailPage({ params }: Props): Promise<React.JSX.Element> {
   const { locale, slug } = await params
 
   // Fetch dictionary, service, and hero data in parallel

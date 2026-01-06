@@ -41,7 +41,7 @@ const employmentTypeLabels = {
   'internship': { th: 'ฝึกงาน', en: 'Internship' },
 }
 
-export default async function CareersPage({ params }: Props) {
+export default async function CareersPage({ params }: Props): Promise<React.JSX.Element> {
   const { locale } = await params
 
   // Fetch data from Strapi

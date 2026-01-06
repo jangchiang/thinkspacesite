@@ -32,7 +32,7 @@ interface StrapiService {
   order?: number
 }
 
-export default async function ServicesPage({ params }: Props) {
+export default async function ServicesPage({ params }: Props): Promise<React.JSX.Element> {
   const { locale } = await params
 
   // Fetch hero, dictionary, and services in parallel

@@ -10,7 +10,7 @@ export default async function MarketingLayout({
   children,
 }: {
   children: React.ReactNode
-}) {
+}): Promise<React.JSX.Element> {
   // Fetch site settings from Strapi
   const siteSettings = await getSiteSettings('en')
   const headerCompanyName = siteSettings?.headerCompanyName || 'Thinkspace Technology'
