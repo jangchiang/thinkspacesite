@@ -1,15 +1,15 @@
 $ strapi build
 - Compiling TS
-✔ Compiling TS (2252ms)
-
+✔ Compiling TS (2288ms)
 - Building build context
+
 [INFO] Including the following ENV variables as part of the JS bundle:
     - ADMIN_PATH
     - STRAPI_ADMIN_BACKEND_URL
     - STRAPI_TELEMETRY_DISABLED
     - STRAPI_AI_URL
     - STRAPI_ANALYTICS_URL
-
-✔ Building build context (219ms)
+✔ Building build context (98ms)
 - Building admin panel
-✔ Building admin panel (19329ms)
+
+✔ Building admin panel (19551ms)

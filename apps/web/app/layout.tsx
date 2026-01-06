@@ -58,6 +58,59 @@ export const metadata: Metadata = {
   },
 }
 
+// JSON-LD structured data
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://techthinkspace.com'
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Thinkspace Technology',
+  alternateName: ['Think Space', 'techthinkspace', 'Thinkspace Tech'],
+  url: siteUrl,
+  logo: `${siteUrl}/logo.png`,
+  description: 'Thinkspace Technology is a leading enterprise technology company providing cloud services, IT consulting, cybersecurity, AI solutions, software development, and digital transformation services in Thailand.',
+  foundingDate: '2020',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Bangkok',
+    addressCountry: 'TH',
+  },
+  areaServed: {
+    '@type': 'Country',
+    name: 'Thailand',
+  },
+  sameAs: [
+    'https://www.facebook.com/thinkspacetechnology',
+    'https://www.linkedin.com/company/thinkspace-technology',
+    'https://twitter.com/thinkspacetech',
+  ],
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer service',
+    availableLanguage: ['English', 'Thai'],
+  },
+  knowsAbout: [
+    'Cloud Computing',
+    'Cybersecurity',
+    'AI Solutions',
+    'Software Development',
+    'IT Consulting',
+    'Digital Transformation',
+  ],
+}
+
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Thinkspace Technology',
+  url: siteUrl,
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${siteUrl}/search?q={search_term_string}`,
+    'query-input': 'required name=search_term_string',
+  },
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -65,6 +118,16 @@ export default function RootLayout({
 }): React.JSX.Element {
   return (
     <html lang="en" data-theme="thinkspace" className={`${inter.variable} ${kanit.variable}`} suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
+      </head>
       <body className="min-h-screen bg-base-100" suppressHydrationWarning>
         <ThemeProvider>
           {children}

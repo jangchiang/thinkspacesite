@@ -9,9 +9,9 @@ $ next build
 Failed to fetch job positions: TypeError: fetch failed
     at node:internal/deps/undici/undici:13178:13
     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at async i (/Users/theeradonsomsri/thinkspacesite/apps/web/.next/server/chunks/946.js:1:18682)
-    at async b (/Users/theeradonsomsri/thinkspacesite/apps/web/.next/server/chunks/946.js:1:21143)
-    at async Object.b [as generateStaticParams] (/Users/theeradonsomsri/thinkspacesite/apps/web/.next/server/app/[locale]/(marketing)/careers/[slug]/page.js:1:3276)
+    at async i (/Users/theeradonsomsri/thinkspacesite/apps/web/.next/server/chunks/946.js:1:20062)
+    at async y (/Users/theeradonsomsri/thinkspacesite/apps/web/.next/server/chunks/946.js:1:22523)
+    at async Object.b [as generateStaticParams] (/Users/theeradonsomsri/thinkspacesite/apps/web/.next/server/app/[locale]/(marketing)/careers/[slug]/page.js:1:5708)
     at async builtRouteParams (/Users/theeradonsomsri/thinkspacesite/node_modules/.bun/next@15.0.0+1defbf50baff6439/node_modules/next/dist/build/utils.js:975:40)
     at async buildAppStaticPaths (/Users/theeradonsomsri/thinkspacesite/node_modules/.bun/next@15.0.0+1defbf50baff6439/node_modules/next/dist/build/utils.js:940:25)
     at async /Users/theeradonsomsri/thinkspacesite/node_modules/.bun/next@15.0.0+1defbf50baff6439/node_modules/next/dist/build/utils.js:1149:79
@@ -27,9 +27,9 @@ Failed to fetch job positions: TypeError: fetch failed
 Failed to fetch job positions: TypeError: fetch failed
     at node:internal/deps/undici/undici:13178:13
     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at async i (/Users/theeradonsomsri/thinkspacesite/apps/web/.next/server/chunks/946.js:1:18682)
-    at async b (/Users/theeradonsomsri/thinkspacesite/apps/web/.next/server/chunks/946.js:1:21143)
-    at async Object.b [as generateStaticParams] (/Users/theeradonsomsri/thinkspacesite/apps/web/.next/server/app/[locale]/(marketing)/careers/[slug]/page.js:1:3276)
+    at async i (/Users/theeradonsomsri/thinkspacesite/apps/web/.next/server/chunks/946.js:1:20062)
+    at async y (/Users/theeradonsomsri/thinkspacesite/apps/web/.next/server/chunks/946.js:1:22523)
+    at async Object.b [as generateStaticParams] (/Users/theeradonsomsri/thinkspacesite/apps/web/.next/server/app/[locale]/(marketing)/careers/[slug]/page.js:1:5708)
     at async builtRouteParams (/Users/theeradonsomsri/thinkspacesite/node_modules/.bun/next@15.0.0+1defbf50baff6439/node_modules/next/dist/build/utils.js:975:40)
     at async buildAppStaticPaths (/Users/theeradonsomsri/thinkspacesite/node_modules/.bun/next@15.0.0+1defbf50baff6439/node_modules/next/dist/build/utils.js:940:25)
     at async /Users/theeradonsomsri/thinkspacesite/node_modules/.bun/next@15.0.0+1defbf50baff6439/node_modules/next/dist/build/utils.js:1149:79
@@ -44,7 +44,6 @@ Failed to fetch job positions: TypeError: fetch failed
 }
    Generating static pages (0/41) ...
    Generating static pages (10/41) 
-   Generating static pages (20/41) 
 Failed to fetch job positions: TypeError: fetch failed
     at node:internal/deps/undici/undici:13178:13
     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
@@ -64,6 +63,7 @@ Failed to fetch job positions: TypeError: fetch failed
     [errors]: [ [Error], [Error] ]
   }
 }
+   Generating static pages (20/41) 
    Generating static pages (30/41) 
  ✓ Generating static pages (41/41)
    Finalizing page optimization ...
