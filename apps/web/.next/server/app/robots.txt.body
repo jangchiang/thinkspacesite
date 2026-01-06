@@ -4,5 +4,5 @@ Disallow: /api/
 Disallow: /admin/
 Disallow: /_next/
 
-Host: https://thinkspace.com
-Sitemap: https://thinkspace.com/sitemap.xml
+Host: https://techthinkspace.com
+Sitemap: https://techthinkspace.com/sitemap.xml

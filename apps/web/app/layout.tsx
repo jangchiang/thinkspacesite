@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter, Kanit } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
@@ -15,6 +15,11 @@ const kanit = Kanit({
   display: 'swap',
   variable: '--font-kanit',
 })
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+}
 
 export const metadata: Metadata = {
   title: {
@@ -57,10 +62,10 @@ export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
-}) {
+}): React.JSX.Element {
   return (
     <html lang="en" data-theme="thinkspace" className={`${inter.variable} ${kanit.variable}`} suppressHydrationWarning>
-      <body className="min-h-screen bg-base-100 transition-colors duration-300" suppressHydrationWarning>
+      <body className="min-h-screen bg-base-100" suppressHydrationWarning>
         <ThemeProvider>
           {children}
         </ThemeProvider>

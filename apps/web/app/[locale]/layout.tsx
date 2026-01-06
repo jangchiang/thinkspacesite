@@ -1,23 +1,7 @@
 import type { Metadata } from 'next'
-import { Inter, Kanit } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import { locales, type Locale } from '@/lib/i18n'
 import { getDictionary } from '@/lib/dictionary'
-import { ThemeProvider } from '@/components/theme-provider'
-import '../globals.css'
-
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
-})
-
-const kanit = Kanit({
-  subsets: ['thai', 'latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  display: 'swap',
-  variable: '--font-kanit',
-})
 
 type Props = {
   params: Promise<{ locale: Locale }>
@@ -118,7 +102,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 // JSON-LD structured data for Organization
-function OrganizationJsonLd({ siteUrl }: { siteUrl: string }) {
+function OrganizationJsonLd({ siteUrl }: { siteUrl: string }): React.JSX.Element {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -166,7 +150,7 @@ function OrganizationJsonLd({ siteUrl }: { siteUrl: string }) {
 }
 
 // JSON-LD for WebSite with search
-function WebSiteJsonLd({ siteUrl, locale }: { siteUrl: string; locale: string }) {
+function WebSiteJsonLd({ siteUrl, locale }: { siteUrl: string; locale: string }): React.JSX.Element {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
@@ -188,6 +172,8 @@ function WebSiteJsonLd({ siteUrl, locale }: { siteUrl: string; locale: string })
   )
 }
 
+// Locale layout - does NOT render html/body (root layout handles that)
+// Only adds locale-specific metadata and JSON-LD
 export default async function LocaleLayout({
   children,
   params,
@@ -203,27 +189,13 @@ export default async function LocaleLayout({
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://techthinkspace.com'
 
-  // Include both font variables - CSS will apply correct one based on lang attribute
-  // suppressHydrationWarning is needed because lang attribute changes based on route
   return (
-    <html
-      lang={locale}
-      data-theme="thinkspace"
-      className={`${inter.variable} ${kanit.variable}`}
-      suppressHydrationWarning
-    >
-      <head>
-        <link rel="alternate" hrefLang="en" href={`${siteUrl}/en`} />
-        <link rel="alternate" hrefLang="th" href={`${siteUrl}/th`} />
-        <link rel="alternate" hrefLang="x-default" href={`${siteUrl}/en`} />
-        <OrganizationJsonLd siteUrl={siteUrl} />
-        <WebSiteJsonLd siteUrl={siteUrl} locale={locale} />
-      </head>
-      <body className="min-h-screen bg-base-100" suppressHydrationWarning>
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
+    <>
+      {/* JSON-LD structured data */}
+      <OrganizationJsonLd siteUrl={siteUrl} />
+      <WebSiteJsonLd siteUrl={siteUrl} locale={locale} />
+      {/* Alternate language links are handled via metadata.alternates */}
+      {children}
+    </>
   )
 }

@@ -1,0 +1,131 @@
+$ next build
+  ▲ Next.js 15.0.0
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+Failed to fetch job positions: TypeError: fetch failed
+    at node:internal/deps/undici/undici:13178:13
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async i (/Users/theeradonsomsri/thinkspacesite/apps/web/.next/server/chunks/946.js:1:18682)
+    at async b (/Users/theeradonsomsri/thinkspacesite/apps/web/.next/server/chunks/946.js:1:21143)
+    at async Object.b [as generateStaticParams] (/Users/theeradonsomsri/thinkspacesite/apps/web/.next/server/app/[locale]/(marketing)/careers/[slug]/page.js:1:3276)
+    at async builtRouteParams (/Users/theeradonsomsri/thinkspacesite/node_modules/.bun/next@15.0.0+1defbf50baff6439/node_modules/next/dist/build/utils.js:975:40)
+    at async buildAppStaticPaths (/Users/theeradonsomsri/thinkspacesite/node_modules/.bun/next@15.0.0+1defbf50baff6439/node_modules/next/dist/build/utils.js:940:25)
+    at async /Users/theeradonsomsri/thinkspacesite/node_modules/.bun/next@15.0.0+1defbf50baff6439/node_modules/next/dist/build/utils.js:1149:79
+    at async Span.traceAsyncFn (/Users/theeradonsomsri/thinkspacesite/node_modules/.bun/next@15.0.0+1defbf50baff6439/node_modules/next/dist/trace/trace.js:157:20) {
+  [cause]: AggregateError [ECONNREFUSED]: 
+      at internalConnectMultiple (node:net:1118:18)
+      at afterConnectMultiple (node:net:1685:7)
+      at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+    code: 'ECONNREFUSED',
+    [errors]: [ [Error], [Error] ]
+  }
+}
+Failed to fetch job positions: TypeError: fetch failed
+    at node:internal/deps/undici/undici:13178:13
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async i (/Users/theeradonsomsri/thinkspacesite/apps/web/.next/server/chunks/946.js:1:18682)
+    at async b (/Users/theeradonsomsri/thinkspacesite/apps/web/.next/server/chunks/946.js:1:21143)
+    at async Object.b [as generateStaticParams] (/Users/theeradonsomsri/thinkspacesite/apps/web/.next/server/app/[locale]/(marketing)/careers/[slug]/page.js:1:3276)
+    at async builtRouteParams (/Users/theeradonsomsri/thinkspacesite/node_modules/.bun/next@15.0.0+1defbf50baff6439/node_modules/next/dist/build/utils.js:975:40)
+    at async buildAppStaticPaths (/Users/theeradonsomsri/thinkspacesite/node_modules/.bun/next@15.0.0+1defbf50baff6439/node_modules/next/dist/build/utils.js:940:25)
+    at async /Users/theeradonsomsri/thinkspacesite/node_modules/.bun/next@15.0.0+1defbf50baff6439/node_modules/next/dist/build/utils.js:1149:79
+    at async Span.traceAsyncFn (/Users/theeradonsomsri/thinkspacesite/node_modules/.bun/next@15.0.0+1defbf50baff6439/node_modules/next/dist/trace/trace.js:157:20) {
+  [cause]: AggregateError [ECONNREFUSED]: 
+      at internalConnectMultiple (node:net:1118:18)
+      at afterConnectMultiple (node:net:1685:7)
+      at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+    code: 'ECONNREFUSED',
+    [errors]: [ [Error], [Error] ]
+  }
+}
+   Generating static pages (0/41) ...
+   Generating static pages (10/41) 
+   Generating static pages (20/41) 
+Failed to fetch job positions: TypeError: fetch failed
+    at node:internal/deps/undici/undici:13178:13
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async d (/Users/theeradonsomsri/thinkspacesite/apps/web/.next/server/app/sitemap.xml/route.js:1:1756)
+    at async v (/Users/theeradonsomsri/thinkspacesite/apps/web/.next/server/app/sitemap.xml/route.js:1:2620)
+    at async Promise.all (index 3)
+    at async y (/Users/theeradonsomsri/thinkspacesite/apps/web/.next/server/app/sitemap.xml/route.js:1:3273)
+    at async _ (/Users/theeradonsomsri/thinkspacesite/apps/web/.next/server/app/sitemap.xml/route.js:1:4802)
+    at async e5.do (/Users/theeradonsomsri/thinkspacesite/node_modules/.bun/next@15.0.0+1defbf50baff6439/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:18:18023)
+    at async e5.handle (/Users/theeradonsomsri/thinkspacesite/node_modules/.bun/next@15.0.0+1defbf50baff6439/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:18:21621)
+    at async exportAppRoute (/Users/theeradonsomsri/thinkspacesite/node_modules/.bun/next@15.0.0+1defbf50baff6439/node_modules/next/dist/export/routes/app-route.js:89:26) {
+  [cause]: AggregateError [ECONNREFUSED]: 
+      at internalConnectMultiple (node:net:1118:18)
+      at afterConnectMultiple (node:net:1685:7)
+      at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+    code: 'ECONNREFUSED',
+    [errors]: [ [Error], [Error] ]
+  }
+}
+   Generating static pages (30/41) 
+ ✓ Generating static pages (41/41)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ƒ /                                    196 B           156 kB
+├ ○ /_not-found                          895 B           100 kB
+├ ● /[locale]                            5 kB            161 kB
+├   ├ /en
+├   └ /th
+├ ● /[locale]/about                      3.54 kB         145 kB
+├   ├ /en/about
+├   └ /th/about
+├ ● /[locale]/careers                    173 B           108 kB
+├   ├ /en/careers
+├   └ /th/careers
+├ ƒ /[locale]/careers/[slug]             1.32 kB         153 kB
+├ ● /[locale]/contact                    6.3 kB          148 kB
+├   ├ /en/contact
+├   └ /th/contact
+├ ● /[locale]/cookies                    442 B           143 kB
+├   ├ /en/cookies
+├   └ /th/cookies
+├ ● /[locale]/news                       3.38 kB         154 kB
+├   ├ /en/news
+├   └ /th/news
+├ ƒ /[locale]/news/[slug]                1.33 kB         158 kB
+├ ● /[locale]/privacy                    442 B           143 kB
+├   ├ /en/privacy
+├   └ /th/privacy
+├ ● /[locale]/services                   3.85 kB         154 kB
+├   ├ /en/services
+├   └ /th/services
+├ ● /[locale]/services/[slug]            5.33 kB         156 kB
+├   ├ /en/services/cloud
+├   ├ /th/services/cloud
+├   ├ /en/services/software
+├   └ [+11 more paths]
+├ ● /[locale]/terms                      442 B           143 kB
+├   ├ /en/terms
+├   └ /th/terms
+├ ● /[locale]/works                      1.27 kB         115 kB
+├   ├ /en/works
+├   └ /th/works
+├ ƒ /[locale]/works/[slug]               1.33 kB         158 kB
+├ ƒ /about                               146 B          99.4 kB
+├ ƒ /api/health                          146 B          99.4 kB
+├ ƒ /api/revalidate                      146 B          99.4 kB
+├ ƒ /contact                             3.71 kB         140 kB
+├ ○ /robots.txt                          0 B                0 B
+├ ƒ /services                            173 B           108 kB
+└ ƒ /sitemap.xml                         0 B                0 B
++ First Load JS shared by all            99.2 kB
+  ├ chunks/331-fc6fced326e39cfe.js       44.7 kB
+  ├ chunks/97aa9fb5-7874ae81d583de73.js  52.6 kB
+  └ other shared chunks (total)          1.92 kB
+
+
+ƒ Middleware                             31 kB
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+
