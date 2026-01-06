@@ -78,8 +78,9 @@ export default async function HomePage({ params }: Props) {
   const caseStudies = (caseStudiesData || []) as CaseStudy[]
   const blogPosts = (blogData?.posts || []) as BlogPost[]
 
-  // Get STRAPI_URL for client components (server-side has access to env vars)
-  const strapiUrl = process.env.STRAPI_URL || 'http://localhost:1337'
+  // Get PUBLIC Strapi URL for client components (images need to be accessible from browser)
+  // STRAPI_URL is internal (http://cms:1337), but images need public URL
+  const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'https://cms.techthinkspace.com'
 
   // Helper function to check if a string is valid (not empty, not just "?")
   const isValidText = (text: string | undefined | null): text is string => {

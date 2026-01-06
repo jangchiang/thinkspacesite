@@ -81,8 +81,8 @@ export default async function NewsPage({ params, searchParams }: Props) {
 
   const totalPages = pagination?.pageCount || 1
 
-  // Get STRAPI_URL for client components
-  const strapiUrl = process.env.STRAPI_URL || 'http://localhost:1337'
+  // Get PUBLIC Strapi URL for client components (images need to be accessible from browser)
+  const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'https://cms.techthinkspace.com'
 
   return (
     <>

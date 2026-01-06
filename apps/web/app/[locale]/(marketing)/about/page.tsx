@@ -49,8 +49,8 @@ export default async function AboutPage({ params }: Props) {
   const teamSectionTitle = aboutData?.teamSectionTitle || ''
   const teamSectionDescription = aboutData?.teamSectionDescription || ''
 
-  // Get STRAPI_URL for client components
-  const strapiUrl = process.env.STRAPI_URL || 'http://localhost:1337'
+  // Get PUBLIC Strapi URL for client components (images need to be accessible from browser)
+  const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'https://cms.techthinkspace.com'
 
   return (
     <>

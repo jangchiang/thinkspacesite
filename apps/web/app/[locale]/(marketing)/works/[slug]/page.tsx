@@ -208,7 +208,7 @@ const fallbackWorks: Record<string, {
 
 function getStrapiImageUrl(url: string | undefined): string | undefined {
   if (!url) return undefined
-  const baseUrl = process.env.STRAPI_URL || 'http://localhost:1337'
+  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'https://cms.techthinkspace.com'
   return `${baseUrl}${url}`
 }
 

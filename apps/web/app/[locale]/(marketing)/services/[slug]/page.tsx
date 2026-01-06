@@ -47,10 +47,10 @@ interface StrapiService {
   processSteps?: { id: number; title: string; description: string }[]
 }
 
-// Helper to build Strapi image URL
+// Helper to build Strapi image URL (use public URL for browser access)
 function getStrapiImageUrl(image: StrapiImage | undefined): string | undefined {
   if (!image) return undefined
-  const baseUrl = process.env.STRAPI_URL || 'http://localhost:1337'
+  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'https://cms.techthinkspace.com'
   // Prefer large format, fallback to original
   const imageUrl = image.formats?.large?.url || image.formats?.medium?.url || image.url
   return `${baseUrl}${imageUrl}`

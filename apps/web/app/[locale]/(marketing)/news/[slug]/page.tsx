@@ -102,7 +102,7 @@ export default async function BlogPostPage({ params }: Props) {
         {imageUrl && (
           <div className="relative aspect-video max-w-4xl mx-auto mb-12 rounded-2xl overflow-hidden">
             <Image
-              src={`${process.env.STRAPI_URL || 'http://localhost:1337'}${imageUrl}`}
+              src={`${process.env.NEXT_PUBLIC_STRAPI_URL || 'https://cms.techthinkspace.com'}${imageUrl}`}
               alt={post.title}
               fill
               className="object-cover"

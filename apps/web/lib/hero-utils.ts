@@ -39,7 +39,7 @@ export function buildHeroBackground(
     return null
   }
 
-  const baseUrl = strapiUrl || process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
+  const baseUrl = strapiUrl || process.env.NEXT_PUBLIC_STRAPI_URL || 'https://cms.techthinkspace.com'
 
   let imageUrl: string | undefined
   if (heroData.backgroundImage) {
