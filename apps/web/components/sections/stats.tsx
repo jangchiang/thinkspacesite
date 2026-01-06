@@ -95,7 +95,7 @@ const itemVariants = {
   },
 }
 
-export function StatsSection({ stats }: StatsSectionProps) {
+export function StatsSection({ stats }: StatsSectionProps): React.JSX.Element | null {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 

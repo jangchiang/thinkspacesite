@@ -26,7 +26,7 @@ const fadeInUp = {
   }),
 }
 
-export function CTASection({ dict, locale }: CTASectionProps) {
+export function CTASection({ dict, locale }: CTASectionProps): React.JSX.Element {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 

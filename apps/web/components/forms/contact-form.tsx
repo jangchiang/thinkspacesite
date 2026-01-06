@@ -9,7 +9,7 @@ interface ContactFormProps {
   locale?: Locale
 }
 
-export function ContactForm({ locale = 'en' }: ContactFormProps) {
+export function ContactForm({ locale = 'en' }: ContactFormProps): React.JSX.Element {
   const [isLoading, setIsLoading] = useState(false)
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
 

@@ -47,7 +47,7 @@ function estimateReadTime(excerpt: string): number {
   return Math.max(2, Math.ceil(words / 200) + 2)
 }
 
-export function NewsGrid({ posts, locale, strapiUrl = '' }: NewsGridProps) {
+export function NewsGrid({ posts, locale, strapiUrl = '' }: NewsGridProps): React.JSX.Element {
   if (posts.length === 0) {
     return (
       <motion.div

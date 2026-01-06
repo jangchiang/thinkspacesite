@@ -6,7 +6,7 @@ interface BackgroundPathsProps {
   className?: string
 }
 
-export function BackgroundPaths({ className = '' }: BackgroundPathsProps) {
+export function BackgroundPaths({ className = '' }: BackgroundPathsProps): React.JSX.Element {
   return (
     <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}>
       {/* Base gradient - enhanced for both modes */}
@@ -265,7 +265,7 @@ interface AnimatedTextProps {
   className?: string
 }
 
-export function AnimatedText({ text, className = '' }: AnimatedTextProps) {
+export function AnimatedText({ text, className = '' }: AnimatedTextProps): React.JSX.Element {
   const words = text.split(' ')
 
   return (

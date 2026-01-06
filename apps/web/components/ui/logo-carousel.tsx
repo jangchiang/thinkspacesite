@@ -22,7 +22,7 @@ interface LogoCarouselProps {
   strapiUrl?: string
 }
 
-export function LogoCarousel({ partners, title, strapiUrl = '' }: LogoCarouselProps) {
+export function LogoCarousel({ partners, title, strapiUrl = '' }: LogoCarouselProps): React.JSX.Element | null {
   if (partners.length === 0) return null
 
   // Double the partners for seamless infinite scroll

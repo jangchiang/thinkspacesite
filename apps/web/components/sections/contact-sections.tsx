@@ -44,7 +44,7 @@ interface ContactHeroProps {
   background?: HeroBackground | null
 }
 
-export function ContactHero({ title, description, background }: ContactHeroProps) {
+export function ContactHero({ title, description, background }: ContactHeroProps): React.JSX.Element {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
@@ -173,7 +173,7 @@ interface ContactInfoSectionProps {
   formTitle: string
 }
 
-export function ContactInfoSection({ title, items, children, formTitle }: ContactInfoSectionProps) {
+export function ContactInfoSection({ title, items, children, formTitle }: ContactInfoSectionProps): React.JSX.Element {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
@@ -247,7 +247,7 @@ interface MapSectionProps {
   placeholder: string
 }
 
-export function MapSection({ placeholder }: MapSectionProps) {
+export function MapSection({ placeholder }: MapSectionProps): React.JSX.Element {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 

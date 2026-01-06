@@ -61,7 +61,7 @@ const itemVariants = {
   },
 }
 
-export function ServicesPageContent({ locale, dict, heroBackground, heroTitle, heroSubtitle, services: servicesProp }: ServicesPageContentProps) {
+export function ServicesPageContent({ locale, dict, heroBackground, heroTitle, heroSubtitle, services: servicesProp }: ServicesPageContentProps): React.JSX.Element {
   const heroRef = useRef(null)
   const gridRef = useRef(null)
   const ctaRef = useRef(null)

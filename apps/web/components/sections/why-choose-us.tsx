@@ -106,7 +106,7 @@ const itemVariants = {
   },
 }
 
-export function WhyChooseUsSection({ locale, data }: WhyChooseUsSectionProps) {
+export function WhyChooseUsSection({ locale, data }: WhyChooseUsSectionProps): React.JSX.Element | null {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 

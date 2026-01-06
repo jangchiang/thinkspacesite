@@ -15,7 +15,7 @@ interface BreadcrumbProps {
   className?: string
 }
 
-export function Breadcrumb({ items, locale, className = '' }: BreadcrumbProps) {
+export function Breadcrumb({ items, locale, className = '' }: BreadcrumbProps): React.JSX.Element {
   const homeLabel = locale === 'th' ? 'หน้าแรก' : 'Home'
 
   return (

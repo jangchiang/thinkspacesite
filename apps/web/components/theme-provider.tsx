@@ -20,7 +20,7 @@ const defaultContext: ThemeContextType = {
 
 const ThemeContext = createContext<ThemeContextType>(defaultContext)
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
+export function ThemeProvider({ children }: { children: React.ReactNode }): React.JSX.Element {
   const [theme, setThemeState] = useState<Theme>('thinkspace')
   const [mounted, setMounted] = useState(false)
 

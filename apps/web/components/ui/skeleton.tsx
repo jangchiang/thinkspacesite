@@ -2,13 +2,13 @@ interface SkeletonProps {
   className?: string
 }
 
-export function Skeleton({ className = '' }: SkeletonProps) {
+export function Skeleton({ className = '' }: SkeletonProps): React.JSX.Element {
   return (
     <div className={`animate-pulse rounded-md bg-base-300 ${className}`} />
   )
 }
 
-export function CardSkeleton() {
+export function CardSkeleton(): React.JSX.Element {
   return (
     <div className="card bg-base-100 shadow-lg">
       <Skeleton className="aspect-video w-full rounded-t-2xl" />
@@ -22,7 +22,7 @@ export function CardSkeleton() {
   )
 }
 
-export function ServiceCardSkeleton() {
+export function ServiceCardSkeleton(): React.JSX.Element {
   return (
     <div className="card bg-base-100 border border-base-200">
       <div className="card-body">
@@ -35,7 +35,7 @@ export function ServiceCardSkeleton() {
   )
 }
 
-export function HeroSkeleton() {
+export function HeroSkeleton(): React.JSX.Element {
   return (
     <div className="min-h-[60vh] flex items-center justify-center">
       <div className="text-center max-w-3xl mx-auto px-4">
@@ -53,7 +53,7 @@ export function HeroSkeleton() {
   )
 }
 
-export function StatsSkeleton() {
+export function StatsSkeleton(): React.JSX.Element {
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
       {[...Array(4)].map((_, i) => (

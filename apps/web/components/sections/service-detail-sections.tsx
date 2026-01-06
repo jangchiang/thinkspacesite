@@ -73,7 +73,7 @@ function hexToRgb(hex: string) {
     : { r: 0, g: 0, b: 0 }
 }
 
-export function ServiceHero({ iconName, color, title, description, background }: ServiceHeroProps) {
+export function ServiceHero({ iconName, color, title, description, background }: ServiceHeroProps): React.JSX.Element {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true })
   const Icon = iconMap[iconName] || Cloud
@@ -200,7 +200,7 @@ interface FeaturesSectionProps {
   imageUrl?: string
 }
 
-export function FeaturesSection({ title, features, imagePlaceholder, imageUrl }: FeaturesSectionProps) {
+export function FeaturesSection({ title, features, imagePlaceholder, imageUrl }: FeaturesSectionProps): React.JSX.Element {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
@@ -270,7 +270,7 @@ interface BenefitsSectionProps {
   benefits: Benefit[]
 }
 
-export function BenefitsSection({ title, benefits }: BenefitsSectionProps) {
+export function BenefitsSection({ title, benefits }: BenefitsSectionProps): React.JSX.Element {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
@@ -330,7 +330,7 @@ interface UseCasesSectionProps {
   useCases: UseCase[]
 }
 
-export function UseCasesSection({ title, subtitle, useCases }: UseCasesSectionProps) {
+export function UseCasesSection({ title, subtitle, useCases }: UseCasesSectionProps): React.JSX.Element {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
@@ -427,7 +427,7 @@ function TechMarquee({ technologies, direction = 'left', speed = 25 }: { technol
   )
 }
 
-export function TechnologiesSection({ title, technologies }: TechnologiesSectionProps) {
+export function TechnologiesSection({ title, technologies }: TechnologiesSectionProps): React.JSX.Element {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
@@ -509,7 +509,7 @@ interface ProcessSectionProps {
   steps: ProcessStep[]
 }
 
-export function ProcessSection({ title, subtitle, steps }: ProcessSectionProps) {
+export function ProcessSection({ title, subtitle, steps }: ProcessSectionProps): React.JSX.Element {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
@@ -574,7 +574,7 @@ interface ServiceCTAProps {
   locale: string
 }
 
-export function ServiceCTA({ title, description, contactText, viewAllText, locale }: ServiceCTAProps) {
+export function ServiceCTA({ title, description, contactText, viewAllText, locale }: ServiceCTAProps): React.JSX.Element {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 

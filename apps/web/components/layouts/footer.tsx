@@ -23,7 +23,7 @@ interface FooterProps {
   copyrightText?: string
 }
 
-export function Footer({ locale, dict, contactInfo, companyName = 'Thinkspace Technology', copyrightText }: FooterProps) {
+export function Footer({ locale, dict, contactInfo, companyName = 'Thinkspace Technology', copyrightText }: FooterProps): React.JSX.Element {
   // Use Strapi data or fallback
   const email = contactInfo?.email || fallbackContact.email
   const phone = contactInfo?.phone || fallbackContact.phone

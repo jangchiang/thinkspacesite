@@ -7,7 +7,7 @@ interface OrganicWaveProps {
   className?: string
 }
 
-export function OrganicWave({ className = '' }: OrganicWaveProps) {
+export function OrganicWave({ className = '' }: OrganicWaveProps): React.JSX.Element {
   return (
     <div className={`absolute inset-0 overflow-hidden ${className}`}>
       {/* Base gradient */}
@@ -157,7 +157,7 @@ export function OrganicWave({ className = '' }: OrganicWaveProps) {
 }
 
 // Alternative: Particle field for "space" theme
-export function SpaceParticles({ className = '' }: OrganicWaveProps) {
+export function SpaceParticles({ className = '' }: OrganicWaveProps): React.JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {

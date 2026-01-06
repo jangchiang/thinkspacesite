@@ -142,7 +142,7 @@ function NavDropdown({
   )
 }
 
-export function Navbar({ locale, dict, services: servicesProp, companyName = 'Thinkspace Technology' }: NavbarProps) {
+export function Navbar({ locale, dict, services: servicesProp, companyName = 'Thinkspace Technology' }: NavbarProps): React.JSX.Element {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)

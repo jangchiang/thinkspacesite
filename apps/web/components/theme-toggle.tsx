@@ -4,7 +4,7 @@ import { Moon, Sun } from 'lucide-react'
 import { useTheme } from './theme-provider'
 import { motion, AnimatePresence } from 'framer-motion'
 
-export function ThemeToggle() {
+export function ThemeToggle(): React.JSX.Element {
   const { theme, toggleTheme, mounted } = useTheme()
   const isDark = theme === 'thinkspaceDark'
 

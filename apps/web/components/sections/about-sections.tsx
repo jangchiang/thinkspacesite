@@ -56,7 +56,7 @@ interface AboutHeroProps {
   background?: HeroBackground | null
 }
 
-export function AboutHero({ title, description, background }: AboutHeroProps) {
+export function AboutHero({ title, description, background }: AboutHeroProps): React.JSX.Element {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
@@ -175,7 +175,7 @@ interface ValuesSectionProps {
   values: Value[]
 }
 
-export function ValuesSection({ values }: ValuesSectionProps) {
+export function ValuesSection({ values }: ValuesSectionProps): React.JSX.Element {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
@@ -233,7 +233,7 @@ export function StorySection({
   storyParagraph2,
   milestonesTitle,
   milestones,
-}: StorySectionProps) {
+}: StorySectionProps): React.JSX.Element {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
@@ -325,7 +325,7 @@ interface TeamSectionProps {
   strapiUrl?: string
 }
 
-export function TeamSection({ title, description, members, strapiUrl = '' }: TeamSectionProps) {
+export function TeamSection({ title, description, members, strapiUrl = '' }: TeamSectionProps): React.JSX.Element {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 

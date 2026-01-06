@@ -10,7 +10,7 @@ interface CategoryFilterProps {
   basePath: string
 }
 
-export function CategoryFilter({ categories, locale, basePath }: CategoryFilterProps) {
+export function CategoryFilter({ categories, locale, basePath }: CategoryFilterProps): React.JSX.Element {
   const searchParams = useSearchParams()
   const currentCategory = searchParams.get('category') || ''
 

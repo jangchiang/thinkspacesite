@@ -29,7 +29,7 @@ interface HeroSectionProps {
   strapiUrl?: string
 }
 
-export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: HeroSectionProps) {
+export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: HeroSectionProps): React.JSX.Element {
   return (
     <section className="relative overflow-hidden min-h-[80vh] sm:min-h-[90vh] flex items-center">
       {/* Animated Paths Background */}

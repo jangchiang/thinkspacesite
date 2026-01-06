@@ -81,7 +81,7 @@ const itemVariants = {
   },
 }
 
-export function FeaturedWorksSection({ locale, caseStudies }: FeaturedWorksSectionProps) {
+export function FeaturedWorksSection({ locale, caseStudies }: FeaturedWorksSectionProps): React.JSX.Element | null {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 

@@ -56,7 +56,7 @@ function estimateReadTime(excerpt: string | null): number {
   return Math.max(2, Math.ceil(words / 200) + 2)
 }
 
-export function NewsPreviewSection({ locale, posts, strapiUrl = '' }: NewsPreviewSectionProps) {
+export function NewsPreviewSection({ locale, posts, strapiUrl = '' }: NewsPreviewSectionProps): React.JSX.Element | null {
   if (posts.length === 0) return null
 
   const latestPosts = posts.slice(0, 3)

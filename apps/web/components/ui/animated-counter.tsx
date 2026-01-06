@@ -9,7 +9,7 @@ interface AnimatedCounterProps {
   className?: string
 }
 
-export function AnimatedCounter({ value, duration = 2000, className = '' }: AnimatedCounterProps) {
+export function AnimatedCounter({ value, duration = 2000, className = '' }: AnimatedCounterProps): React.JSX.Element {
   const ref = useRef<HTMLSpanElement>(null)
   const isInView = useInView(ref, { once: true, margin: '-50px' })
   const [displayValue, setDisplayValue] = useState('0')

@@ -12,7 +12,7 @@ interface PaginationProps {
   locale: Locale
 }
 
-export function Pagination({ currentPage, totalPages, basePath, locale }: PaginationProps) {
+export function Pagination({ currentPage, totalPages, basePath, locale }: PaginationProps): React.JSX.Element | null {
   const searchParams = useSearchParams()
 
   if (totalPages <= 1) return null

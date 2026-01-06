@@ -36,7 +36,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   research: FlaskConical,
 }
 
-export function ServicesSection({ dict, locale }: ServicesSectionProps) {
+export function ServicesSection({ dict, locale }: ServicesSectionProps): React.JSX.Element {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
