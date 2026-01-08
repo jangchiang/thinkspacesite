@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Menu, X, ChevronDown, Globe } from 'lucide-react'
 import { type Locale, localeNames } from '@/lib/i18n'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { Logo } from '@/components/ui/logo'
 import { motion, AnimatePresence } from 'framer-motion'
 
 type Dict = Record<string, any>
@@ -19,7 +20,6 @@ interface NavbarProps {
   locale: Locale
   dict: Dict
   services?: ServiceItem[]
-  companyName?: string
 }
 
 interface NavItem {
@@ -142,7 +142,7 @@ function NavDropdown({
   )
 }
 
-export function Navbar({ locale, dict, services: servicesProp, companyName = 'Thinkspace Technology' }: NavbarProps): React.JSX.Element {
+export function Navbar({ locale, dict, services: servicesProp }: NavbarProps): React.JSX.Element {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -202,14 +202,13 @@ export function Navbar({ locale, dict, services: servicesProp, companyName = 'Th
       <nav className="container-custom">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href={`/${locale}`} className="flex items-center gap-2 group">
-            <motion.span
-              className="font-bold text-xl"
+          <Link href={`/${locale}`} className="flex items-center group">
+            <motion.div
               whileHover={{ scale: 1.02 }}
               transition={{ type: 'spring', stiffness: 400, damping: 10 }}
             >
-              {companyName}
-            </motion.span>
+              <Logo size="sm" animated={false} />
+            </motion.div>
           </Link>
 
           {/* Desktop Navigation */}

@@ -31,7 +31,6 @@ export default async function MarketingLayout({ children, params }: Props): Prom
     getSiteSettings(locale).catch(() => null)
   ])
 
-  const headerCompanyName = siteSettings?.headerCompanyName || 'Thinkspace Technology'
   const footerCompanyName = siteSettings?.footerCompanyName || 'Thinkspace Technology'
   const copyrightText = siteSettings?.copyrightText
 
@@ -43,7 +42,7 @@ export default async function MarketingLayout({ children, params }: Props): Prom
 
   return (
     <>
-      <Navbar locale={locale} dict={dict} services={services} companyName={headerCompanyName} />
+      <Navbar locale={locale} dict={dict} services={services} />
       <main className="min-h-screen page-transition">{children}</main>
       <Footer locale={locale} dict={dict} contactInfo={contactInfo} companyName={footerCompanyName} copyrightText={copyrightText} />
     </>

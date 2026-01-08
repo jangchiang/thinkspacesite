@@ -13,13 +13,12 @@ export default async function MarketingLayout({
 }): Promise<React.JSX.Element> {
   // Fetch site settings from Strapi
   const siteSettings = await getSiteSettings('en')
-  const headerCompanyName = siteSettings?.headerCompanyName || 'Thinkspace Technology'
   const footerCompanyName = siteSettings?.footerCompanyName || 'Thinkspace Technology'
   const copyrightText = siteSettings?.copyrightText
 
   return (
     <>
-      <Navbar locale="en" dict={dict} companyName={headerCompanyName} />
+      <Navbar locale="en" dict={dict} />
       <main className="min-h-screen">{children}</main>
       <Footer locale="en" dict={dict} companyName={footerCompanyName} copyrightText={copyrightText} />
     </>
