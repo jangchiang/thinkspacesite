@@ -12,7 +12,7 @@ env:
 
 jobs:
   # ===========================================
-  # Build & Test
+  # Build & Test (Web Only)
   # ===========================================
   build-test:
     name: Build & Test
@@ -34,12 +34,6 @@ jobs:
         working-directory: apps/web
         run: bun run typecheck || true
 
-      - name: Type check - CMS
-        working-directory: apps/cms
-        run: bun run build
-        env:
-          NODE_ENV: production
-
       - name: Build Web
         working-directory: apps/web
         run: bun run build
@@ -49,7 +43,7 @@ jobs:
           STRAPI_URL: http://localhost:1337
 
   # ===========================================
-  # Build Docker Images
+  # Build Docker Images (Web Only)
   # ===========================================
   build-images:
     name: Build Docker Images
@@ -88,21 +82,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Build and push CMS image
-        uses: docker/build-push-action@v5
-        with:
-          context: apps/cms
-          file: docker/services/cms/Dockerfile
-          target: production
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/cms:latest
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/cms:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
   # ===========================================
-  # Deploy to Production (Self-hosted Runner)
+  # Deploy to Production (Web Only)
   # ===========================================
   deploy:
     name: Deploy to Production
@@ -112,13 +93,13 @@ jobs:
     environment: production
 
     steps:
-      - name: Deploy to production directory
+      - name: Deploy Web to production
         run: |
           cd ~/thinkspacesite
           git fetch origin main
           git reset --hard origin/main
-          # Use explicit project name to ensure consistent volume names
-          docker compose -p thinkspace -f docker/docker-compose.yml -f docker/docker-compose.prod.yml build
-          docker compose -p thinkspace -f docker/docker-compose.yml -f docker/docker-compose.prod.yml up -d
-          # Only prune images/containers, NOT volumes (removed --volumes flag is safe)
+          # Build and restart only the web container, leave CMS untouched
+          docker compose -p thinkspace -f docker/docker-compose.yml -f docker/docker-compose.prod.yml build web
+          docker compose -p thinkspace -f docker/docker-compose.yml -f docker/docker-compose.prod.yml up -d web
+          # Clean up old images
           docker image prune -f
