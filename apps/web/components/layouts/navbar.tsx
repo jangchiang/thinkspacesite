@@ -207,7 +207,7 @@ export function Navbar({ locale, dict, services: servicesProp }: NavbarProps): R
               whileHover={{ scale: 1.02 }}
               transition={{ type: 'spring', stiffness: 400, damping: 10 }}
             >
-              <Logo size="sm" animated={false} />
+              <Logo size="sm" animated={true} />
             </motion.div>
           </Link>
 

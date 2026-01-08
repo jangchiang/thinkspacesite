@@ -37,45 +37,110 @@ export function Logo({ showTagline = false, size = 'md', animated = true }: Logo
 
   const bracketPath = `M 3,3 H ${s.bracket.width - 3} V ${s.bracket.height * 0.35} M ${s.bracket.width - 3},${s.bracket.height * 0.65} V ${s.bracket.height - 3} H 3 V ${s.bracket.height * 0.65} M 3,${s.bracket.height * 0.35} V 3`
 
+  // Animation variants
+  const textVariants = {
+    hidden: { opacity: 0, y: 10, filter: 'blur(4px)' },
+    visible: { opacity: 1, y: 0, filter: 'blur(0px)' },
+  }
+
   return (
     <div className="flex flex-col items-end">
       <div className={`flex items-center ${s.gap}`}>
         {/* THINK */}
-        <span className={`font-black ${s.text} tracking-tight text-base-content`}>
-          THINK
-        </span>
+        {animated ? (
+          <motion.span
+            className={`font-black ${s.text} tracking-tight text-base-content`}
+            initial="hidden"
+            animate="visible"
+            variants={textVariants}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+          >
+            THINK
+          </motion.span>
+        ) : (
+          <span className={`font-black ${s.text} tracking-tight text-base-content`}>
+            THINK
+          </span>
+        )}
 
         {/* SPACE with brackets */}
         <div className={`relative ${s.bracket.padding}`}>
-          <span className={`font-black ${s.space} tracking-tight text-base-content relative z-10`}>
-            SPACE
-          </span>
+          {animated ? (
+            <motion.span
+              className={`font-black ${s.space} tracking-tight text-base-content relative z-10`}
+              initial="hidden"
+              animate="visible"
+              variants={textVariants}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+            >
+              SPACE
+            </motion.span>
+          ) : (
+            <span className={`font-black ${s.space} tracking-tight text-base-content relative z-10`}>
+              SPACE
+            </span>
+          )}
 
           {/* SVG Brackets */}
           <svg
-            className="absolute inset-0 w-full h-full"
+            className="absolute inset-0 w-full h-full overflow-visible"
             viewBox={`0 0 ${s.bracket.width} ${s.bracket.height}`}
             preserveAspectRatio="none"
             fill="none"
           >
             {animated ? (
-              <motion.path
-                d={bracketPath}
-                stroke="currentColor"
-                strokeWidth={s.bracket.strokeWidth}
-                strokeLinecap="square"
-                className="text-primary"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 1.5, ease: 'easeInOut' }}
-              />
+              <>
+                {/* Trail effects - Northern Lights */}
+                <motion.path
+                  d={bracketPath}
+                  stroke="#38bdf8"
+                  strokeWidth={s.bracket.strokeWidth}
+                  strokeLinecap="square"
+                  strokeDasharray="50 400"
+                  initial={{ strokeDashoffset: 500 }}
+                  animate={{ strokeDashoffset: 0 }}
+                  transition={{ duration: 1.2, ease: 'linear', delay: 0.4 }}
+                  style={{ filter: 'drop-shadow(0 0 6px #38bdf8)' }}
+                />
+                <motion.path
+                  d={bracketPath}
+                  stroke="#2dd4bf"
+                  strokeWidth={s.bracket.strokeWidth}
+                  strokeLinecap="square"
+                  strokeDasharray="50 400"
+                  initial={{ strokeDashoffset: 475 }}
+                  animate={{ strokeDashoffset: -25 }}
+                  transition={{ duration: 1.2, ease: 'linear', delay: 0.4 }}
+                  style={{ filter: 'drop-shadow(0 0 6px #2dd4bf)' }}
+                />
+                <motion.path
+                  d={bracketPath}
+                  stroke="#10B981"
+                  strokeWidth={s.bracket.strokeWidth}
+                  strokeLinecap="square"
+                  strokeDasharray="50 400"
+                  initial={{ strokeDashoffset: 450 }}
+                  animate={{ strokeDashoffset: -50 }}
+                  transition={{ duration: 1.2, ease: 'linear', delay: 0.4 }}
+                  style={{ filter: 'drop-shadow(0 0 8px #10B981)' }}
+                />
+                {/* Final bracket */}
+                <motion.path
+                  d={bracketPath}
+                  stroke="#10B981"
+                  strokeWidth={s.bracket.strokeWidth}
+                  strokeLinecap="square"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1.2, ease: 'linear', delay: 0.4 }}
+                />
+              </>
             ) : (
               <path
                 d={bracketPath}
-                stroke="currentColor"
+                stroke="#10B981"
                 strokeWidth={s.bracket.strokeWidth}
                 strokeLinecap="square"
-                className="text-primary"
               />
             )}
           </svg>
@@ -84,17 +149,35 @@ export function Logo({ showTagline = false, size = 'md', animated = true }: Logo
 
       {/* Tagline */}
       {showTagline && (
-        <span
-          className={`${s.tagline} font-normal tracking-[0.2em] uppercase mt-0.5 mr-1`}
-          style={{
-            background: 'linear-gradient(90deg, #10B981 0%, #10B981 45%, currentColor 55%, currentColor 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          }}
-        >
-          technology
-        </span>
+        animated ? (
+          <motion.span
+            className={`${s.tagline} font-normal tracking-[0.2em] uppercase mt-0.5 mr-1`}
+            style={{
+              background: 'linear-gradient(90deg, #10B981 0%, #10B981 45%, currentColor 55%, currentColor 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+            initial="hidden"
+            animate="visible"
+            variants={textVariants}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.5 }}
+          >
+            technology
+          </motion.span>
+        ) : (
+          <span
+            className={`${s.tagline} font-normal tracking-[0.2em] uppercase mt-0.5 mr-1`}
+            style={{
+              background: 'linear-gradient(90deg, #10B981 0%, #10B981 45%, currentColor 55%, currentColor 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
+            technology
+          </span>
+        )
       )}
     </div>
   )
