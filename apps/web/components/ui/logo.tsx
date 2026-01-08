@@ -147,33 +147,42 @@ export function Logo({ showTagline = false, size = 'md', animated = true }: Logo
         </div>
       </div>
 
-      {/* Tagline */}
+      {/* Tagline - technology with color transition */}
       {showTagline && (
         animated ? (
           <motion.span
             className={`${s.tagline} font-normal tracking-[0.2em] uppercase mt-0.5 mr-1`}
+            initial={{
+              opacity: 0,
+              y: 10,
+              filter: 'blur(4px)',
+              backgroundPosition: '0% 50%'
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              filter: 'blur(0px)',
+              backgroundPosition: '100% 50%'
+            }}
+            transition={{
+              opacity: { duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.5 },
+              y: { duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.5 },
+              filter: { duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.5 },
+              backgroundPosition: { duration: 1.8, ease: 'easeInOut', delay: 1.2 }
+            }}
             style={{
-              background: 'linear-gradient(90deg, #10B981 0%, #10B981 45%, currentColor 55%, currentColor 100%)',
+              background: 'linear-gradient(90deg, #10B981 0%, #10B981 45%, #ffffff 55%, #ffffff 100%)',
+              backgroundSize: '300% 100%',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
             }}
-            initial="hidden"
-            animate="visible"
-            variants={textVariants}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.5 }}
           >
             technology
           </motion.span>
         ) : (
           <span
-            className={`${s.tagline} font-normal tracking-[0.2em] uppercase mt-0.5 mr-1`}
-            style={{
-              background: 'linear-gradient(90deg, #10B981 0%, #10B981 45%, currentColor 55%, currentColor 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}
+            className={`${s.tagline} font-normal tracking-[0.2em] uppercase mt-0.5 mr-1 text-base-content`}
           >
             technology
           </span>
