@@ -1303,7 +1303,723 @@ async function seedJobPositions(strapi: Core.Strapi) {
   strapi.log.info('Job positions seeding complete!');
 }
 
-// Homepage seed data
+// Services seed data with comprehensive details
+interface ServiceSeedData {
+  slug: string;
+  icon: 'Cloud' | 'Code' | 'Server' | 'Database' | 'Shield' | 'BarChart' | 'FlaskConical';
+  color: string;
+  order: number;
+  title: { th: string; en: string };
+  shortDescription: { th: string; en: string };
+  description: { th: string; en: string };
+  features: { title: { th: string; en: string } }[];
+  useCases: { title: { th: string; en: string }; description: { th: string; en: string } }[];
+  technologies: { name: string }[];
+  processSteps: { title: { th: string; en: string }; description: { th: string; en: string } }[];
+}
+
+const servicesData: ServiceSeedData[] = [
+  {
+    slug: 'cloud',
+    icon: 'Cloud',
+    color: 'bg-blue-500',
+    order: 1,
+    title: { th: 'Cloud Solutions', en: 'Cloud Solutions' },
+    shortDescription: {
+      th: 'โซลูชันคลาวด์แบบครบวงจร ทั้ง Public, Private และ Hybrid Cloud',
+      en: 'Comprehensive cloud solutions including Public, Private, and Hybrid Cloud',
+    },
+    description: {
+      th: 'บริการคลาวด์แบบครบวงจรสำหรับองค์กร รวมถึง Public Cloud, Private Cloud และ Hybrid Cloud พร้อมบริการ Migration, Optimization และ Management ที่ช่วยให้ธุรกิจของคุณเติบโตอย่างมั่นคง เราเป็นพันธมิตรอย่างเป็นทางการของ AWS, Microsoft Azure และ Google Cloud Platform',
+      en: 'Complete cloud services for enterprises including Public Cloud, Private Cloud, and Hybrid Cloud with Migration, Optimization, and Management services to help your business grow securely. We are official partners of AWS, Microsoft Azure, and Google Cloud Platform.',
+    },
+    features: [
+      { title: { th: 'Cloud Migration & Modernization', en: 'Cloud Migration & Modernization' } },
+      { title: { th: 'Multi-Cloud Management', en: 'Multi-Cloud Management' } },
+      { title: { th: 'Cloud Cost Optimization', en: 'Cloud Cost Optimization' } },
+      { title: { th: 'Disaster Recovery as a Service', en: 'Disaster Recovery as a Service' } },
+      { title: { th: 'Kubernetes & Container Management', en: 'Kubernetes & Container Management' } },
+      { title: { th: 'Serverless Architecture', en: 'Serverless Architecture' } },
+      { title: { th: 'Cloud Security & Compliance', en: 'Cloud Security & Compliance' } },
+      { title: { th: '24/7 Monitoring & Support', en: '24/7 Monitoring & Support' } },
+    ],
+    useCases: [
+      {
+        title: { th: 'การย้ายระบบสู่คลาวด์', en: 'Cloud Migration' },
+        description: {
+          th: 'ย้ายระบบ Legacy ไปยัง Cloud อย่างราบรื่นโดยไม่กระทบต่อการดำเนินธุรกิจ พร้อมลดต้นทุนและเพิ่มความยืดหยุ่น',
+          en: 'Migrate legacy systems to Cloud seamlessly without disrupting business operations while reducing costs and increasing flexibility.',
+        },
+      },
+      {
+        title: { th: 'ระบบ High Availability', en: 'High Availability Systems' },
+        description: {
+          th: 'ออกแบบและติดตั้งระบบที่มีความพร้อมใช้งานสูง 99.99% SLA พร้อม Auto-scaling และ Load Balancing',
+          en: 'Design and deploy high availability systems with 99.99% SLA, including Auto-scaling and Load Balancing.',
+        },
+      },
+      {
+        title: { th: 'Hybrid Cloud สำหรับองค์กร', en: 'Enterprise Hybrid Cloud' },
+        description: {
+          th: 'เชื่อมต่อระบบ On-premise กับ Cloud อย่างปลอดภัย เหมาะสำหรับองค์กรที่มีข้อกำหนดด้านความปลอดภัยสูง',
+          en: 'Securely connect On-premise systems with Cloud, suitable for organizations with high security requirements.',
+        },
+      },
+      {
+        title: { th: 'DevOps & CI/CD Pipeline', en: 'DevOps & CI/CD Pipeline' },
+        description: {
+          th: 'ตั้งค่าระบบ DevOps และ CI/CD Pipeline บน Cloud เพื่อเพิ่มความเร็วในการพัฒนาและ Deploy',
+          en: 'Set up DevOps and CI/CD Pipeline on Cloud to accelerate development and deployment.',
+        },
+      },
+    ],
+    technologies: [
+      { name: 'AWS' },
+      { name: 'Microsoft Azure' },
+      { name: 'Google Cloud Platform' },
+      { name: 'Kubernetes' },
+      { name: 'Docker' },
+      { name: 'Terraform' },
+      { name: 'Ansible' },
+      { name: 'CloudFormation' },
+    ],
+    processSteps: [
+      {
+        title: { th: 'การประเมินและวางแผน', en: 'Assessment & Planning' },
+        description: {
+          th: 'วิเคราะห์ระบบปัจจุบัน ประเมินความพร้อม และวางแผนการย้ายสู่ Cloud อย่างละเอียด',
+          en: 'Analyze current systems, assess readiness, and create detailed cloud migration plans.',
+        },
+      },
+      {
+        title: { th: 'การออกแบบสถาปัตยกรรม', en: 'Architecture Design' },
+        description: {
+          th: 'ออกแบบสถาปัตยกรรม Cloud ที่เหมาะสมกับความต้องการและงบประมาณขององค์กร',
+          en: 'Design cloud architecture that fits your organization\'s requirements and budget.',
+        },
+      },
+      {
+        title: { th: 'การดำเนินการย้ายระบบ', en: 'Migration Execution' },
+        description: {
+          th: 'ดำเนินการย้ายระบบตามแผนที่วางไว้ โดยลดผลกระทบต่อการดำเนินธุรกิจให้น้อยที่สุด',
+          en: 'Execute migration according to plan, minimizing business disruption.',
+        },
+      },
+      {
+        title: { th: 'การทดสอบและ Optimization', en: 'Testing & Optimization' },
+        description: {
+          th: 'ทดสอบระบบอย่างครบถ้วนและ Optimize ประสิทธิภาพและต้นทุน',
+          en: 'Comprehensive testing and optimization of performance and costs.',
+        },
+      },
+      {
+        title: { th: 'การดูแลและสนับสนุน', en: 'Management & Support' },
+        description: {
+          th: 'ให้บริการดูแลระบบ Cloud ตลอด 24/7 พร้อมการ Monitoring และ Support อย่างต่อเนื่อง',
+          en: 'Provide 24/7 cloud management with continuous monitoring and support.',
+        },
+      },
+    ],
+  },
+  {
+    slug: 'software',
+    icon: 'Code',
+    color: 'bg-green-500',
+    order: 2,
+    title: { th: 'Software Development', en: 'Software Development' },
+    shortDescription: {
+      th: 'พัฒนาซอฟต์แวร์ตามความต้องการ ทั้ง Web, Mobile และ Enterprise',
+      en: 'Custom software development for Web, Mobile, and Enterprise applications',
+    },
+    description: {
+      th: 'บริการพัฒนาซอฟต์แวร์แบบครบวงจร ตั้งแต่การวิเคราะห์ความต้องการ ออกแบบระบบ พัฒนา ทดสอบ จนถึงการดูแลรักษา รองรับทั้ง Web Application, Mobile Application และ Enterprise Software ด้วยทีมวิศวกรที่มีประสบการณ์และเทคโนโลยีที่ทันสมัย',
+      en: 'End-to-end software development services from requirements analysis, system design, development, testing, to maintenance. Supporting Web Applications, Mobile Applications, and Enterprise Software with experienced engineers and modern technologies.',
+    },
+    features: [
+      { title: { th: 'Custom Web Application Development', en: 'Custom Web Application Development' } },
+      { title: { th: 'Mobile App Development (iOS & Android)', en: 'Mobile App Development (iOS & Android)' } },
+      { title: { th: 'Enterprise Software Solutions', en: 'Enterprise Software Solutions' } },
+      { title: { th: 'API Development & Integration', en: 'API Development & Integration' } },
+      { title: { th: 'Legacy System Modernization', en: 'Legacy System Modernization' } },
+      { title: { th: 'E-commerce Solutions', en: 'E-commerce Solutions' } },
+      { title: { th: 'Quality Assurance & Testing', en: 'Quality Assurance & Testing' } },
+      { title: { th: 'Maintenance & Support', en: 'Maintenance & Support' } },
+    ],
+    useCases: [
+      {
+        title: { th: 'ระบบ ERP สำหรับองค์กร', en: 'Enterprise ERP Systems' },
+        description: {
+          th: 'พัฒนาระบบ ERP ที่ปรับแต่งตามกระบวนการทำงานขององค์กร รวมถึงการเชื่อมต่อกับระบบอื่นๆ',
+          en: 'Develop customized ERP systems based on organization workflows, including integration with other systems.',
+        },
+      },
+      {
+        title: { th: 'แพลตฟอร์ม E-commerce', en: 'E-commerce Platforms' },
+        description: {
+          th: 'สร้างแพลตฟอร์มขายของออนไลน์ที่รองรับการชำระเงินหลายช่องทางและการจัดการ Inventory',
+          en: 'Build online selling platforms supporting multiple payment channels and inventory management.',
+        },
+      },
+      {
+        title: { th: 'Mobile Banking App', en: 'Mobile Banking App' },
+        description: {
+          th: 'พัฒนา Mobile App สำหรับธนาคารและสถาบันการเงิน พร้อมระบบความปลอดภัยระดับสูง',
+          en: 'Develop Mobile Apps for banks and financial institutions with high-level security.',
+        },
+      },
+      {
+        title: { th: 'ระบบจัดการลูกค้า (CRM)', en: 'Customer Relationship Management (CRM)' },
+        description: {
+          th: 'พัฒนาระบบ CRM ที่ช่วยจัดการความสัมพันธ์กับลูกค้าและเพิ่มยอดขาย',
+          en: 'Develop CRM systems that help manage customer relationships and increase sales.',
+        },
+      },
+    ],
+    technologies: [
+      { name: 'React' },
+      { name: 'Next.js' },
+      { name: 'Node.js' },
+      { name: 'TypeScript' },
+      { name: 'Python' },
+      { name: 'Flutter' },
+      { name: 'React Native' },
+      { name: 'PostgreSQL' },
+      { name: 'MongoDB' },
+      { name: 'GraphQL' },
+    ],
+    processSteps: [
+      {
+        title: { th: 'การวิเคราะห์ความต้องการ', en: 'Requirements Analysis' },
+        description: {
+          th: 'เก็บรวบรวมและวิเคราะห์ความต้องการทางธุรกิจอย่างละเอียดร่วมกับผู้มีส่วนได้ส่วนเสีย',
+          en: 'Gather and analyze business requirements in detail with stakeholders.',
+        },
+      },
+      {
+        title: { th: 'การออกแบบ UI/UX และระบบ', en: 'UI/UX & System Design' },
+        description: {
+          th: 'ออกแบบ User Interface, User Experience และสถาปัตยกรรมระบบที่ตอบโจทย์',
+          en: 'Design User Interface, User Experience, and system architecture that meets requirements.',
+        },
+      },
+      {
+        title: { th: 'การพัฒนาแบบ Agile', en: 'Agile Development' },
+        description: {
+          th: 'พัฒนาซอฟต์แวร์ด้วยวิธี Agile โดยแบ่งเป็น Sprint และส่งมอบงานอย่างต่อเนื่อง',
+          en: 'Develop software using Agile methodology, divided into Sprints with continuous delivery.',
+        },
+      },
+      {
+        title: { th: 'การทดสอบคุณภาพ', en: 'Quality Assurance' },
+        description: {
+          th: 'ทดสอบซอฟต์แวร์อย่างครบถ้วนทั้ง Unit Test, Integration Test และ UAT',
+          en: 'Comprehensive software testing including Unit Test, Integration Test, and UAT.',
+        },
+      },
+      {
+        title: { th: 'การ Deploy และส่งมอบ', en: 'Deployment & Delivery' },
+        description: {
+          th: 'Deploy ระบบและฝึกอบรมผู้ใช้งาน พร้อมเอกสารประกอบครบถ้วน',
+          en: 'Deploy system and train users with complete documentation.',
+        },
+      },
+      {
+        title: { th: 'การดูแลและปรับปรุง', en: 'Maintenance & Enhancement' },
+        description: {
+          th: 'ให้บริการดูแลระบบและปรับปรุงฟีเจอร์ตามความต้องการที่เปลี่ยนแปลง',
+          en: 'Provide system maintenance and feature enhancement based on changing requirements.',
+        },
+      },
+    ],
+  },
+  {
+    slug: 'cybersecurity',
+    icon: 'Shield',
+    color: 'bg-red-500',
+    order: 3,
+    title: { th: 'Cybersecurity', en: 'Cybersecurity' },
+    shortDescription: {
+      th: 'บริการด้านความปลอดภัยไซเบอร์ครบวงจร ปกป้องข้อมูลและระบบของคุณ',
+      en: 'Comprehensive cybersecurity services to protect your data and systems',
+    },
+    description: {
+      th: 'บริการด้านความปลอดภัยไซเบอร์ครบวงจร รวมถึง Security Assessment, Penetration Testing, SOC Services, และ Incident Response เพื่อปกป้องธุรกิจของคุณจากภัยคุกคามทางไซเบอร์ที่ซับซ้อนและเปลี่ยนแปลงอยู่ตลอดเวลา ด้วยทีมผู้เชี่ยวชาญที่มีใบรับรองระดับสากล',
+      en: 'Comprehensive cybersecurity services including Security Assessment, Penetration Testing, SOC Services, and Incident Response to protect your business from complex and constantly evolving cyber threats. With internationally certified expert team.',
+    },
+    features: [
+      { title: { th: 'Security Operations Center (SOC) 24/7', en: 'Security Operations Center (SOC) 24/7' } },
+      { title: { th: 'Penetration Testing & Vulnerability Assessment', en: 'Penetration Testing & Vulnerability Assessment' } },
+      { title: { th: 'Incident Response & Forensics', en: 'Incident Response & Forensics' } },
+      { title: { th: 'Security Awareness Training', en: 'Security Awareness Training' } },
+      { title: { th: 'Compliance & Risk Management', en: 'Compliance & Risk Management' } },
+      { title: { th: 'Cloud Security Assessment', en: 'Cloud Security Assessment' } },
+      { title: { th: 'Identity & Access Management', en: 'Identity & Access Management' } },
+      { title: { th: 'Data Loss Prevention (DLP)', en: 'Data Loss Prevention (DLP)' } },
+    ],
+    useCases: [
+      {
+        title: { th: 'SOC สำหรับสถาบันการเงิน', en: 'SOC for Financial Institutions' },
+        description: {
+          th: 'ให้บริการ Security Operations Center ที่ตรวจจับและตอบสนองต่อภัยคุกคามตลอด 24/7 ตามมาตรฐาน PCI-DSS',
+          en: 'Provide Security Operations Center services that detect and respond to threats 24/7 according to PCI-DSS standards.',
+        },
+      },
+      {
+        title: { th: 'Penetration Testing ประจำปี', en: 'Annual Penetration Testing' },
+        description: {
+          th: 'ทดสอบเจาะระบบเพื่อค้นหาช่องโหว่ก่อนที่ผู้ไม่หวังดีจะโจมตี พร้อมรายงานและแนวทางแก้ไข',
+          en: 'Conduct penetration testing to find vulnerabilities before attackers do, with detailed reports and remediation guidance.',
+        },
+      },
+      {
+        title: { th: 'การตอบสนองต่อเหตุการณ์', en: 'Incident Response' },
+        description: {
+          th: 'ทีมตอบสนองเหตุการณ์พร้อมให้บริการเมื่อเกิดการโจมตี เพื่อจำกัดความเสียหายและกู้คืนระบบ',
+          en: 'Incident response team ready to serve when attacks occur, to limit damage and recover systems.',
+        },
+      },
+      {
+        title: { th: 'Zero Trust Implementation', en: 'Zero Trust Implementation' },
+        description: {
+          th: 'ออกแบบและติดตั้งสถาปัตยกรรม Zero Trust เพื่อความปลอดภัยสูงสุดในการเข้าถึงทรัพยากร',
+          en: 'Design and implement Zero Trust architecture for maximum security in resource access.',
+        },
+      },
+    ],
+    technologies: [
+      { name: 'SIEM (Splunk, QRadar)' },
+      { name: 'CrowdStrike' },
+      { name: 'Palo Alto Networks' },
+      { name: 'Microsoft Sentinel' },
+      { name: 'Fortinet' },
+      { name: 'Tenable' },
+      { name: 'Qualys' },
+      { name: 'Okta' },
+    ],
+    processSteps: [
+      {
+        title: { th: 'การประเมินความเสี่ยง', en: 'Risk Assessment' },
+        description: {
+          th: 'ประเมินสถานะความปลอดภัยปัจจุบันและระบุความเสี่ยงที่สำคัญขององค์กร',
+          en: 'Assess current security posture and identify critical risks to the organization.',
+        },
+      },
+      {
+        title: { th: 'การวางแผนความปลอดภัย', en: 'Security Planning' },
+        description: {
+          th: 'พัฒนาแผนความปลอดภัยและ Roadmap ที่สอดคล้องกับเป้าหมายทางธุรกิจ',
+          en: 'Develop security plan and roadmap aligned with business objectives.',
+        },
+      },
+      {
+        title: { th: 'การติดตั้งโซลูชัน', en: 'Solution Implementation' },
+        description: {
+          th: 'ติดตั้งและ Configure เครื่องมือและระบบความปลอดภัยตามแผนที่วางไว้',
+          en: 'Install and configure security tools and systems according to plan.',
+        },
+      },
+      {
+        title: { th: 'การตรวจจับและตอบสนอง', en: 'Detection & Response' },
+        description: {
+          th: 'เริ่มการ Monitoring และตอบสนองต่อภัยคุกคามตลอด 24/7',
+          en: 'Begin monitoring and responding to threats 24/7.',
+        },
+      },
+      {
+        title: { th: 'การปรับปรุงต่อเนื่อง', en: 'Continuous Improvement' },
+        description: {
+          th: 'ทบทวนและปรับปรุงมาตรการความปลอดภัยอย่างต่อเนื่องตามภัยคุกคามใหม่',
+          en: 'Continuously review and improve security measures based on new threats.',
+        },
+      },
+    ],
+  },
+  {
+    slug: 'ai-datascience',
+    icon: 'Database',
+    color: 'bg-purple-500',
+    order: 4,
+    title: { th: 'AI & Data Science', en: 'AI & Data Science' },
+    shortDescription: {
+      th: 'โซลูชัน AI และ Data Science เพื่อขับเคลื่อนธุรกิจด้วยข้อมูล',
+      en: 'AI and Data Science solutions to drive data-driven business decisions',
+    },
+    description: {
+      th: 'บริการ AI และ Data Science ครบวงจร รวมถึง Machine Learning, Deep Learning, Data Analytics, และ Business Intelligence เพื่อช่วยให้องค์กรของคุณตัดสินใจด้วยข้อมูล เพิ่มประสิทธิภาพการดำเนินงาน และสร้างนวัตกรรมใหม่ที่สร้างความได้เปรียบทางการแข่งขัน',
+      en: 'Comprehensive AI and Data Science services including Machine Learning, Deep Learning, Data Analytics, and Business Intelligence to help your organization make data-driven decisions, improve operational efficiency, and create innovations that provide competitive advantages.',
+    },
+    features: [
+      { title: { th: 'Machine Learning Model Development', en: 'Machine Learning Model Development' } },
+      { title: { th: 'Natural Language Processing (NLP)', en: 'Natural Language Processing (NLP)' } },
+      { title: { th: 'Computer Vision Solutions', en: 'Computer Vision Solutions' } },
+      { title: { th: 'Predictive Analytics', en: 'Predictive Analytics' } },
+      { title: { th: 'Business Intelligence & Dashboards', en: 'Business Intelligence & Dashboards' } },
+      { title: { th: 'Data Engineering & ETL', en: 'Data Engineering & ETL' } },
+      { title: { th: 'Chatbot & Virtual Assistants', en: 'Chatbot & Virtual Assistants' } },
+      { title: { th: 'Recommendation Systems', en: 'Recommendation Systems' } },
+    ],
+    useCases: [
+      {
+        title: { th: 'การพยากรณ์ยอดขาย', en: 'Sales Forecasting' },
+        description: {
+          th: 'พัฒนาโมเดลพยากรณ์ยอดขายโดยใช้ Machine Learning เพื่อวางแผนการผลิตและ Inventory',
+          en: 'Develop sales forecasting models using Machine Learning for production and inventory planning.',
+        },
+      },
+      {
+        title: { th: 'Chatbot อัจฉริยะ', en: 'Intelligent Chatbot' },
+        description: {
+          th: 'พัฒนา Chatbot ที่เข้าใจภาษาไทยและตอบคำถามลูกค้าได้อย่างแม่นยำ ลดภาระ Call Center',
+          en: 'Develop Chatbots that understand Thai and accurately answer customer questions, reducing Call Center workload.',
+        },
+      },
+      {
+        title: { th: 'การตรวจจับการฉ้อโกง', en: 'Fraud Detection' },
+        description: {
+          th: 'ระบบตรวจจับธุรกรรมผิดปกติแบบ Real-time สำหรับสถาบันการเงินและ E-commerce',
+          en: 'Real-time anomaly detection system for financial institutions and E-commerce.',
+        },
+      },
+      {
+        title: { th: 'Computer Vision สำหรับ QC', en: 'Computer Vision for QC' },
+        description: {
+          th: 'ระบบตรวจสอบคุณภาพสินค้าอัตโนมัติด้วย AI ในสายการผลิต',
+          en: 'Automated product quality inspection system using AI in production lines.',
+        },
+      },
+    ],
+    technologies: [
+      { name: 'Python' },
+      { name: 'TensorFlow' },
+      { name: 'PyTorch' },
+      { name: 'Scikit-learn' },
+      { name: 'Apache Spark' },
+      { name: 'Databricks' },
+      { name: 'Power BI' },
+      { name: 'Tableau' },
+      { name: 'LangChain' },
+      { name: 'OpenAI' },
+    ],
+    processSteps: [
+      {
+        title: { th: 'การสำรวจและเตรียมข้อมูล', en: 'Data Discovery & Preparation' },
+        description: {
+          th: 'สำรวจและประเมินคุณภาพข้อมูล ทำความสะอาดและเตรียมข้อมูลสำหรับการวิเคราะห์',
+          en: 'Explore and assess data quality, clean and prepare data for analysis.',
+        },
+      },
+      {
+        title: { th: 'การพัฒนาโมเดล', en: 'Model Development' },
+        description: {
+          th: 'พัฒนาและฝึกฝนโมเดล Machine Learning/AI ด้วยเทคนิคที่เหมาะสม',
+          en: 'Develop and train Machine Learning/AI models with appropriate techniques.',
+        },
+      },
+      {
+        title: { th: 'การทดสอบและปรับแต่ง', en: 'Testing & Tuning' },
+        description: {
+          th: 'ทดสอบความแม่นยำของโมเดลและปรับแต่ง Hyperparameters เพื่อผลลัพธ์ที่ดีที่สุด',
+          en: 'Test model accuracy and tune Hyperparameters for optimal results.',
+        },
+      },
+      {
+        title: { th: 'การ Deploy สู่ Production', en: 'Production Deployment' },
+        description: {
+          th: 'Deploy โมเดลสู่ Production environment พร้อมระบบ Monitoring และ Auto-scaling',
+          en: 'Deploy models to Production environment with Monitoring and Auto-scaling systems.',
+        },
+      },
+      {
+        title: { th: 'การติดตามและปรับปรุง', en: 'Monitoring & Improvement' },
+        description: {
+          th: 'ติดตามประสิทธิภาพโมเดลและปรับปรุงอย่างต่อเนื่องตามข้อมูลใหม่',
+          en: 'Monitor model performance and continuously improve based on new data.',
+        },
+      },
+    ],
+  },
+  {
+    slug: 'hpc',
+    icon: 'Server',
+    color: 'bg-orange-500',
+    order: 5,
+    title: { th: 'High Performance Computing', en: 'High Performance Computing' },
+    shortDescription: {
+      th: 'ระบบ HPC สำหรับงานคำนวณขนาดใหญ่และการวิจัย',
+      en: 'HPC systems for large-scale computing and research applications',
+    },
+    description: {
+      th: 'บริการ High Performance Computing สำหรับงานที่ต้องการประสิทธิภาพสูง เช่น การวิจัยทางวิทยาศาสตร์ การจำลองทางวิศวกรรม การประมวลผล AI ขนาดใหญ่ และการวิเคราะห์ข้อมูลปริมาณมหาศาล ด้วยโครงสร้างพื้นฐานที่ทันสมัยและทีมผู้เชี่ยวชาญเฉพาะทาง',
+      en: 'High Performance Computing services for demanding workloads such as scientific research, engineering simulations, large-scale AI processing, and big data analytics. With modern infrastructure and specialized expert team.',
+    },
+    features: [
+      { title: { th: 'GPU Cluster for AI/ML Workloads', en: 'GPU Cluster for AI/ML Workloads' } },
+      { title: { th: 'HPC Cluster Design & Build', en: 'HPC Cluster Design & Build' } },
+      { title: { th: 'High-Speed Storage Systems', en: 'High-Speed Storage Systems' } },
+      { title: { th: 'Job Scheduling & Management', en: 'Job Scheduling & Management' } },
+      { title: { th: 'Parallel Computing Optimization', en: 'Parallel Computing Optimization' } },
+      { title: { th: 'Research Computing Support', en: 'Research Computing Support' } },
+      { title: { th: 'HPC as a Service (HPCaaS)', en: 'HPC as a Service (HPCaaS)' } },
+      { title: { th: '24/7 System Administration', en: '24/7 System Administration' } },
+    ],
+    useCases: [
+      {
+        title: { th: 'การวิจัยทางวิทยาศาสตร์', en: 'Scientific Research' },
+        description: {
+          th: 'สนับสนุนงานวิจัยที่ต้องการคำนวณซับซ้อน เช่น การจำลองโมเลกุล การวิเคราะห์ Genomics',
+          en: 'Support research requiring complex calculations such as molecular simulation, Genomics analysis.',
+        },
+      },
+      {
+        title: { th: 'AI Model Training', en: 'AI Model Training' },
+        description: {
+          th: 'ให้บริการ GPU Cluster สำหรับการ Train โมเดล Deep Learning ขนาดใหญ่',
+          en: 'Provide GPU Cluster services for training large Deep Learning models.',
+        },
+      },
+      {
+        title: { th: 'การจำลองทางวิศวกรรม', en: 'Engineering Simulation' },
+        description: {
+          th: 'รันการจำลอง CAE, CFD, FEA สำหรับอุตสาหกรรมยานยนต์และการบิน',
+          en: 'Run CAE, CFD, FEA simulations for automotive and aerospace industries.',
+        },
+      },
+      {
+        title: { th: 'การวิเคราะห์ข้อมูลขนาดใหญ่', en: 'Big Data Analytics' },
+        description: {
+          th: 'ประมวลผลและวิเคราะห์ข้อมูลปริมาณมหาศาลในเวลาอันสั้น',
+          en: 'Process and analyze massive amounts of data in short time.',
+        },
+      },
+    ],
+    technologies: [
+      { name: 'NVIDIA GPU (A100, H100)' },
+      { name: 'Slurm Workload Manager' },
+      { name: 'Lustre File System' },
+      { name: 'InfiniBand' },
+      { name: 'CUDA' },
+      { name: 'OpenMPI' },
+      { name: 'Singularity' },
+      { name: 'NVIDIA DGX' },
+    ],
+    processSteps: [
+      {
+        title: { th: 'การวิเคราะห์ความต้องการ', en: 'Requirements Analysis' },
+        description: {
+          th: 'วิเคราะห์ Workload และความต้องการด้านประสิทธิภาพอย่างละเอียด',
+          en: 'Analyze workloads and performance requirements in detail.',
+        },
+      },
+      {
+        title: { th: 'การออกแบบระบบ', en: 'System Design' },
+        description: {
+          th: 'ออกแบบสถาปัตยกรรม HPC ที่เหมาะสมกับ Workload และงบประมาณ',
+          en: 'Design HPC architecture suitable for workloads and budget.',
+        },
+      },
+      {
+        title: { th: 'การติดตั้งและ Configure', en: 'Installation & Configuration' },
+        description: {
+          th: 'ติดตั้งฮาร์ดแวร์และ Configure ซอฟต์แวร์ทั้งหมด รวมถึง Job Scheduler',
+          en: 'Install hardware and configure all software including Job Scheduler.',
+        },
+      },
+      {
+        title: { th: 'การทดสอบและ Benchmark', en: 'Testing & Benchmarking' },
+        description: {
+          th: 'ทดสอบและ Benchmark ระบบเพื่อให้แน่ใจว่าได้ประสิทธิภาพตามที่ต้องการ',
+          en: 'Test and benchmark system to ensure required performance is achieved.',
+        },
+      },
+      {
+        title: { th: 'การดูแลและสนับสนุน', en: 'Management & Support' },
+        description: {
+          th: 'ให้บริการดูแลระบบและสนับสนุนผู้ใช้งานตลอด 24/7',
+          en: 'Provide system administration and user support 24/7.',
+        },
+      },
+    ],
+  },
+  {
+    slug: 'consulting',
+    icon: 'BarChart',
+    color: 'bg-teal-500',
+    order: 6,
+    title: { th: 'IT Consulting', en: 'IT Consulting' },
+    shortDescription: {
+      th: 'บริการที่ปรึกษาด้าน IT และ Digital Transformation',
+      en: 'IT consulting and Digital Transformation advisory services',
+    },
+    description: {
+      th: 'บริการที่ปรึกษาด้าน IT ครบวงจร รวมถึง IT Strategy, Digital Transformation, Process Optimization และ Technology Roadmap เพื่อช่วยให้องค์กรของคุณก้าวสู่ยุคดิจิทัลอย่างมั่นใจ ด้วยทีมที่ปรึกษาที่มีประสบการณ์ในหลากหลายอุตสาหกรรม',
+      en: 'Comprehensive IT consulting services including IT Strategy, Digital Transformation, Process Optimization, and Technology Roadmap to help your organization confidently embrace the digital era. With consulting team experienced in various industries.',
+    },
+    features: [
+      { title: { th: 'Digital Transformation Strategy', en: 'Digital Transformation Strategy' } },
+      { title: { th: 'IT Strategy & Roadmap', en: 'IT Strategy & Roadmap' } },
+      { title: { th: 'Business Process Optimization', en: 'Business Process Optimization' } },
+      { title: { th: 'Technology Assessment', en: 'Technology Assessment' } },
+      { title: { th: 'Vendor Selection & Management', en: 'Vendor Selection & Management' } },
+      { title: { th: 'IT Governance & Compliance', en: 'IT Governance & Compliance' } },
+      { title: { th: 'Change Management', en: 'Change Management' } },
+      { title: { th: 'Project Management (PMO)', en: 'Project Management (PMO)' } },
+    ],
+    useCases: [
+      {
+        title: { th: 'Digital Transformation Roadmap', en: 'Digital Transformation Roadmap' },
+        description: {
+          th: 'วางแผนการเปลี่ยนแปลงทางดิจิทัลที่สอดคล้องกับเป้าหมายทางธุรกิจและงบประมาณ',
+          en: 'Plan digital transformation aligned with business goals and budget.',
+        },
+      },
+      {
+        title: { th: 'IT Due Diligence', en: 'IT Due Diligence' },
+        description: {
+          th: 'ประเมินสถานะ IT สำหรับการควบรวมกิจการ (M&A) และการลงทุน',
+          en: 'Assess IT status for Mergers & Acquisitions (M&A) and investments.',
+        },
+      },
+      {
+        title: { th: 'Process Automation Assessment', en: 'Process Automation Assessment' },
+        description: {
+          th: 'วิเคราะห์และระบุกระบวนการที่สามารถใช้ Automation เพื่อเพิ่มประสิทธิภาพ',
+          en: 'Analyze and identify processes that can use Automation to improve efficiency.',
+        },
+      },
+      {
+        title: { th: 'IT Cost Optimization', en: 'IT Cost Optimization' },
+        description: {
+          th: 'ทบทวนและปรับปรุงค่าใช้จ่ายด้าน IT โดยไม่กระทบต่อประสิทธิภาพการทำงาน',
+          en: 'Review and optimize IT costs without affecting operational performance.',
+        },
+      },
+    ],
+    technologies: [
+      { name: 'Enterprise Architecture (TOGAF)' },
+      { name: 'ITIL' },
+      { name: 'Agile/Scrum' },
+      { name: 'Design Thinking' },
+      { name: 'Business Process Modeling' },
+      { name: 'Project Management (PMP)' },
+      { name: 'Change Management' },
+      { name: 'Risk Management' },
+    ],
+    processSteps: [
+      {
+        title: { th: 'การสำรวจและประเมิน', en: 'Discovery & Assessment' },
+        description: {
+          th: 'สำรวจสถานะปัจจุบันและประเมินความพร้อมขององค์กร',
+          en: 'Survey current state and assess organizational readiness.',
+        },
+      },
+      {
+        title: { th: 'การวิเคราะห์และวางแผน', en: 'Analysis & Planning' },
+        description: {
+          th: 'วิเคราะห์ Gap และพัฒนาแผนการดำเนินงานที่เป็นไปได้',
+          en: 'Analyze gaps and develop actionable implementation plans.',
+        },
+      },
+      {
+        title: { th: 'การนำเสนอและอนุมัติ', en: 'Presentation & Approval' },
+        description: {
+          th: 'นำเสนอแผนและข้อเสนอแนะต่อผู้บริหารเพื่อขออนุมัติ',
+          en: 'Present plans and recommendations to management for approval.',
+        },
+      },
+      {
+        title: { th: 'การสนับสนุนการดำเนินงาน', en: 'Implementation Support' },
+        description: {
+          th: 'สนับสนุนการดำเนินงานตามแผนและติดตามความคืบหน้า',
+          en: 'Support implementation according to plan and track progress.',
+        },
+      },
+      {
+        title: { th: 'การทบทวนและปรับปรุง', en: 'Review & Optimization' },
+        description: {
+          th: 'ทบทวนผลลัพธ์และปรับปรุงแผนอย่างต่อเนื่อง',
+          en: 'Review results and continuously improve plans.',
+        },
+      },
+    ],
+  },
+];
+
+async function seedServices(strapi: Core.Strapi) {
+  const existingServices = await strapi.documents('api::service.service').findMany({
+    locale: 'th-TH',
+  });
+
+  if (existingServices.length > 0) {
+    strapi.log.info(`${existingServices.length} services already exist, skipping seed`);
+    return;
+  }
+
+  strapi.log.info('Seeding services...');
+
+  for (const service of servicesData) {
+    try {
+      // Prepare Thai data
+      const thFeatures = service.features.map(f => ({ title: f.title.th }));
+      const thUseCases = service.useCases.map(u => ({ title: u.title.th, description: u.description.th }));
+      const thProcessSteps = service.processSteps.map(p => ({ title: p.title.th, description: p.description.th }));
+
+      // Create Thai version (default locale)
+      const thEntry = await strapi.documents('api::service.service').create({
+        data: {
+          title: service.title.th,
+          slug: service.slug,
+          shortDescription: service.shortDescription.th,
+          description: service.description.th,
+          icon: service.icon,
+          color: service.color,
+          order: service.order,
+          features: thFeatures,
+          useCases: thUseCases,
+          technologies: service.technologies,
+          processSteps: thProcessSteps,
+          autoTranslate: false,
+        },
+        locale: 'th-TH',
+        status: 'published',
+      });
+
+      strapi.log.info(`Created Thai service: ${service.title.th}`);
+
+      // Prepare English data
+      const enFeatures = service.features.map(f => ({ title: f.title.en }));
+      const enUseCases = service.useCases.map(u => ({ title: u.title.en, description: u.description.en }));
+      const enProcessSteps = service.processSteps.map(p => ({ title: p.title.en, description: p.description.en }));
+
+      // Create English localization
+      await strapi.documents('api::service.service').update({
+        documentId: thEntry.documentId,
+        data: {
+          title: service.title.en,
+          slug: service.slug,
+          shortDescription: service.shortDescription.en,
+          description: service.description.en,
+          icon: service.icon,
+          color: service.color,
+          order: service.order,
+          features: enFeatures,
+          useCases: enUseCases,
+          technologies: service.technologies,
+          processSteps: enProcessSteps,
+          autoTranslate: false,
+        },
+        locale: 'en',
+        status: 'published',
+      });
+
+      strapi.log.info(`Created English service: ${service.title.en}`);
+    } catch (error) {
+      strapi.log.error(`Failed to create service ${service.title.en}:`, error);
+    }
+  }
+
+  strapi.log.info('Services seeding complete!');
+}
+
 const homepageData = {
   heroSection: {
     th: {
@@ -1505,6 +2221,7 @@ export default {
     await seedJobPositions(strapi);
     await seedContactInfo(strapi);
     await seedLegalPages(strapi);
+    await seedServices(strapi);
     await seedHomepage(strapi);
   },
 };

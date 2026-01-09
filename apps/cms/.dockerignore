@@ -1,0 +1,11 @@
+node_modules
+.tmp
+.cache
+.git
+dist
+build
+*.log
+.env
+.env.*
+!.env.example
+.DS_Store
