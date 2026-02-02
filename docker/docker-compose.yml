@@ -11,6 +11,8 @@ services:
     restart: unless-stopped
     ports:
       - "8801:3000"
+    extra_hosts:
+      - "cms.techthinkspace.com:host-gateway"
     environment:
       - NODE_ENV=${NODE_ENV:-production}
       - NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
