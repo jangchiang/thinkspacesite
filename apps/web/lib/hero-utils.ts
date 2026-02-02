@@ -39,16 +39,22 @@ export function buildHeroBackground(
     return null
   }
 
-  const baseUrl = strapiUrl || process.env.NEXT_PUBLIC_STRAPI_URL || 'https://cms.techthinkspace.com'
-
   let imageUrl: string | undefined
   if (heroData.backgroundImage) {
     const img = heroData.backgroundImage
     const url = img.formats?.large?.url || img.formats?.medium?.url || img.url
-    imageUrl = url.startsWith('http') ? url : `${baseUrl}${url}`
+    // Use local proxy path so Next.js image optimizer can reach CMS internally
+    if (url.startsWith('/uploads/')) {
+      imageUrl = `/cms-uploads${url.replace('/uploads', '')}`
+    } else if (url.startsWith('http')) {
+      imageUrl = url
+    } else {
+      imageUrl = `/cms-uploads${url}`
+    }
   }
 
   let videoUrl: string | undefined
+  const baseUrl = strapiUrl || process.env.NEXT_PUBLIC_STRAPI_URL || 'https://cms.techthinkspace.com'
   if (heroData.backgroundVideo?.url) {
     const url = heroData.backgroundVideo.url
     videoUrl = url.startsWith('http') ? url : `${baseUrl}${url}`

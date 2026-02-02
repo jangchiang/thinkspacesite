@@ -7,6 +7,7 @@ const nextConfig = {
       // Development
       { protocol: 'http', hostname: 'localhost', port: '1337' },
       { protocol: 'http', hostname: 'localhost', port: '3000' },
+      { protocol: 'http', hostname: 'localhost' },
       { protocol: 'http', hostname: 'cms', port: '1337' },
       { protocol: 'http', hostname: 'cms' },
       // Production - Strapi CMS
@@ -20,6 +21,14 @@ const nextConfig = {
     serverActions: {
       bodySizeLimit: '2mb',
     },
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/cms-uploads/:path*',
+        destination: `${process.env.STRAPI_URL || 'http://cms:1337'}/uploads/:path*`,
+      },
+    ]
   },
   async headers() {
     return [
