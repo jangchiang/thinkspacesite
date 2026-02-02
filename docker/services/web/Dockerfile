@@ -56,9 +56,10 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 
-# Copy the built .next folder and public
+# Copy the built .next folder, public, and config
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next ./.next
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/next.config.js ./next.config.js
 
 # Create a clean package.json without workspace dependencies and install
 # IMPORTANT: Versions must match what the app was built with (React 19.0.1, Next.js 15.0.7)
