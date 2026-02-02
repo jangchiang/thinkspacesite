@@ -51,6 +51,7 @@ COPY --from=builder /app/src ./src
 COPY --from=builder /app/database ./database
 COPY --from=builder /app/types ./types
 COPY --from=builder /app/tsconfig.json ./
+COPY --from=builder /app/favicon.png ./
 
 # Create non-root user and set permissions
 RUN addgroup --system --gid 1001 strapi && \
