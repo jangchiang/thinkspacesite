@@ -171,7 +171,7 @@ export function Logo({ showTagline = false, size = 'md', animated = true }: Logo
               backgroundPosition: { duration: 1.8, ease: 'easeInOut', delay: 1.2 }
             }}
             style={{
-              background: 'linear-gradient(90deg, #10B981 0%, #10B981 45%, #ffffff 55%, #ffffff 100%)',
+              background: 'linear-gradient(90deg, #10B981 0%, #10B981 45%, oklch(var(--bc)) 55%, oklch(var(--bc)) 100%)',
               backgroundSize: '300% 100%',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',

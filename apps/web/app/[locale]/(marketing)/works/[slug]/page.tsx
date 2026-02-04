@@ -594,12 +594,12 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
       </section>
 
       {/* Results Section */}
-      <section className="py-20 bg-gradient-to-br from-primary to-primary/80 text-primary-content">
+      <section className="py-20 bg-gradient-to-br from-neutral-800 to-neutral-900 text-white">
         <div className="container-custom">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/20 mb-4">
-                <Rocket className="w-8 h-8" />
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/20 mb-4">
+                <Rocket className="w-8 h-8 text-primary" />
               </div>
               <h2 className="text-3xl md:text-4xl font-bold">
                 {locale === 'th' ? 'ผลลัพธ์ที่ได้' : 'The Results'}
@@ -613,9 +613,9 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
                     key={index}
                     className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center border border-white/20"
                   >
-                    <CheckCircle2 className="w-8 h-8 mx-auto mb-3 text-white/80" />
-                    <div className="text-4xl font-bold mb-2">{result.value}</div>
-                    <div className="text-sm text-primary-content/80">{result.label}</div>
+                    <CheckCircle2 className="w-8 h-8 mx-auto mb-3 text-primary" />
+                    <div className="text-4xl font-bold text-primary mb-2">{result.value}</div>
+                    <div className="text-sm text-white/70">{result.label}</div>
                   </div>
                 ))}
               </div>
@@ -626,9 +626,9 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
                     key={index}
                     className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 flex items-start gap-4"
                   >
-                    <CheckCircle2 className="w-7 h-7 text-white/80 flex-shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-7 h-7 text-primary flex-shrink-0 mt-0.5" />
                     <div>
-                      <div className="text-xs font-semibold uppercase tracking-wider text-primary-content/60 mb-1">
+                      <div className="text-xs font-semibold uppercase tracking-wider text-white/50 mb-1">
                         {result.label}
                       </div>
                       <div className="text-base leading-relaxed">
@@ -652,7 +652,7 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
                       key={index}
                       className="flex items-start gap-3 bg-white/10 backdrop-blur-sm rounded-xl px-5 py-4 border border-white/10"
                     >
-                      <Check className="w-5 h-5 text-white/80 mt-0.5 flex-shrink-0" />
+                      <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                       <span className="text-sm leading-relaxed">{achievement}</span>
                     </div>
                   ))}

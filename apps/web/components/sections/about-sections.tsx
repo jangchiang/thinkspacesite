@@ -1,8 +1,8 @@
 'use client'
 
 import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
-import { Users, Target, Award, Globe, type LucideIcon } from 'lucide-react'
+import { useRef, useState } from 'react'
+import { Users, Target, Award, Globe, ChevronDown, ChevronUp, type LucideIcon } from 'lucide-react'
 import Image from 'next/image'
 import { type HeroBackground } from '@/lib/hero-utils'
 
@@ -172,30 +172,77 @@ export function AboutHero({ title, description, background }: AboutHeroProps): R
 
 // Helper to render value descriptions - detects numbered lists and renders properly
 function ValueDescription({ text }: { text: string }): React.JSX.Element {
-  // Check if text contains numbered patterns like "1.", "2." etc.
-  const numberedPattern = /(?:^|\n)\s*\d+\.\s/
+  const [expanded, setExpanded] = useState(false)
+
+  // Check if text contains numbered patterns like "1.", "2." etc. (handles "1.\n" CMS format)
+  const numberedPattern = /(?:^|\n)\s*\d+\.\s*/
   if (numberedPattern.test(text)) {
-    // Split on numbered pattern boundaries, filtering empty entries
-    const items = text.split(/(?:^|\n)\s*\d+\.\s/).filter(Boolean).map(s => s.trim())
+    const items = text.split(/(?:^|\n)\s*\d+\.\s*/).filter(Boolean).map(s => s.trim())
+    const collapsedCount = 2
+    const showToggle = items.length > collapsedCount
+    const displayItems = expanded ? items : items.slice(0, collapsedCount)
+
     return (
-      <ul className="text-sm text-base-content/70 leading-relaxed space-y-1.5 text-left">
-        {items.map((item, i) => (
-          <li key={i} className="flex items-start gap-2">
-            <span className="text-primary font-semibold mt-0.5 flex-shrink-0">{i + 1}.</span>
-            <span>{item}</span>
-          </li>
-        ))}
-      </ul>
+      <div className="text-left w-full">
+        <ul className="text-sm text-base-content/70 leading-relaxed space-y-2">
+          {displayItems.map((item, i) => {
+            // Bold the title portion before the colon if present
+            const colonIdx = item.indexOf(':')
+            const hasTitle = colonIdx > 0 && colonIdx < 50
+            return (
+              <li key={i} className="flex items-start gap-2">
+                <span className="text-primary font-semibold mt-0.5 flex-shrink-0">{i + 1}.</span>
+                <span>
+                  {hasTitle ? (
+                    <>
+                      <span className="font-medium text-base-content">{item.substring(0, colonIdx)}</span>
+                      <span>{item.substring(colonIdx)}</span>
+                    </>
+                  ) : item}
+                </span>
+              </li>
+            )
+          })}
+        </ul>
+        {showToggle && (
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="flex items-center gap-1 text-primary text-xs font-medium mt-3 hover:underline"
+          >
+            {expanded ? (
+              <><ChevronUp className="w-3 h-3" /> แสดงน้อยลง</>
+            ) : (
+              <><ChevronDown className="w-3 h-3" /> +{items.length - collapsedCount} รายการ</>
+            )}
+          </button>
+        )}
+      </div>
     )
   }
 
-  // If text has newlines, render with whitespace preserved
-  if (text.includes('\n')) {
-    return <p className="text-sm text-base-content/70 leading-relaxed whitespace-pre-line">{text}</p>
+  // Long paragraph — collapsible
+  if (text.length > 200) {
+    return (
+      <div className="text-left w-full">
+        <p className={`text-sm text-base-content/70 leading-relaxed ${!expanded ? 'line-clamp-4' : ''}`}>
+          {text}
+        </p>
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="flex items-center gap-1 text-primary text-xs font-medium mt-2 hover:underline"
+        >
+          {expanded ? (
+            <><ChevronUp className="w-3 h-3" /> แสดงน้อยลง</>
+          ) : (
+            <><ChevronDown className="w-3 h-3" /> อ่านเพิ่มเติม</>
+          )}
+        </button>
+      </div>
+    )
   }
 
-  // Default: simple paragraph
-  return <p className="text-base-content/70">{text}</p>
+  // Short text — render as-is
+  return <p className="text-sm text-base-content/70">{text}</p>
 }
 
 // Values Section
@@ -207,11 +254,17 @@ export function ValuesSection({ values }: ValuesSectionProps): React.JSX.Element
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
+  // Use 2-col layout when any value has long content (numbered list or long paragraph)
+  const hasLongContent = values.some(v => v.description.length > 150)
+  const gridClass = hasLongContent
+    ? 'grid md:grid-cols-2 gap-8'
+    : 'grid md:grid-cols-2 lg:grid-cols-4 gap-8'
+
   return (
     <section className="section-padding" ref={ref}>
       <div className="container-custom">
         <motion.div
-          className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
+          className={gridClass}
           variants={staggerContainer}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
