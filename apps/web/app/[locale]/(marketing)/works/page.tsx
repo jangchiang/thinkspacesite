@@ -1,11 +1,12 @@
 import { type Locale } from '@/lib/i18n'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRight, Building2, TrendingUp } from 'lucide-react'
+import { ArrowRight, Building2, TrendingUp, Check } from 'lucide-react'
 import type { Metadata } from 'next'
 import { getCaseStudies, getPageHero } from '@/lib/strapi'
 import { HeroSection } from '@/components/sections/hero-section'
 import { buildHeroBackground } from '@/lib/hero-utils'
+import { isMetricValue } from '@/lib/case-study-utils'
 
 type Props = {
   params: Promise<{ locale: Locale }>
@@ -147,13 +148,29 @@ export default async function WorksPage({ params }: Props): Promise<React.JSX.El
                     {work.challenge}
                   </p>
                   {work.resultValue && (
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className="flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-lg">
-                        <TrendingUp className="w-5 h-5" />
-                        <span className="font-bold text-2xl">{work.resultValue}</span>
+                    isMetricValue(work.resultValue) ? (
+                      <div className="flex items-center gap-4 mb-4">
+                        <div className="flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-lg">
+                          <TrendingUp className="w-5 h-5" />
+                          <span className="font-bold text-2xl">{work.resultValue}</span>
+                        </div>
+                        <span className="text-base-content/70">{work.resultLabel}</span>
                       </div>
-                      <span className="text-base-content/70">{work.resultLabel}</span>
-                    </div>
+                    ) : (
+                      <div className="bg-primary/5 border border-primary/10 rounded-lg p-4 mb-4">
+                        <div className="flex items-start gap-2">
+                          <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                          <div>
+                            <div className="text-xs font-semibold text-primary uppercase tracking-wider mb-1">
+                              {work.resultLabel}
+                            </div>
+                            <p className="text-sm text-base-content/80 leading-relaxed line-clamp-2">
+                              {work.resultValue}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )
                   )}
                   <div className="card-actions">
                     <Link

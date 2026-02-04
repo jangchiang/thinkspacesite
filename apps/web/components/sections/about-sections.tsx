@@ -170,6 +170,34 @@ export function AboutHero({ title, description, background }: AboutHeroProps): R
   )
 }
 
+// Helper to render value descriptions - detects numbered lists and renders properly
+function ValueDescription({ text }: { text: string }): React.JSX.Element {
+  // Check if text contains numbered patterns like "1.", "2." etc.
+  const numberedPattern = /(?:^|\n)\s*\d+\.\s/
+  if (numberedPattern.test(text)) {
+    // Split on numbered pattern boundaries, filtering empty entries
+    const items = text.split(/(?:^|\n)\s*\d+\.\s/).filter(Boolean).map(s => s.trim())
+    return (
+      <ul className="text-sm text-base-content/70 leading-relaxed space-y-1.5 text-left">
+        {items.map((item, i) => (
+          <li key={i} className="flex items-start gap-2">
+            <span className="text-primary font-semibold mt-0.5 flex-shrink-0">{i + 1}.</span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
+  // If text has newlines, render with whitespace preserved
+  if (text.includes('\n')) {
+    return <p className="text-sm text-base-content/70 leading-relaxed whitespace-pre-line">{text}</p>
+  }
+
+  // Default: simple paragraph
+  return <p className="text-base-content/70">{text}</p>
+}
+
 // Values Section
 interface ValuesSectionProps {
   values: Value[]
@@ -205,7 +233,7 @@ export function ValuesSection({ values }: ValuesSectionProps): React.JSX.Element
                     <IconComponent className="w-8 h-8 text-primary" />
                   </motion.div>
                   <h3 className="card-title">{value.title}</h3>
-                  <p className="text-base-content/70">{value.description}</p>
+                  <ValueDescription text={value.description} />
                 </div>
               </motion.div>
             )
@@ -248,8 +276,8 @@ export function StorySection({
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-6">{storyTitle}</h2>
             <div className="space-y-4 text-base-content/70">
-              <p>{storyParagraph1}</p>
-              <p>{storyParagraph2}</p>
+              <p className="whitespace-pre-line">{storyParagraph1}</p>
+              <p className="whitespace-pre-line">{storyParagraph2}</p>
             </div>
           </motion.div>
 
@@ -325,9 +353,13 @@ interface TeamSectionProps {
   strapiUrl?: string
 }
 
-export function TeamSection({ title, description, members, strapiUrl = '' }: TeamSectionProps): React.JSX.Element {
+export function TeamSection({ title, description, members, strapiUrl = '' }: TeamSectionProps): React.JSX.Element | null {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+
+  if (!members || members.length === 0) {
+    return null
+  }
 
   return (
     <section className="section-padding" ref={ref}>

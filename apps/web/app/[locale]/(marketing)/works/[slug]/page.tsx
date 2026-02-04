@@ -1,12 +1,13 @@
 import { type Locale } from '@/lib/i18n'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRight, Building2, Quote, CheckCircle2, Lightbulb, Target, Rocket } from 'lucide-react'
+import { ArrowRight, Building2, Quote, CheckCircle2, Lightbulb, Target, Rocket, Check } from 'lucide-react'
 import type { Metadata } from 'next'
 import { getCaseStudy } from '@/lib/strapi'
 import { notFound } from 'next/navigation'
 import { MarkdownRenderer } from '@/components/markdown-renderer'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
+import { getResultDisplayMode } from '@/lib/case-study-utils'
 
 type Props = {
   params: Promise<{ locale: Locale; slug: string }>
@@ -31,6 +32,7 @@ interface StrapiWork {
   resultValue?: string
   resultLabel?: string
   additionalResults?: StrapiResultItem[]
+  results?: string[]
   technologies?: string[]
   featuredImage?: {
     url: string
@@ -278,6 +280,7 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
           value: r.value,
           label: locale === 'th' ? r.label.th : r.label.en
         })),
+    results: strapiWork.results || [],
     testimonial: undefined, // Remove testimonial for Strapi data
     technologies: strapiWork.technologies && strapiWork.technologies.length > 0
       ? strapiWork.technologies
@@ -297,6 +300,7 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
       value: r.value,
       label: locale === 'th' ? r.label.th : r.label.en
     })),
+    results: [],
     testimonial: fallback!.testimonial,
     technologies: fallback!.technologies,
   }
@@ -305,6 +309,9 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
     { value: work.resultValue, label: work.resultLabel },
     ...(work.additionalResults || [])
   ]
+
+  const displayMode = getResultDisplayMode(allResults)
+  const isMetric = displayMode === 'metric'
 
   const journeySteps = [
     {
@@ -392,34 +399,66 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
 
               {/* Primary Metric */}
               {work.resultValue && (
-                <div className="flex items-center gap-4 pt-4">
-                  <div className="text-5xl md:text-6xl font-bold text-primary">
-                    {work.resultValue}
+                isMetric ? (
+                  <div className="flex items-center gap-4 pt-4">
+                    <div className="text-5xl md:text-6xl font-bold text-primary">
+                      {work.resultValue}
+                    </div>
+                    <div className="text-lg text-white/70 max-w-[150px]">
+                      {work.resultLabel}
+                    </div>
                   </div>
-                  <div className="text-lg text-white/70 max-w-[150px]">
-                    {work.resultLabel}
+                ) : (
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-5 border border-white/10 max-w-lg mt-4">
+                    <div className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">
+                      {work.resultLabel}
+                    </div>
+                    <div className="text-xl md:text-2xl font-semibold leading-snug">
+                      {work.resultValue}
+                    </div>
                   </div>
-                </div>
+                )
               )}
             </div>
 
             {/* Stats Cards - Floating */}
             {work.additionalResults && work.additionalResults.length > 0 && (
-              <div className="hidden lg:grid grid-cols-2 gap-4">
-                {allResults.slice(0, 4).map((result, index) => (
-                  <div
-                    key={index}
-                    className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:bg-white/15 transition-colors"
-                  >
-                    <div className="text-3xl font-bold text-primary mb-1">
-                      {result.value}
+              isMetric ? (
+                <div className="hidden lg:grid grid-cols-2 gap-4">
+                  {allResults.slice(0, 4).map((result, index) => (
+                    <div
+                      key={index}
+                      className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:bg-white/15 transition-colors"
+                    >
+                      <div className="text-3xl font-bold text-primary mb-1">
+                        {result.value}
+                      </div>
+                      <div className="text-sm text-white/70">
+                        {result.label}
+                      </div>
                     </div>
-                    <div className="text-sm text-white/70">
-                      {result.label}
+                  ))}
+                </div>
+              ) : (
+                <div className="hidden lg:block space-y-3">
+                  {allResults.slice(0, 4).map((result, index) => (
+                    <div
+                      key={index}
+                      className="flex items-start gap-3 bg-white/10 backdrop-blur-md rounded-xl px-5 py-4 border border-white/10"
+                    >
+                      <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                      <div>
+                        <div className="text-xs font-semibold text-primary uppercase tracking-wider mb-1">
+                          {result.label}
+                        </div>
+                        <div className="text-sm text-white/90 leading-relaxed">
+                          {result.value}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )
             )}
           </div>
         </div>
@@ -451,21 +490,42 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
       {work.additionalResults && work.additionalResults.length > 0 && (
         <section className="lg:hidden py-8 bg-base-200">
           <div className="container-custom">
-            <div className="grid grid-cols-2 gap-4">
-              {allResults.map((result, index) => (
-                <div
-                  key={index}
-                  className="bg-base-100 rounded-xl p-4 text-center"
-                >
-                  <div className="text-2xl font-bold text-primary mb-1">
-                    {result.value}
+            {isMetric ? (
+              <div className="grid grid-cols-2 gap-4">
+                {allResults.map((result, index) => (
+                  <div
+                    key={index}
+                    className="bg-base-100 rounded-xl p-4 text-center"
+                  >
+                    <div className="text-2xl font-bold text-primary mb-1">
+                      {result.value}
+                    </div>
+                    <div className="text-xs text-base-content/70">
+                      {result.label}
+                    </div>
                   </div>
-                  <div className="text-xs text-base-content/70">
-                    {result.label}
+                ))}
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {allResults.map((result, index) => (
+                  <div
+                    key={index}
+                    className="flex items-start gap-3 bg-base-100 rounded-xl p-4"
+                  >
+                    <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                    <div>
+                      <div className="text-xs font-semibold text-primary uppercase tracking-wider mb-1">
+                        {result.label}
+                      </div>
+                      <div className="text-sm text-base-content/80 leading-relaxed">
+                        {result.value}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </section>
       )}
@@ -546,18 +606,59 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
               </h2>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {allResults.map((result, index) => (
-                <div
-                  key={index}
-                  className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center border border-white/20"
-                >
-                  <CheckCircle2 className="w-8 h-8 mx-auto mb-3 text-white/80" />
-                  <div className="text-4xl font-bold mb-2">{result.value}</div>
-                  <div className="text-sm text-primary-content/80">{result.label}</div>
+            {isMetric ? (
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {allResults.map((result, index) => (
+                  <div
+                    key={index}
+                    className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center border border-white/20"
+                  >
+                    <CheckCircle2 className="w-8 h-8 mx-auto mb-3 text-white/80" />
+                    <div className="text-4xl font-bold mb-2">{result.value}</div>
+                    <div className="text-sm text-primary-content/80">{result.label}</div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 gap-6">
+                {allResults.map((result, index) => (
+                  <div
+                    key={index}
+                    className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 flex items-start gap-4"
+                  >
+                    <CheckCircle2 className="w-7 h-7 text-white/80 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <div className="text-xs font-semibold uppercase tracking-wider text-primary-content/60 mb-1">
+                        {result.label}
+                      </div>
+                      <div className="text-base leading-relaxed">
+                        {result.value}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Key Achievements from results JSON */}
+            {work.results && work.results.length > 0 && (
+              <div className="mt-12">
+                <h3 className="text-xl font-bold text-center mb-6">
+                  {locale === 'th' ? 'ผลสำเร็จหลัก' : 'Key Achievements'}
+                </h3>
+                <div className="grid md:grid-cols-2 gap-4 max-w-3xl mx-auto">
+                  {work.results.map((achievement, index) => (
+                    <div
+                      key={index}
+                      className="flex items-start gap-3 bg-white/10 backdrop-blur-sm rounded-xl px-5 py-4 border border-white/10"
+                    >
+                      <Check className="w-5 h-5 text-white/80 mt-0.5 flex-shrink-0" />
+                      <span className="text-sm leading-relaxed">{achievement}</span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </section>

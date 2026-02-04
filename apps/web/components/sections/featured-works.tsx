@@ -3,8 +3,9 @@
 import Link from 'next/link'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { ArrowRight, Building2, Server, Shield, Cloud, Code, Database, BarChart } from 'lucide-react'
+import { ArrowRight, Building2, Server, Shield, Cloud, Code, Database, BarChart, Check } from 'lucide-react'
 import { type Locale } from '@/lib/i18n'
+import { isMetricValue } from '@/lib/case-study-utils'
 
 interface CaseStudy {
   id: number
@@ -167,10 +168,20 @@ export function FeaturedWorksSection({ locale, caseStudies }: FeaturedWorksSecti
 
                     {/* Result Badge */}
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="text-2xl font-bold text-primary">{work.resultValue}</span>
-                        <span className="text-sm text-base-content/60">{work.resultLabel}</span>
-                      </div>
+                      {isMetricValue(work.resultValue) ? (
+                        <div className="flex items-center gap-2">
+                          <span className="text-2xl font-bold text-primary">{work.resultValue}</span>
+                          <span className="text-sm text-base-content/60">{work.resultLabel}</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-start gap-2 min-w-0 flex-1 mr-4">
+                          <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <div className="min-w-0">
+                            <span className="text-xs font-semibold text-primary uppercase tracking-wider">{work.resultLabel}</span>
+                            <p className="text-sm text-base-content/70 line-clamp-2 leading-snug">{work.resultValue}</p>
+                          </div>
+                        </div>
+                      )}
                       <div className="flex items-center gap-2 text-primary font-medium">
                         <span className="text-sm">
                           {locale === 'th' ? 'ดูรายละเอียด' : 'View Details'}
