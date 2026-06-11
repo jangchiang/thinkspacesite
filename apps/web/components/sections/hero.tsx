@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { type Locale } from '@/lib/i18n'
 import { motion } from 'framer-motion'
-import { LogoCarousel } from '@/components/ui/logo-carousel'
 import { MatrixGrid } from '@/components/backgrounds/matrix-grid'
 
 type Dict = Record<string, any>
@@ -37,7 +36,7 @@ const rise = (delay = 0) => ({
   transition: { duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
 })
 
-export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: HeroSectionProps): React.JSX.Element {
+export function HeroSection({ dict, locale }: HeroSectionProps): React.JSX.Element {
   const isTh = locale === 'th'
 
   const tags = isTh
@@ -144,17 +143,6 @@ export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: Her
           </motion.div>
         </div>
 
-        {/* Trust strip — clients */}
-        {partners.length > 0 && (
-          <motion.div
-            className="border-t border-white/10 py-8"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <LogoCarousel partners={partners} title={dict.hero.trustedBy} strapiUrl={strapiUrl} />
-          </motion.div>
-        )}
       </div>
     </section>
   )
