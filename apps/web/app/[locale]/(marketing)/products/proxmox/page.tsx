@@ -16,7 +16,6 @@ import {
   Mail,
   Quote,
 } from 'lucide-react'
-import { Logo } from '@/components/ui/logo'
 import { MatrixGrid } from '@/components/backgrounds/matrix-grid'
 import { type Locale } from '@/lib/i18n'
 
@@ -168,31 +167,26 @@ export default async function ProxmoxProductPage({ params }: Props): Promise<Rea
 
   return (
     <main className="bg-base-100">
-      {/* 1) Co-branded header bar */}
-      <section className="border-b border-base-300 bg-base-100">
-        <div className="container-custom flex flex-col items-center justify-between gap-4 py-5 sm:flex-row">
-          <Logo size="md" />
-          <div className="flex items-center gap-4">
-            <span className="hidden text-sm text-base-content/60 sm:inline">
-              {isTh ? 'ความร่วมมือกับ' : 'In partnership with'}
-            </span>
-            <Image
-              src="/images/partners/proxmox-reseller.png"
-              alt="Proxmox Authorized Reseller"
-              width={160}
-              height={50}
-              className="h-9 w-auto sm:h-10"
-              priority
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* 2) Dark matrix hero */}
+      {/* Dark matrix hero with integrated Proxmox co-branding */}
       <section className="relative overflow-hidden bg-secondary text-white">
         <MatrixGrid />
         <div className="container-custom relative z-10 py-20 md:py-28 lg:py-32">
           <div className="max-w-3xl">
+            {/* Co-brand lockup (ThinkSpace branding comes from the navbar) */}
+            <div className="mb-8 flex items-center gap-3">
+              <span className="text-xs uppercase tracking-[0.18em] text-white/45">
+                {isTh ? 'ความร่วมมือกับ' : 'In partnership with'}
+              </span>
+              <Image
+                src="/images/partners/proxmox-reseller-inverted.png"
+                alt="Proxmox Authorized Reseller"
+                width={170}
+                height={54}
+                className="h-9 w-auto sm:h-10"
+                priority
+              />
+            </div>
+
             <span className="eyebrow !text-primary">
               <span className="rule-accent" />
               {isTh ? 'ตัวแทนจำหน่ายที่ได้รับอนุญาต' : 'Authorized Proxmox Reseller'}

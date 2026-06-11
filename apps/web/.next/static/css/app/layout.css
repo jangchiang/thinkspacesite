@@ -5072,6 +5072,9 @@ html {
 .tracking-widest {
   letter-spacing: 0.1em;
 }
+.tracking-\[0\.18em\] {
+  letter-spacing: 0.18em;
+}
 .\!text-primary {
   --tw-text-opacity: 1 !important;
   color: var(--fallback-p,oklch(var(--p)/var(--tw-text-opacity, 1))) !important;
@@ -5199,6 +5202,9 @@ html {
 }
 .text-white\/60 {
   color: rgb(255 255 255 / 0.6);
+}
+.text-white\/45 {
+  color: rgb(255 255 255 / 0.45);
 }
 .underline-offset-4 {
   text-underline-offset: 4px;
