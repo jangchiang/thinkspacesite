@@ -1,4 +1,5 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
+  "/[locale]/(marketing)/products/proxmox/page": "app/[locale]/(marketing)/products/proxmox/page.js",
   "/[locale]/(marketing)/page": "app/[locale]/(marketing)/page.js"
 }

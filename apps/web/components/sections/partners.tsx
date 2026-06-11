@@ -103,8 +103,8 @@ export function PartnersBand({ locale }: PartnersBandProps): React.JSX.Element {
               <PartnerLogo
                 name={client.name}
                 src={client.src}
-                className="h-full grayscale opacity-50 transition-all duration-300 hover:grayscale-0 hover:opacity-100"
-                wordmarkClassName="text-base md:text-lg text-base-content/45 transition-colors duration-300 hover:text-base-content"
+                className="h-full opacity-95 transition-transform duration-300 hover:scale-[1.06]"
+                wordmarkClassName="text-base md:text-lg font-semibold text-base-content/70 transition-colors duration-300 hover:text-base-content"
               />
             </div>
           ))}
