@@ -26,6 +26,7 @@ interface NavItem {
   name: string
   href: string
   children?: { name: string; href: string }[]
+  viewAllLabel?: string
 }
 
 // Custom Dropdown Component with better hover UX
@@ -87,7 +88,7 @@ function NavDropdown({
       onMouseLeave={handleMouseLeave}
     >
       <button
-        className="flex items-center gap-1 text-sm font-medium text-base-content/70 hover:text-base-content cursor-pointer transition-colors py-2"
+        className="flex items-center gap-1 text-[15px] font-medium text-base-content/80 hover:text-primary cursor-pointer transition-colors py-2"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-haspopup="true"
@@ -132,7 +133,7 @@ function NavDropdown({
                 className="block px-4 py-2 text-sm font-medium text-primary hover:bg-primary/5 rounded-lg transition-colors"
                 onClick={() => setIsOpen(false)}
               >
-                {locale === 'th' ? 'ดูบริการทั้งหมด' : 'View All Services'} →
+                {item.viewAllLabel || (locale === 'th' ? 'ดูบริการทั้งหมด' : 'View All Services')} →
               </Link>
             </div>
           </motion.div>
@@ -144,7 +145,7 @@ function NavDropdown({
 
 export function Navbar({ locale, dict, services: servicesProp }: NavbarProps): React.JSX.Element {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(false)
+  const [openMobileKey, setOpenMobileKey] = useState<string | null>(null)
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
 
@@ -175,39 +176,50 @@ export function Navbar({ locale, dict, services: servicesProp }: NavbarProps): R
     ? servicesProp
     : []
 
+  const productsChildren = [
+    { name: locale === 'th' ? 'Logix — แพลตฟอร์ม AI' : 'Logix — AI Platform', href: `/${locale}/products/logix` },
+    { name: locale === 'th' ? 'Proxmox Virtualization' : 'Proxmox Virtualization', href: `/${locale}/products/proxmox` },
+  ]
+
   const navigation: NavItem[] = [
     { name: dict.nav.home, href: `/${locale}` },
     {
-      name: dict.nav.services,
+      name: locale === 'th' ? 'ผลิตภัณฑ์' : 'Products',
+      href: `/${locale}/products`,
+      children: productsChildren,
+      viewAllLabel: locale === 'th' ? 'ดูผลิตภัณฑ์ทั้งหมด' : 'All products',
+    },
+    {
+      name: locale === 'th' ? 'บริการ' : 'Solutions',
       href: `/${locale}/services`,
       children: servicesChildren.length > 0 ? servicesChildren : undefined,
     },
     { name: dict.nav.works, href: `/${locale}/works` },
-    { name: dict.nav.news, href: `/${locale}/news` },
     { name: dict.nav.about, href: `/${locale}/about` },
+    { name: dict.nav.news, href: `/${locale}/news` },
     { name: dict.nav.contact, href: `/${locale}/contact` },
   ]
 
   return (
     <motion.header
-      className={`sticky top-0 z-50 backdrop-blur-lg border-b transition-all duration-300 ${
+      className={`sticky top-0 z-50 border-b transition-all duration-300 ${
         scrolled
-          ? 'bg-base-100/95 border-base-200 shadow-sm'
-          : 'bg-base-100/80 border-transparent'
+          ? 'bg-base-100/95 backdrop-blur-md border-base-300 shadow-sm'
+          : 'bg-base-100 border-base-300'
       }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     >
       <nav className="container-custom">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-[4.5rem] items-center justify-between">
           {/* Logo */}
           <Link href={`/${locale}`} className="flex items-center group">
             <motion.div
               whileHover={{ scale: 1.02 }}
               transition={{ type: 'spring', stiffness: 400, damping: 10 }}
             >
-              <Logo size="sm" animated={true} showTagline={true} />
+              <Logo size="md" animated={true} showTagline={true} />
             </motion.div>
           </Link>
 
@@ -225,7 +237,7 @@ export function Navbar({ locale, dict, services: servicesProp }: NavbarProps): R
                 >
                   <Link
                     href={item.href}
-                    className="text-sm font-medium text-base-content/70 hover:text-base-content transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full"
+                    className="text-[15px] font-medium text-base-content/80 hover:text-base-content transition-colors relative after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full"
                   >
                     {item.name}
                   </Link>
@@ -276,7 +288,7 @@ export function Navbar({ locale, dict, services: servicesProp }: NavbarProps): R
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Link href={`/${locale}/contact`} className="btn btn-primary btn-sm">
+              <Link href={`/${locale}/contact`} className="btn btn-primary btn-md text-[15px]">
                 {dict.nav.getStarted}
               </Link>
             </motion.div>
@@ -287,6 +299,8 @@ export function Navbar({ locale, dict, services: servicesProp }: NavbarProps): R
             type="button"
             className="lg:hidden btn btn-ghost btn-square"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? (locale === 'th' ? 'ปิดเมนู' : 'Close menu') : (locale === 'th' ? 'เปิดเมนู' : 'Open menu')}
+            aria-expanded={mobileMenuOpen}
             whileTap={{ scale: 0.9 }}
           >
             <AnimatePresence mode="wait">
@@ -338,17 +352,18 @@ export function Navbar({ locale, dict, services: servicesProp }: NavbarProps): R
                       <div>
                         <button
                           className="w-full flex items-center justify-between px-3 py-2 text-base font-medium text-base-content/70 hover:text-base-content hover:bg-base-200 rounded-lg transition-colors"
-                          onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                          onClick={() => setOpenMobileKey(openMobileKey === item.name ? null : item.name)}
+                          aria-expanded={openMobileKey === item.name}
                         >
                           {item.name}
                           <ChevronDown
                             className={`w-4 h-4 transition-transform duration-200 ${
-                              mobileServicesOpen ? 'rotate-180' : ''
+                              openMobileKey === item.name ? 'rotate-180' : ''
                             }`}
                           />
                         </button>
                         <AnimatePresence>
-                          {mobileServicesOpen && (
+                          {openMobileKey === item.name && (
                             <motion.div
                               className="pl-4 overflow-hidden"
                               initial={{ opacity: 0, height: 0 }}

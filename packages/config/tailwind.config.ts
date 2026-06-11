@@ -16,19 +16,33 @@ const config: Config = {
         mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
       },
       colors: {
-        // Think Space brand colors
+        // Think Space brand colors — teal-green (logo) accent
         brand: {
-          50: '#f0fdf4',
-          100: '#dcfce7',
-          200: '#bbf7d0',
-          300: '#86efac',
-          400: '#4ade80',
-          500: '#22c55e',
-          600: '#16a34a',
-          700: '#15803d',
-          800: '#166534',
-          900: '#14532d',
-          950: '#052e16',
+          50: '#ecfdf8',
+          100: '#d0f9ee',
+          200: '#a3f1dd',
+          300: '#6ee5c9',
+          400: '#38d2af',
+          500: '#16c79a',
+          600: '#11a88a',
+          700: '#0f8870',
+          800: '#116b5a',
+          900: '#12574b',
+          950: '#04322b',
+        },
+        // Deep corporate navy — headings, dark surfaces
+        navy: {
+          50: '#eef2f8',
+          100: '#d6e0ef',
+          200: '#aec2dd',
+          300: '#7e9cc4',
+          400: '#4f72a4',
+          500: '#2f5183',
+          600: '#1f3c66',
+          700: '#163052',
+          800: '#0f2342',
+          900: '#0b2447',
+          950: '#06152c',
         },
       },
       animation: {
@@ -57,92 +71,93 @@ const config: Config = {
     themes: [
       {
         thinkspace: {
-          // Primary - Green
-          'primary': '#22c55e',
-          'primary-content': '#ffffff',
+          // Primary - Teal-green (logo accent: actions, links)
+          'primary': '#16c79a',
+          'primary-content': '#052e26',
 
-          // Secondary - Dark
-          'secondary': '#171717',
+          // Secondary - Deep navy (primary buttons, dark surfaces)
+          'secondary': '#0b2447',
           'secondary-content': '#ffffff',
 
-          // Accent - Darker green
-          'accent': '#16a34a',
+          // Accent - Deeper teal (hover)
+          'accent': '#0f8870',
           'accent-content': '#ffffff',
 
-          // Neutral
-          'neutral': '#404040',
+          // Neutral - Slate
+          'neutral': '#1a2433',
           'neutral-content': '#ffffff',
 
-          // Base colors
+          // Base colors - clean white canvas + cool gray
           'base-100': '#ffffff',
-          'base-200': '#f5f5f5',
-          'base-300': '#e5e5e5',
-          'base-content': '#171717',
+          'base-200': '#f5f7fa',
+          'base-300': '#e3e8ef',
+          'base-content': '#1a2433',
 
           // State colors
-          'info': '#3b82f6',
+          'info': '#2563eb',
           'info-content': '#ffffff',
-          'success': '#22c55e',
-          'success-content': '#ffffff',
-          'warning': '#eab308',
-          'warning-content': '#171717',
-          'error': '#ef4444',
+          'success': '#16c79a',
+          'success-content': '#052e26',
+          'warning': '#d9a21b',
+          'warning-content': '#1a2433',
+          'error': '#e5484d',
           'error-content': '#ffffff',
 
-          // Component styling
-          '--rounded-box': '0.5rem',
-          '--rounded-btn': '0.375rem',
-          '--rounded-badge': '1.9rem',
+          // Component styling - sharper, formal
+          '--rounded-box': '0.375rem',
+          '--rounded-btn': '0.25rem',
+          '--rounded-badge': '0.25rem',
           '--animation-btn': '0.25s',
           '--animation-input': '0.2s',
           '--btn-focus-scale': '0.98',
           '--border-btn': '1px',
           '--tab-border': '1px',
-          '--tab-radius': '0.5rem',
+          '--tab-radius': '0.375rem',
         },
         thinkspaceDark: {
-          // Primary - Green
-          'primary': '#22c55e',
-          'primary-content': '#ffffff',
+          // Primary - Brighter teal for dark surfaces
+          'primary': '#2dd4b0',
+          'primary-content': '#04221c',
 
-          // Secondary - Light
-          'secondary': '#e5e5e5',
-          'secondary-content': '#171717',
+          // Secondary - Deep navy surface (kept dark in BOTH themes so bg-secondary
+          // panels — hero, CTAs, Logix band — never invert. Headings use base-content.)
+          'secondary': '#0b2447',
+          'secondary-content': '#ffffff',
 
-          // Accent - Lighter green
-          'accent': '#4ade80',
-          'accent-content': '#171717',
+          // Accent - Light teal
+          'accent': '#5eead4',
+          'accent-content': '#04221c',
 
           // Neutral
-          'neutral': '#a3a3a3',
-          'neutral-content': '#171717',
+          'neutral': '#94a3b8',
+          'neutral-content': '#0b1a2e',
 
-          // Base colors - Dark
-          'base-100': '#171717',
-          'base-200': '#262626',
-          'base-300': '#404040',
-          'base-content': '#f5f5f5',
+          // Base colors - navy-tinted dark
+          'base-100': '#0b1a2e',
+          'base-200': '#102740',
+          'base-300': '#1e3a5f',
+          'base-content': '#e2e8f0',
 
           // State colors
           'info': '#3b82f6',
           'info-content': '#ffffff',
-          'success': '#22c55e',
-          'success-content': '#ffffff',
+          'success': '#2dd4b0',
+          'success-content': '#04221c',
           'warning': '#eab308',
-          'warning-content': '#171717',
-          'error': '#ef4444',
-          'error-content': '#ffffff',
+          'warning-content': '#0b1a2e',
+          'error': '#f87171',
+          'error-content': '#0b1a2e',
 
           // Component styling
-          '--rounded-box': '0.5rem',
-          '--rounded-btn': '0.375rem',
-          '--rounded-badge': '1.9rem',
+          '--rounded-box': '0.375rem',
+          '--rounded-btn': '0.25rem',
+          '--rounded-badge': '0.25rem',
           '--animation-btn': '0.25s',
           '--animation-input': '0.2s',
           '--btn-focus-scale': '0.98',
           '--border-btn': '1px',
           '--tab-border': '1px',
-          '--tab-radius': '0.5rem',
+          '--tab-radius': '0.375rem',
         },
       },
     ],

@@ -21,63 +21,87 @@ interface PageHeroData {
 
 const pageHeroes: PageHeroData[] = [
   {
-    pageIdentifier: 'works',
-    title: { th: 'ผลงานของเรา', en: 'Our Work Profile' },
+    pageIdentifier: 'home',
+    title: { th: 'เปลี่ยนวิสัยทัศน์ให้เป็นความจริง', en: 'From Vision to Reality' },
     subtitle: {
-      th: 'ดูผลงานและโครงการที่เราได้ดำเนินการให้กับลูกค้า',
-      en: 'Explore our portfolio of successful projects and client work'
+      th: 'ThinkSpace สร้างซอฟต์แวร์ AI โครงสร้างพื้นฐาน และงานวิจัยขั้นสูง ให้องค์กรเป็นเจ้าของเทคโนโลยีของตนเอง',
+      en: 'ThinkSpace builds software, AI, infrastructure, and advanced research that let organizations own their own technology.'
     },
     backgroundType: 'none',
     overlayOpacity: 60,
-    overlayColor: '#000000',
+    overlayColor: '#0B2447',
+    textColor: 'light',
+  },
+  {
+    pageIdentifier: 'works',
+    title: { th: 'ผลงานของเรา', en: 'Our Work' },
+    subtitle: {
+      th: 'โครงการจริงด้านซอฟต์แวร์ AI โครงสร้างพื้นฐาน และงานวิจัย ที่เราส่งมอบให้องค์กรทั้งในไทยและต่างประเทศ',
+      en: 'Real projects in software, AI, infrastructure, and research delivered for organizations in Thailand and abroad.'
+    },
+    backgroundType: 'none',
+    overlayOpacity: 60,
+    overlayColor: '#0B2447',
     textColor: 'light',
   },
   {
     pageIdentifier: 'news',
     title: { th: 'ข่าวสาร', en: 'News' },
     subtitle: {
-      th: 'ข่าวสารล่าสุด อัพเดท และข้อมูลเชิงลึกจากทีมของเรา',
-      en: 'Latest news, updates, and insights from our team'
+      th: 'ข่าวสารล่าสุด อัปเดต และข้อมูลเชิงลึกจากทีม ThinkSpace',
+      en: 'Latest news, updates, and insights from the ThinkSpace team.'
     },
     backgroundType: 'none',
     overlayOpacity: 60,
-    overlayColor: '#000000',
+    overlayColor: '#0B2447',
     textColor: 'light',
   },
   {
     pageIdentifier: 'about',
     title: { th: 'เกี่ยวกับเรา', en: 'About Us' },
     subtitle: {
-      th: 'Thinkspace Technology เป็นผู้นำด้านโซลูชันเทคโนโลยีสำหรับองค์กร',
-      en: 'Thinkspace Technology is a leading enterprise technology solutions provider'
+      th: 'ThinkSpace บริษัทเทคโนโลยีจากเชียงใหม่ ที่สร้างสรรค์อนาคต ที่มากกว่าแค่เทคโนโลยี',
+      en: 'ThinkSpace is a Chiang Mai technology company creating a future beyond technology.'
     },
     backgroundType: 'none',
     overlayOpacity: 60,
-    overlayColor: '#000000',
+    overlayColor: '#0B2447',
     textColor: 'light',
   },
   {
     pageIdentifier: 'contact',
     title: { th: 'ติดต่อเรา', en: 'Contact Us' },
     subtitle: {
-      th: 'มีคำถามหรือต้องการข้อมูลเพิ่มเติม? ทีมงานของเราพร้อมให้ความช่วยเหลือ',
-      en: 'Have questions or need more information? Our team is here to help.'
+      th: 'มีโจทย์ที่อยากเปลี่ยนเป็นจริง? ทีม ThinkSpace พร้อมพูดคุยกับคุณ',
+      en: 'Have a vision you want to make real? The ThinkSpace team is ready to talk.'
     },
     backgroundType: 'none',
     overlayOpacity: 60,
-    overlayColor: '#000000',
+    overlayColor: '#0B2447',
     textColor: 'light',
   },
   {
     pageIdentifier: 'services',
-    title: { th: 'บริการของเรา', en: 'Our Services' },
+    title: { th: 'โซลูชันของเรา', en: 'Our Solutions' },
     subtitle: {
-      th: 'โซลูชันเทคโนโลยีครบวงจรสำหรับองค์กรของคุณ',
-      en: 'Comprehensive technology solutions for your organization'
+      th: 'หกกลุ่มโซลูชันหลัก ตั้งแต่ซอฟต์แวร์ ความมั่นคงปลอดภัยไซเบอร์ AI HPC IoT ไปจนถึงงานวิจัยขั้นสูง',
+      en: 'Six core solution pillars — software, cybersecurity, AI, HPC, IoT, and advanced research.'
     },
     backgroundType: 'none',
     overlayOpacity: 60,
-    overlayColor: '#000000',
+    overlayColor: '#0B2447',
+    textColor: 'light',
+  },
+  {
+    pageIdentifier: 'products',
+    title: { th: 'ผลิตภัณฑ์ของเรา', en: 'Our Products' },
+    subtitle: {
+      th: 'Logix แพลตฟอร์ม AI ของเราเอง และ Proxmox ในฐานะตัวแทนจำหน่ายที่ได้รับอนุญาต',
+      en: 'Logix, our own AI platform, and Proxmox as an authorized reseller.'
+    },
+    backgroundType: 'none',
+    overlayOpacity: 60,
+    overlayColor: '#0B2447',
     textColor: 'light',
   },
 ];

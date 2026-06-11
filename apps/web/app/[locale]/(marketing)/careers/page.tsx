@@ -57,10 +57,11 @@ export default async function CareersPage({ params }: Props): Promise<React.JSX.
   return (
     <>
       {/* Hero Section */}
-      <section className="section-padding bg-gradient-to-br from-base-100 to-primary/5">
+      <section className="section-padding bg-base-200 border-b border-base-300">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+            <p className="eyebrow mb-4">{locale === 'th' ? 'ร่วมงานกับเรา' : 'Careers'}</p>
+            <h1 className="display-heading text-4xl md:text-5xl lg:text-6xl mb-6">
               {locale === 'th' ? 'ร่วมงานกับเรา' : 'Join Our Team'}
             </h1>
             <p className="text-lg md:text-xl text-base-content/70">
@@ -75,22 +76,23 @@ export default async function CareersPage({ params }: Props): Promise<React.JSX.
       {/* Benefits Section */}
       <section className="section-padding">
         <div className="container-custom">
-          <h2 className="text-3xl font-bold text-center mb-12">
-            {locale === 'th' ? 'ทำไมต้อง Think Space' : 'Why Think Space'}
-          </h2>
+          <div className="text-center mb-12">
+            <p className="eyebrow mb-4">{locale === 'th' ? 'วัฒนธรรมองค์กร' : 'Our Culture'}</p>
+            <h2 className="display-heading text-3xl md:text-4xl">
+              {locale === 'th' ? 'ทำไมต้อง Think Space' : 'Why Think Space'}
+            </h2>
+          </div>
           <div className="grid md:grid-cols-3 gap-8">
             {benefits.map((benefit) => {
               const IconComponent = iconMap[benefit.iconName as keyof typeof iconMap] || Heart
 
               return (
-                <div key={benefit.id} className="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow">
-                  <div className="card-body items-center text-center">
-                    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                      <IconComponent className="w-8 h-8 text-primary" />
-                    </div>
-                    <h3 className="card-title">{benefit.title}</h3>
-                    <p className="text-base-content/70">{benefit.description}</p>
+                <div key={benefit.id} className="card-surface bg-base-100 p-8 text-center flex flex-col items-center">
+                  <div className="w-16 h-16 bg-primary/10 flex items-center justify-center mb-4">
+                    <IconComponent className="w-8 h-8 text-primary" />
                   </div>
+                  <h3 className="text-xl font-bold text-base-content mb-2">{benefit.title}</h3>
+                  <p className="text-base-content/70 leading-relaxed">{benefit.description}</p>
                 </div>
               )
             })}
@@ -99,11 +101,14 @@ export default async function CareersPage({ params }: Props): Promise<React.JSX.
       </section>
 
       {/* Open Positions */}
-      <section className="section-padding bg-base-200">
+      <section className="section-padding bg-base-200 border-y border-base-300">
         <div className="container-custom">
-          <h2 className="text-3xl font-bold text-center mb-12">
-            {locale === 'th' ? 'ตำแหน่งที่เปิดรับ' : 'Open Positions'}
-          </h2>
+          <div className="text-center mb-12">
+            <p className="eyebrow mb-4">{locale === 'th' ? 'โอกาส' : 'Opportunities'}</p>
+            <h2 className="display-heading text-3xl md:text-4xl">
+              {locale === 'th' ? 'ตำแหน่งที่เปิดรับ' : 'Open Positions'}
+            </h2>
+          </div>
           <div className="space-y-4">
             {jobs.map((job) => {
               const typeLabel = employmentTypeLabels[job.employmentType]
@@ -112,12 +117,11 @@ export default async function CareersPage({ params }: Props): Promise<React.JSX.
                 <Link
                   key={job.id}
                   href={`/${locale}/careers/${job.slug}`}
-                  className="card bg-base-100 shadow hover:shadow-lg transition-all hover:border-primary/30 border border-transparent"
+                  className="card-surface bg-base-100 block p-6 group"
                 >
-                  <div className="card-body">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div>
-                        <h3 className="card-title text-xl group-hover:text-primary">{job.title}</h3>
+                        <h3 className="text-xl font-bold text-base-content group-hover:text-primary transition-colors">{job.title}</h3>
                         <div className="flex flex-wrap gap-4 mt-2 text-sm text-base-content/70">
                           <span className="flex items-center gap-1">
                             <Briefcase className="w-4 h-4" />
@@ -138,7 +142,6 @@ export default async function CareersPage({ params }: Props): Promise<React.JSX.
                         <ArrowRight className="w-4 h-4 ml-1" />
                       </span>
                     </div>
-                  </div>
                 </Link>
               )
             })}
@@ -159,8 +162,8 @@ export default async function CareersPage({ params }: Props): Promise<React.JSX.
       {/* CTA Section */}
       <section className="section-padding">
         <div className="container-custom">
-          <div className="bg-primary/5 rounded-2xl p-8 md:p-12 text-center">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">
+          <div className="card-surface bg-base-200 p-8 md:p-12 text-center">
+            <h2 className="display-heading text-2xl md:text-3xl mb-4">
               {locale === 'th' ? 'ไม่เห็นตำแหน่งที่ต้องการ?' : "Don't see the right position?"}
             </h2>
             <p className="text-base-content/70 mb-6 max-w-2xl mx-auto">

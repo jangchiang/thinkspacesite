@@ -83,13 +83,12 @@ const containerVariants = {
 }
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 30, scale: 0.95 },
+  hidden: { opacity: 0, y: 24 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: {
-      duration: 0.6,
+      duration: 0.55,
       ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
     },
   },
@@ -108,42 +107,34 @@ export function StatsSection({ stats }: StatsSectionProps): React.JSX.Element | 
   }
 
   return (
-    <section className="py-8 md:py-12 bg-primary text-primary-content overflow-hidden" ref={ref}>
+    <section className="section-padding bg-base-100 border-y border-base-300" ref={ref}>
       <div className="container-custom">
         <motion.div
-          className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-base-300"
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
           variants={containerVariants}
         >
-          {displayStats.map((stat, index) => {
+          {displayStats.map((stat) => {
             const parsed = parseStatValue(stat.value)
 
             return (
               <motion.div
                 key={stat.id}
-                className="text-center"
+                className="bg-base-100 text-center px-4 py-8 md:py-10"
                 variants={itemVariants}
               >
-                <motion.div
-                  className="text-3xl md:text-4xl lg:text-5xl font-bold mb-1"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-                >
+                <div className="display-heading text-base-content text-4xl md:text-5xl lg:text-6xl mb-3">
                   {parsed.displayRaw ? (
                     stat.value
                   ) : (
                     <AnimatedNumber value={parsed.number!} suffix={parsed.suffix} />
                   )}
-                </motion.div>
-                <motion.div
-                  className="text-primary-content/80 text-xs md:text-sm"
-                  initial={{ opacity: 0 }}
-                  animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-                  transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-                >
+                </div>
+                <div className="mx-auto mb-3 h-px w-8 bg-primary" />
+                <div className="text-base-content/70 text-xs md:text-sm uppercase tracking-wider">
                   {stat.label}
-                </motion.div>
+                </div>
               </motion.div>
             )
           })}

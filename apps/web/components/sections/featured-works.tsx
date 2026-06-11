@@ -41,42 +41,24 @@ const industryIcons: Record<string, React.ComponentType<{ className?: string }>>
   'การเงิน': BarChart,
 }
 
-// Color mapping based on industry
-const industryColors: Record<string, string> = {
-  'Banking': 'from-blue-500/20 to-cyan-500/20',
-  'ธนาคาร': 'from-blue-500/20 to-cyan-500/20',
-  'Energy': 'from-orange-500/20 to-yellow-500/20',
-  'พลังงาน': 'from-orange-500/20 to-yellow-500/20',
-  'Government': 'from-red-500/20 to-pink-500/20',
-  'ภาครัฐ': 'from-red-500/20 to-pink-500/20',
-  'Retail': 'from-purple-500/20 to-indigo-500/20',
-  'ค้าปลีก': 'from-purple-500/20 to-indigo-500/20',
-  'Technology': 'from-green-500/20 to-emerald-500/20',
-  'เทคโนโลยี': 'from-green-500/20 to-emerald-500/20',
-  'Healthcare': 'from-teal-500/20 to-cyan-500/20',
-  'สาธารณสุข': 'from-teal-500/20 to-cyan-500/20',
-  'Finance': 'from-amber-500/20 to-orange-500/20',
-  'การเงิน': 'from-amber-500/20 to-orange-500/20',
-}
-
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.2,
+      staggerChildren: 0.1,
+      delayChildren: 0.1,
     },
   },
 }
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 40 },
+  hidden: { opacity: 0, y: 28 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.6,
+      duration: 0.55,
       ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
     },
   },
@@ -85,6 +67,7 @@ const itemVariants = {
 export function FeaturedWorksSection({ locale, caseStudies }: FeaturedWorksSectionProps): React.JSX.Element | null {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const isTh = locale === 'th'
 
   // Use provided case studies only (no fallbacks), limit to 4
   const works = (caseStudies || []).slice(0, 4)
@@ -95,100 +78,91 @@ export function FeaturedWorksSection({ locale, caseStudies }: FeaturedWorksSecti
   }
 
   return (
-    <section className="py-16 md:py-20 lg:py-24 bg-base-200" ref={ref}>
+    <section className="section-padding bg-base-200" ref={ref}>
       <div className="container-custom">
         {/* Header */}
         <motion.div
-          className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12"
+          className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 md:mb-16"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
         >
-          <div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-              {locale === 'th' ? 'ผลงานที่โดดเด่น' : 'Featured Works'}
+          <div className="max-w-2xl">
+            <p className="eyebrow mb-3">{isTh ? 'ผลงาน' : 'Selected Work'}</p>
+            <h2 className="display-heading text-3xl md:text-4xl lg:text-5xl mb-5">
+              {isTh ? 'โครงการที่เราภูมิใจนำเสนอ' : 'Projects We Are Proud Of'}
             </h2>
-            <p className="text-lg text-base-content/70 max-w-2xl">
-              {locale === 'th'
-                ? 'โครงการที่เราภูมิใจนำเสนอ สะท้อนความเชี่ยวชาญและความสำเร็จของทีมงาน'
-                : 'Projects we are proud to present, reflecting our expertise and team success'}
+            <div className="rule-accent mb-6" />
+            <p className="text-lg text-base-content/70 leading-relaxed">
+              {isTh
+                ? 'โครงการจริงที่ส่งมอบให้องค์กร ภาครัฐ และมหาวิทยาลัย ทั้งในและต่างประเทศ'
+                : 'Real engagements delivered for enterprises, government, and universities across borders.'}
             </p>
           </div>
           <Link
             href={`/${locale}/works`}
-            className="btn btn-outline btn-primary group"
+            className="btn btn-outline btn-primary group shrink-0"
           >
-            {locale === 'th' ? 'ดูผลงานทั้งหมด' : 'View All Works'}
+            {isTh ? 'ดูผลงานทั้งหมด' : 'View All Works'}
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </motion.div>
 
         {/* Works Grid */}
         <motion.div
-          className="grid md:grid-cols-2 gap-6 lg:gap-8"
+          className="grid md:grid-cols-2 gap-6"
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
           variants={containerVariants}
         >
           {works.map((work) => {
             const IconComponent = industryIcons[work.industry] || Building2
-            const colorClass = industryColors[work.industry] || 'from-gray-500/20 to-slate-500/20'
 
             return (
-              <motion.div
-                key={work.id}
-                variants={itemVariants}
-                whileHover={{ y: -5 }}
-              >
+              <motion.div key={work.id} variants={itemVariants}>
                 <Link
                   href={`/${locale}/works/${work.slug}`}
-                  className="group block relative overflow-hidden rounded-2xl bg-base-100 border border-base-300 hover:border-primary/30 transition-all duration-300"
+                  className="card-surface group flex flex-col h-full p-7 lg:p-8"
                 >
-                  {/* Gradient Background */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${colorClass} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                  <div className="flex items-start gap-4 mb-5">
+                    <div className="w-12 h-12 flex items-center justify-center bg-secondary text-primary shrink-0">
+                      <IconComponent className="w-6 h-6" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="eyebrow mb-1">{work.industry}</p>
+                      <h3 className="font-bold text-xl text-base-content leading-snug">
+                        {work.title}
+                      </h3>
+                      {work.clientName ? (
+                        <p className="text-sm text-base-content/60 mt-1">{work.clientName}</p>
+                      ) : null}
+                    </div>
+                  </div>
 
-                  <div className="relative p-6 lg:p-8">
-                    <div className="flex items-start gap-4 mb-4">
-                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-all duration-300 flex-shrink-0">
-                        <IconComponent className="w-6 h-6 text-primary group-hover:text-primary-content transition-colors" />
-                      </div>
+                  <p className="text-base-content/70 mb-6 leading-relaxed">
+                    {work.excerpt}
+                  </p>
+
+                  {/* Result + link */}
+                  <div className="mt-auto flex items-end justify-between gap-4 pt-5 border-t border-base-300">
+                    {isMetricValue(work.resultValue) ? (
                       <div>
-                        <span className="text-xs font-medium text-primary uppercase tracking-wider">
-                          {work.industry}
-                        </span>
-                        <h3 className="font-bold text-xl mt-1">
-                          {work.title}
-                        </h3>
+                        <span className="block text-3xl font-bold text-base-content tracking-tight">{work.resultValue}</span>
+                        <span className="text-xs uppercase tracking-wider text-base-content/60">{work.resultLabel}</span>
                       </div>
-                    </div>
-
-                    <p className="text-base-content/70 mb-4">
-                      {work.excerpt}
-                    </p>
-
-                    {/* Result Badge */}
-                    <div className="flex items-center justify-between">
-                      {isMetricValue(work.resultValue) ? (
-                        <div className="flex items-center gap-2">
-                          <span className="text-2xl font-bold text-primary">{work.resultValue}</span>
-                          <span className="text-sm text-base-content/60">{work.resultLabel}</span>
+                    ) : (
+                      <div className="flex items-start gap-2 min-w-0">
+                        <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                        <div className="min-w-0">
+                          <span className="block text-xs font-semibold text-primary uppercase tracking-wider">{work.resultLabel}</span>
+                          <p className="text-sm text-base-content/70 line-clamp-2 leading-snug">{work.resultValue}</p>
                         </div>
-                      ) : (
-                        <div className="flex items-start gap-2 min-w-0 flex-1 mr-4">
-                          <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                          <div className="min-w-0">
-                            <span className="text-xs font-semibold text-primary uppercase tracking-wider">{work.resultLabel}</span>
-                            <p className="text-sm text-base-content/70 line-clamp-2 leading-snug">{work.resultValue}</p>
-                          </div>
-                        </div>
-                      )}
-                      <div className="flex items-center gap-2 text-primary font-medium">
-                        <span className="text-sm">
-                          {locale === 'th' ? 'ดูรายละเอียด' : 'View Details'}
-                        </span>
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
                       </div>
-                    </div>
+                    )}
+                    <span className="flex items-center gap-1.5 text-primary font-medium text-sm shrink-0">
+                      {isTh ? 'รายละเอียด' : 'Details'}
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </span>
                   </div>
                 </Link>
               </motion.div>

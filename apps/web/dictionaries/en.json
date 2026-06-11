@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "Thinkspace Technology | Enterprise Technology Solutions",
-    "description": "Thinkspace Technology is a leading enterprise technology company providing cloud services, IT consulting, cybersecurity, AI solutions, and research & development services."
+    "title": "ThinkSpace Technologies | AI, Data & Digital Engineering",
+    "description": "ThinkSpace Technologies is a Chiang Mai–based technology and engineering partner specialising in AI, Data Science, High-Performance Computing, simulation and cybersecurity — and the maker of Logix, a sovereign AI-native platform for on-premise and on-cloud."
   },
   "nav": {
     "home": "Home",
@@ -14,13 +14,13 @@
     "getStarted": "Get Started"
   },
   "hero": {
-    "badge": "Turning Ideas into Reality",
-    "title": "Transform Your Business with",
-    "titleHighlight": "Enterprise Technology",
-    "subtitle": "We turn your ideas into reality with tailored technology solutions. From startups to enterprises, we provide the right solutions to power your success.",
+    "badge": "AI · Data · Simulation · Digital Engineering",
+    "title": "From Vision to Reality —",
+    "titleHighlight": "Intelligent, Secure Systems",
+    "subtitle": "ThinkSpace Technologies is a Chiang Mai engineering partner delivering AI, data science, high-performance computing and secure digital engineering — and Logix, our sovereign AI-native platform for on-premise and on-cloud.",
     "cta": "Get Started",
     "watchDemo": "Watch Demo",
-    "trustedBy": "Trusted by organizations"
+    "trustedBy": "Trusted by leading organizations"
   },
   "services": {
     "title": "Comprehensive Technology Solutions",
@@ -304,12 +304,22 @@
           {
             "name": "Civil Engineering",
             "description": "Structural analysis and sustainable construction",
-            "topics": ["Smart building solutions", "Sustainable materials", "Construction automation", "Infrastructure monitoring"]
+            "topics": [
+              "Smart building solutions",
+              "Sustainable materials",
+              "Construction automation",
+              "Infrastructure monitoring"
+            ]
           },
           {
             "name": "Computer Engineering",
             "description": "Hardware and system architecture",
-            "topics": ["Embedded systems", "Hardware optimization", "System architecture", "Performance analysis"]
+            "topics": [
+              "Embedded systems",
+              "Hardware optimization",
+              "System architecture",
+              "Performance analysis"
+            ]
           }
         ]
       },
@@ -319,17 +329,32 @@
           {
             "name": "Computer Vision",
             "description": "Advanced image and video processing",
-            "topics": ["Object detection", "Image recognition", "Video analysis", "Real-time processing"]
+            "topics": [
+              "Object detection",
+              "Image recognition",
+              "Video analysis",
+              "Real-time processing"
+            ]
           },
           {
             "name": "Artificial Intelligence",
             "description": "Machine learning and neural networks",
-            "topics": ["Deep learning", "Neural networks", "Natural language processing", "Reinforcement learning"]
+            "topics": [
+              "Deep learning",
+              "Neural networks",
+              "Natural language processing",
+              "Reinforcement learning"
+            ]
           },
           {
             "name": "Data Science",
             "description": "Data analytics and processing",
-            "topics": ["Big data analytics", "Predictive modeling", "Statistical analysis", "Data visualization"]
+            "topics": [
+              "Big data analytics",
+              "Predictive modeling",
+              "Statistical analysis",
+              "Data visualization"
+            ]
           }
         ]
       },
@@ -339,12 +364,22 @@
           {
             "name": "Material Research",
             "description": "Advanced material development",
-            "topics": ["Composite materials", "Material properties", "New filament types", "Material testing"]
+            "topics": [
+              "Composite materials",
+              "Material properties",
+              "New filament types",
+              "Material testing"
+            ]
           },
           {
             "name": "Printing Technology",
             "description": "Innovative printing methods",
-            "topics": ["Print optimization", "New printing techniques", "Quality control", "Process automation"]
+            "topics": [
+              "Print optimization",
+              "New printing techniques",
+              "Quality control",
+              "Process automation"
+            ]
           }
         ]
       }

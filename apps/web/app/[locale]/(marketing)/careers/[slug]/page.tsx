@@ -57,7 +57,7 @@ const fallbackJobs: Record<string, {
   'senior-cloud-engineer': {
     title: { th: 'วิศวกรคลาวด์อาวุโส', en: 'Senior Cloud Engineer' },
     department: { th: 'วิศวกรรม', en: 'Engineering' },
-    location: { th: 'กรุงเทพฯ / ทำงานระยะไกล', en: 'Bangkok / Remote' },
+    location: { th: 'เชียงใหม่ / ทำงานระยะไกล', en: 'Chiang Mai / Remote' },
     employmentType: 'full-time',
     description: {
       th: 'เรากำลังมองหาวิศวกรคลาวด์อาวุโสที่มีประสบการณ์ในการออกแบบและพัฒนาระบบ Cloud Infrastructure สำหรับลูกค้าองค์กรขนาดใหญ่ คุณจะทำงานร่วมกับทีมเพื่อสร้างโซลูชันที่มีความยืดหยุ่นและปลอดภัย',
@@ -71,7 +71,7 @@ const fallbackJobs: Record<string, {
   'security-analyst': {
     title: { th: 'นักวิเคราะห์ความปลอดภัย', en: 'Security Analyst' },
     department: { th: 'ความปลอดภัย', en: 'Security' },
-    location: { th: 'กรุงเทพฯ', en: 'Bangkok' },
+    location: { th: 'เชียงใหม่', en: 'Chiang Mai' },
     employmentType: 'full-time',
     description: {
       th: 'ร่วมทีม Security Operations Center (SOC) ของเราเพื่อปกป้องลูกค้าจากภัยคุกคามทางไซเบอร์ คุณจะวิเคราะห์และตอบสนองต่อเหตุการณ์ด้านความปลอดภัยตลอด 24/7',
@@ -99,7 +99,7 @@ const fallbackJobs: Record<string, {
   'project-manager': {
     title: { th: 'ผู้จัดการโครงการ', en: 'Project Manager' },
     department: { th: 'ปฏิบัติการ', en: 'Operations' },
-    location: { th: 'กรุงเทพฯ', en: 'Bangkok' },
+    location: { th: 'เชียงใหม่', en: 'Chiang Mai' },
     employmentType: 'full-time',
     description: {
       th: 'บริหารจัดการโครงการ IT สำหรับลูกค้าองค์กร ประสานงานระหว่างทีมเทคนิคและลูกค้าเพื่อส่งมอบโครงการตรงเวลาและตามงบประมาณ',

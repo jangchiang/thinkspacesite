@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { Cloud, Shield, Database, Code, BarChart, Server, FlaskConical, ArrowRight, type LucideIcon } from 'lucide-react'
+import { Cloud, Shield, Database, Code, BarChart, Server, FlaskConical, Cpu, ArrowRight, type LucideIcon } from 'lucide-react'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { type Locale } from '@/lib/i18n'
@@ -19,6 +19,7 @@ const iconMap: Record<string, LucideIcon> = {
   BarChart,
   Server,
   FlaskConical,
+  Cpu,
   // Fallback key mappings (matching homepage)
   cloud: Cloud,
   software: Code,
@@ -48,14 +49,14 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
+      staggerChildren: 0.08,
+      delayChildren: 0.1,
     },
   },
 }
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
@@ -66,6 +67,69 @@ const itemVariants = {
   },
 }
 
+// REAL 6 ThinkSpace pillars used when Strapi returns nothing.
+const fallbackServices: Array<{
+  slug: string
+  icon: LucideIcon
+  title: { en: string; th: string }
+  description: { en: string; th: string }
+}> = [
+  {
+    slug: 'software',
+    icon: Code,
+    title: { en: 'Software Solutions', th: 'โซลูชันซอฟต์แวร์' },
+    description: {
+      en: 'Custom software, web and mobile platforms, and enterprise systems — from cross-border ERP to POS and digital marketplaces.',
+      th: 'ซอฟต์แวร์ตามความต้องการ แพลตฟอร์มเว็บและมือถือ และระบบองค์กร ตั้งแต่ ERP ข้ามพรมแดนไปจนถึง POS และมาร์เก็ตเพลส',
+    },
+  },
+  {
+    slug: 'cybersecurity',
+    icon: Shield,
+    title: { en: 'Cybersecurity & Cloud Infrastructure', th: 'ความมั่นคงปลอดภัยไซเบอร์และคลาวด์' },
+    description: {
+      en: 'Enterprise security, identity and access control, and resilient cloud and network infrastructure you fully own.',
+      th: 'ความปลอดภัยระดับองค์กร การควบคุมตัวตนและสิทธิ์การเข้าถึง และโครงสร้างพื้นฐานคลาวด์และเครือข่ายที่คุณเป็นเจ้าของเต็มที่',
+    },
+  },
+  {
+    slug: 'ai-datascience',
+    icon: Database,
+    title: { en: 'AI & Data Science', th: 'ปัญญาประดิษฐ์และวิทยาการข้อมูล' },
+    description: {
+      en: 'Applied AI, machine learning, and private AI systems — from risk prediction and document intelligence to sovereign on-prem AI.',
+      th: 'การประยุกต์ใช้ AI แมชชีนเลิร์นนิง และระบบ AI ส่วนตัว ตั้งแต่การทำนายความเสี่ยงและความเข้าใจเอกสารไปจนถึง AI อธิปไตยบนเซิร์ฟเวอร์เอง',
+    },
+  },
+  {
+    slug: 'hpc',
+    icon: Cpu,
+    title: { en: 'High-Performance Computing', th: 'การประมวลผลสมรรถนะสูง' },
+    description: {
+      en: 'GPU-accelerated computing and large-scale simulation for research and engineering workloads.',
+      th: 'การประมวลผลเร่งด้วย GPU และการจำลองขนาดใหญ่สำหรับงานวิจัยและวิศวกรรม',
+    },
+  },
+  {
+    slug: 'iot',
+    icon: Server,
+    title: { en: 'IoT & Automation', th: 'IoT และระบบอัตโนมัติ' },
+    description: {
+      en: 'Connected devices, sensor networks, and automation platforms that turn real-world data into real-time monitoring and control.',
+      th: 'อุปกรณ์เชื่อมต่อ เครือข่ายเซ็นเซอร์ และแพลตฟอร์มอัตโนมัติที่เปลี่ยนข้อมูลจริงเป็นการตรวจสอบและควบคุมแบบเรียลไทม์',
+    },
+  },
+  {
+    slug: 'research',
+    icon: FlaskConical,
+    title: { en: 'Advanced Research', th: 'งานวิจัยขั้นสูง' },
+    description: {
+      en: 'Applied R&D with universities and industry — turning frontier research in simulation, AI, and digital engineering into working systems.',
+      th: 'งานวิจัยและพัฒนาประยุกต์ร่วมกับมหาวิทยาลัยและอุตสาหกรรม เปลี่ยนงานวิจัยล้ำสมัยให้เป็นระบบที่ใช้งานได้จริง',
+    },
+  },
+]
+
 export function ServicesPageContent({ locale, dict, heroBackground, heroTitle, heroSubtitle, services: servicesProp }: ServicesPageContentProps): React.JSX.Element {
   const heroRef = useRef(null)
   const gridRef = useRef(null)
@@ -74,9 +138,11 @@ export function ServicesPageContent({ locale, dict, heroBackground, heroTitle, h
   const gridInView = useInView(gridRef, { once: true, margin: '-100px' })
   const ctaInView = useInView(ctaRef, { once: true, margin: '-100px' })
 
+  const isTh = locale === 'th'
+
   const hasBackground = heroBackground && heroBackground.type !== 'none'
-  const overlayOpacity = heroBackground?.overlayOpacity ?? 60
-  const overlayColor = heroBackground?.overlayColor ?? '#000000'
+  const overlayOpacity = heroBackground?.overlayOpacity ?? 70
+  const overlayColor = heroBackground?.overlayColor ?? '#0B2447'
   const textColorClass = heroBackground?.textColor === 'dark' ? 'text-base-content' : 'text-white'
 
   // Convert hex to RGB for rgba
@@ -96,66 +162,53 @@ export function ServicesPageContent({ locale, dict, heroBackground, heroTitle, h
     backgroundColor: `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${overlayOpacity / 100})`,
   }
 
-  // Fallback services from dictionary (same as homepage)
-  const fallbackServiceKeys = [
-    { key: 'cloud', slug: 'cloud' },
-    { key: 'software', slug: 'software' },
-    { key: 'security', slug: 'cybersecurity' },
-    { key: 'dataAi', slug: 'ai-datascience' },
-  ]
-
-  // Use services from props (Strapi) or fall back to dictionary services
+  // Use services from props (Strapi) or fall back to the real 6 pillars.
   const services = servicesProp && servicesProp.length > 0
     ? servicesProp.map(service => ({
         slug: service.slug,
         title: service.title,
         description: service.description,
         icon: iconMap[service.icon] || Code,
-        color: service.color || 'bg-primary',
         href: `/${locale}/services/${service.slug}`,
       }))
-    : fallbackServiceKeys.map(service => ({
+    : fallbackServices.map(service => ({
         slug: service.slug,
-        title: dict.services?.[service.key]?.title || service.key,
-        description: dict.services?.[service.key]?.description || '',
-        icon: iconMap[service.key] || Code,
-        color: 'bg-primary',
+        title: isTh ? service.title.th : service.title.en,
+        description: isTh ? service.description.th : service.description.en,
+        icon: service.icon,
         href: `/${locale}/services/${service.slug}`,
       }))
 
-  const defaultTitle = dict.services?.title || (locale === 'th' ? 'บริการของเรา' : 'Our Services')
-  const defaultSubtitle = dict.services?.subtitle || (locale === 'th'
-    ? 'โซลูชันเทคโนโลยีครบวงจรสำหรับองค์กรของคุณ'
-    : 'Comprehensive technology solutions for your organization')
+  const defaultTitle = isTh ? 'บริการของเรา' : 'Our Services'
+  const defaultSubtitle = isTh
+    ? 'หกเสาหลักด้านเทคโนโลยี — ตั้งแต่ซอฟต์แวร์และความปลอดภัย ไปจนถึง AI, HPC, IoT และงานวิจัยขั้นสูง'
+    : 'Six technology pillars — from software and security to AI, HPC, IoT, and advanced research.'
+  const eyebrow = isTh ? 'บริการ' : 'What We Do'
 
   return (
     <>
       {/* Hero Section */}
       {!hasBackground ? (
-        <section className="section-padding bg-gradient-to-br from-base-100 to-primary/5" ref={heroRef}>
-          <div className="container-custom">
+        <section className="bg-secondary text-white overflow-hidden" ref={heroRef}>
+          <div className="container-custom py-20 md:py-28">
             <motion.div
-              className="max-w-3xl mx-auto text-center"
-              initial={{ opacity: 0, y: 30 }}
-              animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+              className="max-w-3xl"
+              initial={{ opacity: 0, y: 24 }}
+              animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+              <p className="eyebrow mb-4">{eyebrow}</p>
+              <h1 className="display-heading text-4xl md:text-5xl lg:text-6xl text-white mb-6">
                 {heroTitle || defaultTitle}
               </h1>
-              <motion.p
-                className="text-lg md:text-xl text-base-content/70"
-                initial={{ opacity: 0, y: 20 }}
-                animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              >
+              <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-2xl">
                 {heroSubtitle || defaultSubtitle}
-              </motion.p>
+              </p>
             </motion.div>
           </div>
         </section>
       ) : (
-        <section className="relative min-h-[50vh] flex items-center overflow-hidden" ref={heroRef}>
+        <section className="relative min-h-[50vh] flex items-center overflow-hidden bg-secondary" ref={heroRef}>
           {/* Background Media */}
           {heroBackground.type === 'image' && heroBackground.imageUrl && (
             <div className="absolute inset-0">
@@ -187,28 +240,21 @@ export function ServicesPageContent({ locale, dict, heroBackground, heroTitle, h
           {/* Overlay */}
           <div className="absolute inset-0" style={overlayStyle} />
 
-          {/* Gradient fade at bottom */}
-          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-base-100 to-transparent" />
-
           {/* Content */}
-          <div className={`container-custom relative z-10 py-20 ${textColorClass}`}>
+          <div className={`container-custom relative z-10 py-20 md:py-28 ${textColorClass}`}>
             <motion.div
-              className="max-w-3xl mx-auto text-center"
-              initial={{ opacity: 0, y: 30 }}
-              animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+              className="max-w-3xl"
+              initial={{ opacity: 0, y: 24 }}
+              animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+              <p className="eyebrow mb-4">{eyebrow}</p>
+              <h1 className="display-heading text-4xl md:text-5xl lg:text-6xl text-white mb-6">
                 {heroTitle || defaultTitle}
               </h1>
-              <motion.p
-                className="text-lg md:text-xl opacity-80"
-                initial={{ opacity: 0, y: 20 }}
-                animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              >
+              <p className="text-lg md:text-xl text-white/80 leading-relaxed max-w-2xl">
                 {heroSubtitle || defaultSubtitle}
-              </motion.p>
+              </p>
             </motion.div>
           </div>
         </section>
@@ -220,12 +266,12 @@ export function ServicesPageContent({ locale, dict, heroBackground, heroTitle, h
           {services.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-base-content/70 text-lg">
-                {locale === 'th' ? 'ยังไม่มีบริการ' : 'No services yet'}
+                {isTh ? 'ยังไม่มีบริการ' : 'No services yet'}
               </p>
             </div>
           ) : (
             <motion.div
-              className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+              className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
               initial="hidden"
               animate={gridInView ? 'visible' : 'hidden'}
               variants={containerVariants}
@@ -236,29 +282,21 @@ export function ServicesPageContent({ locale, dict, heroBackground, heroTitle, h
                   <motion.div key={service.slug} variants={itemVariants}>
                     <Link
                       href={service.href}
-                      className="group card bg-base-100 shadow-lg hover:shadow-xl transition-all duration-300 border border-base-200 hover:border-primary/20 h-full"
+                      className="group card-surface bg-base-100 p-8 h-full flex flex-col hover-lift"
                     >
-                      <div className="card-body">
-                        <motion.div
-                          className={`w-16 h-16 rounded-xl ${service.color} flex items-center justify-center mb-4 transition-transform`}
-                          whileHover={{ scale: 1.1, rotate: 5 }}
-                          transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-                        >
-                          <Icon className="w-8 h-8 text-white" />
-                        </motion.div>
-                        <h3 className="card-title text-xl mb-2">
-                          {service.title}
-                        </h3>
-                        <p className="text-base-content/70 mb-4">
-                          {service.description}
-                        </p>
-                        <div className="card-actions mt-auto">
-                          <span className="inline-flex items-center gap-2 text-primary font-medium group-hover:gap-3 transition-all">
-                            {dict.services?.learnMore || (locale === 'th' ? 'เรียนรู้เพิ่มเติม' : 'Learn More')}
-                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                          </span>
-                        </div>
-                      </div>
+                      <span className="inline-flex items-center justify-center w-12 h-12 border border-base-300 text-primary bg-primary/5 mb-6 group-hover:border-primary transition-colors">
+                        <Icon className="w-6 h-6" />
+                      </span>
+                      <h3 className="text-xl font-semibold text-base-content mb-3 group-hover:text-primary transition-colors">
+                        {service.title}
+                      </h3>
+                      <p className="text-base-content/70 leading-relaxed mb-6 flex-1">
+                        {service.description}
+                      </p>
+                      <span className="inline-flex items-center gap-2 text-primary font-medium text-sm mt-auto">
+                        {dict.services?.learnMore || (isTh ? 'เรียนรู้เพิ่มเติม' : 'Learn More')}
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </span>
                     </Link>
                   </motion.div>
                 )
@@ -269,37 +307,27 @@ export function ServicesPageContent({ locale, dict, heroBackground, heroTitle, h
       </section>
 
       {/* CTA Section */}
-      <section className="section-padding bg-primary text-primary-content" ref={ctaRef}>
+      <section className="section-padding bg-base-200" ref={ctaRef}>
         <div className="container-custom">
           <motion.div
-            className="max-w-3xl mx-auto text-center"
-            initial={{ opacity: 0, y: 30 }}
-            animate={ctaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            className="bg-secondary text-white p-10 md:p-16 text-center"
+            initial={{ opacity: 0, y: 24 }}
+            animate={ctaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              {locale === 'th' ? 'พร้อมเริ่มต้นหรือยัง?' : 'Ready to Get Started?'}
+            <div className="rule-accent mx-auto mb-8" />
+            <h2 className="display-heading text-3xl md:text-4xl text-white mb-4">
+              {isTh ? 'พร้อมเริ่มต้นหรือยัง?' : 'Ready to Get Started?'}
             </h2>
-            <motion.p
-              className="text-lg text-primary-content/80 mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={ctaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            >
-              {locale === 'th'
-                ? 'ติดต่อเราวันนี้เพื่อรับคำปรึกษาฟรี'
-                : 'Contact us today for a free consultation'}
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={ctaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <Link href={`/${locale}/contact`} className="btn btn-secondary btn-lg group">
-                {locale === 'th' ? 'ติดต่อเรา' : 'Contact Us'}
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </motion.div>
+            <p className="text-lg text-white/70 mb-8 max-w-2xl mx-auto leading-relaxed">
+              {isTh
+                ? 'ติดต่อเราวันนี้เพื่อพูดคุยเกี่ยวกับโครงการของคุณและรับคำปรึกษา'
+                : 'Talk to us about your project and get a consultation.'}
+            </p>
+            <Link href={`/${locale}/contact`} className="btn btn-primary group">
+              {isTh ? 'ติดต่อเรา' : 'Contact Us'}
+              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+            </Link>
           </motion.div>
         </div>
       </section>

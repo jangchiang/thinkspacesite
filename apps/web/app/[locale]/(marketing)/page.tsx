@@ -3,6 +3,8 @@ import { getDictionary } from '@/lib/dictionary'
 import { getPartners, getStats, getCaseStudies, getBlogPosts, getHomepage, getServices } from '@/lib/strapi'
 import { HeroSection } from '@/components/sections/hero'
 import { ServicesSection } from '@/components/sections/services'
+import { LogixHighlight } from '@/components/sections/logix-highlight'
+import { PartnersBand } from '@/components/sections/partners'
 import { WhyChooseUsSection } from '@/components/sections/why-choose-us'
 import { FeaturedWorksSection } from '@/components/sections/featured-works'
 import { NewsPreviewSection } from '@/components/sections/news-preview'
@@ -114,10 +116,12 @@ export default async function HomePage({ params }: Props): Promise<React.JSX.Ele
     <>
       <HeroSection dict={{ ...dict, hero: heroData }} locale={locale} partners={partners} strapiUrl={strapiUrl} />
       <ServicesSection dict={dict} locale={locale} services={services} />
+      <LogixHighlight locale={locale} />
+      <PartnersBand locale={locale} strapiUrl={strapiUrl} />
       <WhyChooseUsSection locale={locale} data={homepageData?.whyChooseUsSection} />
       <FeaturedWorksSection locale={locale} caseStudies={caseStudies} />
-      <NewsPreviewSection locale={locale} posts={blogPosts} strapiUrl={strapiUrl} />
       <StatsSection stats={stats} />
+      <NewsPreviewSection locale={locale} posts={blogPosts} strapiUrl={strapiUrl} />
       <CTASection dict={dict} locale={locale} />
     </>
   )

@@ -89,7 +89,8 @@ export default async function NewsPage({ params, searchParams }: Props): Promise
       {/* Hero Section */}
       <HeroSection background={heroBackground} minHeight="min-h-[40vh]">
         <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+          <p className="eyebrow mb-4">{locale === 'th' ? 'ข่าวสาร' : 'Newsroom'}</p>
+          <h1 className="display-heading text-4xl md:text-5xl lg:text-6xl mb-6">
             {heroData?.title || (locale === 'th' ? 'ข่าวสาร' : 'News')}
           </h1>
           <p className={`text-lg md:text-xl ${heroBackground ? 'opacity-80' : 'text-base-content/70'}`}>

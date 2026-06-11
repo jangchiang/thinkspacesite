@@ -1,8 +1,0 @@
-User-Agent: *
-Allow: /
-Disallow: /api/
-Disallow: /admin/
-Disallow: /_next/
-
-Host: https://techthinkspace.com
-Sitemap: https://techthinkspace.com/sitemap.xml
