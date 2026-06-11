@@ -41,6 +41,11 @@
       "static/chunks/main-app.js",
       "static/chunks/app/[locale]/(marketing)/products/proxmox/page.js"
     ],
+    "/[locale]/(marketing)/products/logix/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/[locale]/(marketing)/products/logix/page.js"
+    ],
     "/_not-found/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",

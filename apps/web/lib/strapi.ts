@@ -173,6 +173,18 @@ export async function getCaseStudies(locale: Locale, limit?: number) {
   return response.data
 }
 
+export async function getProduct(slug: string, locale: Locale) {
+  const response = await fetchStrapi<unknown[]>('/products', {
+    locale,
+    filters: { slug: { $eq: slug } },
+    populate: ['features', 'tiers', 'addOns'],
+    tags: ['products', `product-${slug}`],
+    revalidate: 0,
+  })
+
+  return (Array.isArray(response.data) && response.data[0]) || null
+}
+
 export async function getService(slug: string, locale: Locale) {
   const response = await fetchStrapi<unknown[]>('/services', {
     locale,
