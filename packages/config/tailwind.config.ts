@@ -76,7 +76,7 @@ const config: Config = {
           'primary-content': '#052e26',
 
           // Secondary - Deep navy (primary buttons, dark surfaces)
-          'secondary': '#0b2447',
+          'secondary': '#06152c',
           'secondary-content': '#ffffff',
 
           // Accent - Deeper teal (hover)
@@ -121,7 +121,7 @@ const config: Config = {
 
           // Secondary - Deep navy surface (kept dark in BOTH themes so bg-secondary
           // panels — hero, CTAs, Logix band — never invert. Headings use base-content.)
-          'secondary': '#0b2447',
+          'secondary': '#06152c',
           'secondary-content': '#ffffff',
 
           // Accent - Light teal
