@@ -88,7 +88,7 @@ export function FeaturedWorksSection({ locale, caseStudies }: FeaturedWorksSecti
           transition={{ duration: 0.6 }}
         >
           <div className="max-w-2xl">
-            <p className="eyebrow mb-3">{isTh ? 'ผลงาน' : 'Selected Work'}</p>
+            <p className="eyebrow mb-3">{isTh ? 'เรื่องราวความสำเร็จ' : 'Customer Stories'}</p>
             <h2 className="display-heading text-3xl md:text-4xl lg:text-5xl mb-5">
               {isTh ? 'โครงการที่เราภูมิใจนำเสนอ' : 'Projects We Are Proud Of'}
             </h2>
@@ -103,7 +103,7 @@ export function FeaturedWorksSection({ locale, caseStudies }: FeaturedWorksSecti
             href={`/${locale}/works`}
             className="btn btn-outline btn-primary group shrink-0"
           >
-            {isTh ? 'ดูผลงานทั้งหมด' : 'View All Works'}
+            {isTh ? 'ดูเรื่องราวทั้งหมด' : 'View all stories'}
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </motion.div>

@@ -50,6 +50,26 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/[locale]/(marketing)/about/page.js"
+    ],
+    "/[locale]/(marketing)/services/[slug]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/[locale]/(marketing)/services/[slug]/page.js"
+    ],
+    "/[locale]/(marketing)/contact/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/[locale]/(marketing)/contact/page.js"
+    ],
+    "/[locale]/(marketing)/works/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/[locale]/(marketing)/works/page.js"
+    ],
+    "/[locale]/(marketing)/works/[slug]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/[locale]/(marketing)/works/[slug]/page.js"
     ]
   }
 }

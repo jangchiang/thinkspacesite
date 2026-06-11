@@ -66,7 +66,7 @@ export function generateBreadcrumbs(
   const routeLabels: Record<string, { th: string; en: string }> = {
     about: { th: 'เกี่ยวกับเรา', en: 'About' },
     services: { th: 'บริการ', en: 'Services' },
-    works: { th: 'ผลงาน', en: 'Works' },
+    works: { th: 'เรื่องราวความสำเร็จ', en: 'Customer Stories' },
     news: { th: 'ข่าวสาร', en: 'News' },
     careers: { th: 'ร่วมงาน', en: 'Careers' },
     contact: { th: 'ติดต่อ', en: 'Contact' },

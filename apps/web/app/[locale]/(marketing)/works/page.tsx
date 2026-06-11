@@ -224,14 +224,14 @@ export default async function WorksPage({ params }: Props): Promise<React.JSX.El
       {/* Hero Section */}
       <HeroSection background={heroBackground} minHeight="min-h-[40vh]">
         <div className="max-w-3xl mx-auto text-center">
-          <p className="eyebrow mb-4">{isTh ? 'ผลงาน' : 'Work Profile'}</p>
+          <p className="eyebrow mb-4">{isTh ? 'เรื่องราวความสำเร็จ' : 'Customer Stories'}</p>
           <h1 className="display-heading text-4xl md:text-5xl lg:text-6xl mb-6">
-            {heroData?.title || (isTh ? 'ผลงานของเรา' : 'Our Work Profile')}
+            {heroData?.title || (isTh ? 'เรื่องราวความสำเร็จของลูกค้า' : 'Customer Stories')}
           </h1>
           <p className={`text-lg md:text-xl ${heroBackground ? 'opacity-80' : 'text-base-content/70'}`}>
             {heroData?.subtitle || (isTh
-              ? 'ดูผลงานและโครงการที่เราได้ดำเนินการให้กับลูกค้า'
-              : 'Explore our portfolio of successful projects and client work')}
+              ? 'เรื่องราวจริงจากองค์กรที่เราร่วมงานด้วย ตั้งแต่ AI และ HPC ไปจนถึง ERP และระบบความปลอดภัย'
+              : 'Real stories from the organizations we work with — from AI and HPC to ERP and security.')}
           </p>
         </div>
       </HeroSection>
