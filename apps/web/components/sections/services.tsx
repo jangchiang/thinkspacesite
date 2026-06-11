@@ -190,7 +190,7 @@ export function ServicesSection({ locale, services: strapiServices }: ServicesSe
                   <p className="mb-6 flex-1 text-base-content/70 leading-relaxed">
                     {pillar.description}
                   </p>
-                  <span className="inline-flex items-center gap-1.5 text-sm font-medium text-primary">
+                  <span className="inline-flex items-center gap-1.5 text-sm font-medium text-accent">
                     {learnMore}
                     <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </span>

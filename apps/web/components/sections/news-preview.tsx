@@ -133,7 +133,7 @@ export function NewsPreviewSection({ locale, posts, strapiUrl = '' }: NewsPrevie
                   </div>
                 </div>
                 <div className="flex flex-col flex-1 p-6">
-                  <div className="flex items-center gap-4 text-xs text-base-content/60 mb-3">
+                  <div className="flex items-center gap-4 text-xs text-base-content/70 mb-3">
                     <span className="flex items-center gap-1.5">
                       <Calendar className="w-3.5 h-3.5" />
                       {new Date(post.publishedAt).toLocaleDateString(
@@ -153,7 +153,7 @@ export function NewsPreviewSection({ locale, posts, strapiUrl = '' }: NewsPrevie
                   <p className="text-sm text-base-content/70 line-clamp-3 leading-relaxed">
                     {post.excerpt}
                   </p>
-                  <span className="mt-auto pt-4 inline-flex items-center gap-1.5 text-primary font-medium text-sm">
+                  <span className="mt-auto pt-4 inline-flex items-center gap-1.5 text-accent font-medium text-sm">
                     {isTh ? 'อ่านต่อ' : 'Read more'}
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </span>

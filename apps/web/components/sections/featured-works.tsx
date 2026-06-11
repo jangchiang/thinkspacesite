@@ -134,7 +134,7 @@ export function FeaturedWorksSection({ locale, caseStudies }: FeaturedWorksSecti
                         {work.title}
                       </h3>
                       {work.clientName ? (
-                        <p className="text-sm text-base-content/60 mt-1">{work.clientName}</p>
+                        <p className="text-sm text-base-content/70 mt-1">{work.clientName}</p>
                       ) : null}
                     </div>
                   </div>
@@ -148,18 +148,18 @@ export function FeaturedWorksSection({ locale, caseStudies }: FeaturedWorksSecti
                     {isMetricValue(work.resultValue) ? (
                       <div>
                         <span className="block text-3xl font-bold text-base-content tracking-tight">{work.resultValue}</span>
-                        <span className="text-xs uppercase tracking-wider text-base-content/60">{work.resultLabel}</span>
+                        <span className="text-xs uppercase tracking-wider text-base-content/70">{work.resultLabel}</span>
                       </div>
                     ) : (
                       <div className="flex items-start gap-2 min-w-0">
                         <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                         <div className="min-w-0">
-                          <span className="block text-xs font-semibold text-primary uppercase tracking-wider">{work.resultLabel}</span>
+                          <span className="block text-xs font-semibold text-accent uppercase tracking-wider">{work.resultLabel}</span>
                           <p className="text-sm text-base-content/70 line-clamp-2 leading-snug">{work.resultValue}</p>
                         </div>
                       </div>
                     )}
-                    <span className="flex items-center gap-1.5 text-primary font-medium text-sm shrink-0">
+                    <span className="flex items-center gap-1.5 text-accent font-medium text-sm shrink-0">
                       {isTh ? 'รายละเอียด' : 'Details'}
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </span>

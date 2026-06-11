@@ -30,8 +30,7 @@ export function ContactForm({ locale = 'en' }: ContactFormProps): React.JSX.Elem
     }
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
-      const response = await fetch(`${apiUrl}/contact`, {
+      const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -62,6 +61,10 @@ export function ContactForm({ locale = 'en' }: ContactFormProps): React.JSX.Elem
     successDesc: locale === 'th' ? 'เราจะติดต่อกลับโดยเร็วที่สุด' : 'We will get back to you soon.',
     error: locale === 'th' ? 'ส่งไม่สำเร็จ กรุณาลองอีกครั้ง' : 'Failed to send. Please try again.',
     sendAnother: locale === 'th' ? 'ส่งข้อความอีกครั้ง' : 'Send another message',
+    errorDirect:
+      locale === 'th'
+        ? 'หรือติดต่อเราโดยตรงที่'
+        : 'Or reach us directly at',
   }
 
   if (status === 'success') {
@@ -199,13 +202,23 @@ export function ContactForm({ locale = 'en' }: ContactFormProps): React.JSX.Elem
       <AnimatePresence>
         {status === 'error' && (
           <motion.div
-            className="alert alert-error"
+            className="alert alert-error flex-col items-start gap-2"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
           >
-            <AlertCircle className="w-5 h-5" />
-            <span>{t.error}</span>
+            <div className="flex items-center gap-2">
+              <AlertCircle className="w-5 h-5" />
+              <span>{t.error}</span>
+            </div>
+            <p className="text-sm">
+              {t.errorDirect}{' '}
+              <a href="mailto:info@techthinkspace.com" className="link font-medium">
+                info@techthinkspace.com
+              </a>{' '}
+              ·{' '}
+              <span className="font-medium">Line @techthinkspace</span>
+            </p>
           </motion.div>
         )}
       </AnimatePresence>

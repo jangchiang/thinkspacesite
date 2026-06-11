@@ -7,16 +7,19 @@ import { getCaseStudies, getPageHero } from '@/lib/strapi'
 import { HeroSection } from '@/components/sections/hero-section'
 import { buildHeroBackground } from '@/lib/hero-utils'
 import { isMetricValue } from '@/lib/case-study-utils'
+import { CategoryFilter } from '@/components/ui/category-filter'
+import { Suspense } from 'react'
 
 type Props = {
   params: Promise<{ locale: Locale }>
+  searchParams: Promise<{ category?: string }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
 
   return {
-    title: locale === 'th' ? 'ผลงาน' : 'Work Profile',
+    title: locale === 'th' ? 'เรื่องราวความสำเร็จ' : 'Customer Stories',
     description: locale === 'th'
       ? 'ผลงานและโครงการที่ Thinkspace Technology ได้ดำเนินการ'
       : 'Projects and work completed by Thinkspace Technology',
@@ -177,8 +180,9 @@ function getStrapiImageUrl(url: string | undefined): string | undefined {
   return `${baseUrl}${url}`
 }
 
-export default async function WorksPage({ params }: Props): Promise<React.JSX.Element> {
+export default async function WorksPage({ params, searchParams }: Props): Promise<React.JSX.Element> {
   const { locale } = await params
+  const { category } = await searchParams
   const isTh = locale === 'th'
 
   // Fetch hero and works in parallel
@@ -219,6 +223,18 @@ export default async function WorksPage({ params }: Props): Promise<React.JSX.El
         clientLogo: undefined as string | undefined,
       }))
 
+  // Derive the unique industries/sectors so visitors can filter the stories.
+  const industries = [...new Set(
+    works
+      .map((work) => work.industry)
+      .filter((industry): industry is string => Boolean(industry))
+  )].sort()
+
+  // Filter the displayed stories by the selected industry (from the query param).
+  const filteredWorks = category
+    ? works.filter((work) => work.industry === category)
+    : works
+
   return (
     <>
       {/* Hero Section */}
@@ -239,8 +255,19 @@ export default async function WorksPage({ params }: Props): Promise<React.JSX.El
       {/* Works Grid */}
       <section className="section-padding">
         <div className="container-custom">
+          {/* Industry Filter */}
+          {industries.length > 1 && (
+            <Suspense fallback={<div className="h-10 mb-8" />}>
+              <CategoryFilter
+                categories={industries}
+                locale={locale}
+                basePath={`/${locale}/works`}
+              />
+            </Suspense>
+          )}
+
           <div className="space-y-8">
-            {works.map((work) => (
+            {filteredWorks.map((work) => (
               <div key={work.slug} className="card-surface bg-base-100 lg:card-side flex flex-col lg:flex-row overflow-hidden">
                 <div className="lg:w-1/3 bg-base-200 flex items-center justify-center p-8 relative overflow-hidden min-h-[12rem]">
                   {work.featuredImage ? (
@@ -315,6 +342,14 @@ export default async function WorksPage({ params }: Props): Promise<React.JSX.El
               </div>
             ))}
           </div>
+
+          {filteredWorks.length === 0 && (
+            <p className="text-center text-base-content/60 py-12">
+              {isTh
+                ? 'ไม่พบเรื่องราวในหมวดหมู่นี้'
+                : 'No stories found in this category.'}
+            </p>
+          )}
         </div>
       </section>
 

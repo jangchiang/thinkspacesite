@@ -95,7 +95,7 @@ export function NewsGrid({ posts, locale, strapiUrl = '' }: NewsGridProps): Reac
                 </div>
               </div>
               <div className="p-6">
-                <div className="flex items-center gap-4 text-sm text-base-content/60 mb-2">
+                <div className="flex items-center gap-4 text-sm text-base-content/70 mb-2">
                   <span className="flex items-center gap-1">
                     <Calendar className="w-4 h-4" />
                     {new Date(post.date).toLocaleDateString(locale === 'th' ? 'th-TH' : 'en-US', {
@@ -114,7 +114,7 @@ export function NewsGrid({ posts, locale, strapiUrl = '' }: NewsGridProps): Reac
                 </h2>
                 <p className="text-base-content/70 line-clamp-2">{post.excerpt}</p>
                 <div className="mt-4">
-                  <span className="inline-flex items-center gap-2 text-primary font-medium group-hover:gap-3 transition-all">
+                  <span className="inline-flex items-center gap-2 text-accent font-medium group-hover:gap-3 transition-all">
                     {locale === 'th' ? 'อ่านเพิ่มเติม' : 'Read More'}
                     <ArrowRight className="w-4 h-4" />
                   </span>

@@ -33,7 +33,7 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Match all paths except internal ones
-    '/((?!_next|api|static|.*\\..*).*)',
+    // Match all paths except internal ones + Next metadata routes (opengraph/twitter/sitemap/robots)
+    '/((?!_next|api|static|opengraph-image|twitter-image|sitemap|robots|.*\\..*).*)',
   ],
 }
