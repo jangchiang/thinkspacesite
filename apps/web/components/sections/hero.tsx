@@ -32,7 +32,7 @@ export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: Her
   const isTh = locale === 'th'
 
   return (
-    <section className="relative overflow-hidden bg-navy-950 text-white">
+    <section className="relative overflow-hidden bg-secondary text-white">
       {/* Subtle grid + restrained teal glow (kept low so the panel reads as solid dark) */}
       <div
         className="absolute inset-0 opacity-[0.05]"
@@ -114,7 +114,7 @@ export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: Her
                 { k: isTh ? 'สาขาความเชี่ยวชาญ' : 'Solution pillars', v: '6' },
                 { k: isTh ? 'ฐานที่ตั้ง' : 'Based in', v: isTh ? 'เชียงใหม่' : 'Chiang Mai' },
               ].map((s) => (
-                <div key={s.k} className="bg-navy-950 p-5">
+                <div key={s.k} className="bg-secondary p-5">
                   <div className="text-2xl font-bold text-primary md:text-3xl">{s.v}</div>
                   <div className="mt-1 text-xs text-white/75">{s.k}</div>
                 </div>

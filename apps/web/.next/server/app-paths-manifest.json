@@ -1,10 +1,13 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
   "/[locale]/(marketing)/page": "app/[locale]/(marketing)/page.js",
   "/[locale]/(marketing)/news/page": "app/[locale]/(marketing)/news/page.js",
   "/[locale]/(marketing)/about/page": "app/[locale]/(marketing)/about/page.js",
   "/[locale]/(marketing)/contact/page": "app/[locale]/(marketing)/contact/page.js",
   "/[locale]/(marketing)/products/logix/page": "app/[locale]/(marketing)/products/logix/page.js",
-  "/[locale]/(marketing)/services/page": "app/[locale]/(marketing)/services/page.js",
   "/[locale]/(marketing)/products/page": "app/[locale]/(marketing)/products/page.js",
-  "/[locale]/(marketing)/products/proxmox/page": "app/[locale]/(marketing)/products/proxmox/page.js"
+  "/[locale]/(marketing)/products/proxmox/page": "app/[locale]/(marketing)/products/proxmox/page.js",
+  "/[locale]/(marketing)/services/page": "app/[locale]/(marketing)/services/page.js",
+  "/[locale]/(marketing)/works/page": "app/[locale]/(marketing)/works/page.js",
+  "/[locale]/(marketing)/careers/page": "app/[locale]/(marketing)/careers/page.js"
 }

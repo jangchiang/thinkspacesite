@@ -76,7 +76,7 @@ const config: Config = {
           'primary-content': '#052e26',
 
           // Secondary - Deep navy (primary buttons, dark surfaces)
-          'secondary': '#06152c',
+          'secondary': '#171717',
           'secondary-content': '#ffffff',
 
           // Accent - Deeper teal (hover)
@@ -89,8 +89,8 @@ const config: Config = {
 
           // Base colors - clean white canvas + cool gray
           'base-100': '#ffffff',
-          'base-200': '#f5f7fa',
-          'base-300': '#e3e8ef',
+          'base-200': '#f5f5f5',
+          'base-300': '#e5e5e5',
           'base-content': '#1a2433',
 
           // State colors
@@ -121,7 +121,7 @@ const config: Config = {
 
           // Secondary - Deep navy surface (kept dark in BOTH themes so bg-secondary
           // panels — hero, CTAs, Logix band — never invert. Headings use base-content.)
-          'secondary': '#06152c',
+          'secondary': '#171717',
           'secondary-content': '#ffffff',
 
           // Accent - Light teal

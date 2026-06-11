@@ -46,7 +46,7 @@ export function LogixHighlight({ locale }: LogixHighlightProps) {
   ]
 
   return (
-    <section className="bg-navy-950 text-white">
+    <section className="bg-secondary text-white">
       <div className="container-custom section-padding">
         <motion.div
           ref={ref}
@@ -114,7 +114,7 @@ export function LogixHighlight({ locale }: LogixHighlightProps) {
                     initial={{ opacity: 0, y: 16 }}
                     animate={inView ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.5, ease: 'easeOut', delay: 0.15 + i * 0.08 }}
-                    className="bg-navy-950 p-6 sm:p-8"
+                    className="bg-secondary p-6 sm:p-8"
                   >
                     <span className="inline-flex h-11 w-11 items-center justify-center rounded-box bg-primary/10 text-primary">
                       <Icon className="h-5 w-5" aria-hidden />
