@@ -1,11 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { type Locale } from '@/lib/i18n'
 import { motion } from 'framer-motion'
-import { BackgroundPaths } from '@/components/backgrounds/background-paths'
 import { LogoCarousel } from '@/components/ui/logo-carousel'
+import { MatrixGrid } from '@/components/backgrounds/matrix-grid'
 
 type Dict = Record<string, any>
 
@@ -26,98 +26,131 @@ interface HeroSectionProps {
   dict: Dict
   locale: Locale
   partners?: Partner[]
+  clients?: Partner[]
   strapiUrl?: string
 }
 
-export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: HeroSectionProps): React.JSX.Element {
-  return (
-    <section className="relative overflow-hidden flex items-center">
-      {/* Animated Paths Background */}
-      <BackgroundPaths />
+// initial state animates transform only (no opacity) so text is visible instantly —
+// avoids the blank-flash / LCP hit of fading in from opacity:0.
+const rise = (delay = 0) => ({
+  initial: { y: 16 },
+  animate: { y: 0 },
+  transition: { duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+})
 
-      <div className="container-custom relative z-10 px-4 sm:px-6 w-full">
-        <div className="py-6 sm:py-12 md:py-20 lg:py-28">
-          <div className="max-w-4xl mx-auto text-center">
-            {/* Badge */}
-            <motion.div
-              className="inline-flex items-center px-2.5 py-1 sm:px-4 sm:py-2 rounded-full bg-base-100/80 backdrop-blur-md border border-primary/20 text-primary text-[10px] sm:text-sm font-medium mb-3 sm:mb-6 shadow-lg shadow-primary/5"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-            >
+export function HeroSection({ dict, locale, clients = [], strapiUrl = '' }: HeroSectionProps): React.JSX.Element {
+  const isTh = locale === 'th'
+
+  // Only clients that actually have a logo (avoids empty boxes in the marquee).
+  const clientLogos = clients.filter((c) => c.logo)
+
+  const tags = isTh
+    ? ['AI และวิทยาการข้อมูล', 'HPC', 'ความปลอดภัยไซเบอร์', 'Private AI', 'Digital Twin']
+    : ['AI & Data Science', 'HPC', 'Cybersecurity', 'Private AI', 'Digital Twins']
+
+  const stats = [
+    { k: isTh ? 'องค์กรที่ไว้วางใจ' : 'Organizations served', v: '20+' },
+    { k: isTh ? 'สาขาความเชี่ยวชาญ' : 'Solution pillars', v: '6' },
+    { k: isTh ? 'ก่อตั้ง' : 'Founded', v: '2024' },
+    { k: isTh ? 'ฐานที่ตั้ง' : 'Based in', v: isTh ? 'เชียงใหม่' : 'Chiang Mai' },
+  ]
+
+  return (
+    <section className="relative overflow-hidden bg-secondary text-white">
+      {/* Background: animated matrix grid over a dark gradient.
+          To add a video background later, drop a file at /public/videos/hero.mp4
+          (and an optional /public/images/hero-poster.jpg) and render a <video>
+          element here above the gradient. */}
+      <div className="absolute inset-0 bg-gradient-to-br from-secondary/92 via-secondary/72 to-secondary/88" />
+      <MatrixGrid />
+
+      <div className="container-custom relative z-10">
+        <div className="grid items-center gap-10 py-20 md:py-28 lg:grid-cols-12 lg:py-32">
+          {/* Copy */}
+          <div className="lg:col-span-7">
+            <motion.div className="eyebrow !text-primary" {...rise(0)}>
+              <span className="rule-accent" />
               {dict.hero.badge}
             </motion.div>
 
-            {/* Headline */}
             <motion.h1
-              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold tracking-normal leading-tight mb-2 sm:mb-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              className="mt-5 text-3xl font-bold leading-[1.1] tracking-tight sm:text-4xl md:text-5xl lg:text-6xl"
+              {...rise(0.05)}
             >
               {dict.hero.title}
               <br />
-              <span
-                className="inline-block mt-0.5 sm:mt-1"
-                style={{
-                  background: 'linear-gradient(to right, #22c55e, #16a34a)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >
+              <span className="bg-gradient-to-r from-primary to-[#4ade80] bg-clip-text text-transparent">
                 {dict.hero.titleHighlight}
               </span>
             </motion.h1>
 
-            {/* Subheadline */}
-            <motion.p
-              className="text-xs sm:text-sm md:text-base lg:text-lg text-base-content/70 max-w-xl mx-auto mb-4 sm:mb-6 md:mb-8 px-1 sm:px-0"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
+            <motion.p className="mt-6 max-w-2xl text-base leading-relaxed text-white/85 md:text-lg" {...rise(0.1)}>
               {dict.hero.subtitle}
             </motion.p>
 
-            {/* CTAs */}
-            <motion.div
-              className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
-              <motion.div
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Link
-                  href={`/${locale}/contact`}
-                  className="btn btn-primary btn-sm sm:btn-md md:btn-lg gap-1.5 sm:gap-2 group shadow-xl shadow-primary/30"
-                >
-                  {dict.hero.cta}
-                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </motion.div>
+            <motion.div className="mt-6 flex flex-wrap gap-2" {...rise(0.15)}>
+              {tags.map((t) => (
+                <span key={t} className="rounded-full border border-white/15 bg-white/[0.04] px-3 py-1 text-xs font-medium text-white/75">
+                  {t}
+                </span>
+              ))}
             </motion.div>
 
-            {/* Trust Indicators with Logo Carousel - hidden on very small screens */}
-            {partners.length > 0 && (
-              <motion.div
-                className="mt-6 sm:mt-10 md:mt-14 pt-4 sm:pt-6 border-t border-base-content/10"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
+            <motion.div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center" {...rise(0.2)}>
+              <Link href={`/${locale}/contact`} className="btn btn-primary btn-md group gap-2 md:btn-lg">
+                {dict.hero.cta}
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+              <Link
+                href={`/${locale}/products/logix`}
+                className="btn btn-outline btn-md gap-2 border-white/40 text-white hover:border-primary hover:bg-primary/10 hover:text-white md:btn-lg"
               >
-                <LogoCarousel
-                  partners={partners}
-                  title={dict.hero.trustedBy}
-                  strapiUrl={strapiUrl}
-                />
-              </motion.div>
-            )}
+                {isTh ? 'รู้จัก Logix' : 'Discover Logix'}
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            </motion.div>
           </div>
+
+          {/* Credentials panel */}
+          <motion.div className="lg:col-span-5" {...rise(0.25)}>
+            <div className="rounded-lg border border-white/12 bg-white/[0.03] p-1.5 backdrop-blur-sm">
+              <div className="grid grid-cols-2 gap-px overflow-hidden rounded-md bg-white/[0.06]">
+                {stats.map((s) => (
+                  <div key={s.k} className="bg-secondary/60 p-5">
+                    <div className="text-2xl font-bold text-primary md:text-3xl">{s.v}</div>
+                    <div className="mt-1 text-xs text-white/75">{s.k}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="px-5 pb-4 pt-4">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/45">
+                  {isTh ? 'พันธมิตรเทคโนโลยี' : 'Technology partners'}
+                </p>
+                <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm">
+                  <span className="font-semibold text-white/90">
+                    Proxmox <span className="text-xs font-medium text-primary">Authorized Reseller</span>
+                  </span>
+                  <span className="text-white/25">·</span>
+                  <span className="font-semibold text-white/90">Dell</span>
+                  <span className="text-white/25">·</span>
+                  <span className="font-semibold text-white/90">Google Cloud</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
+
+        {/* Trusted-by strip — clients (only those with a logo) */}
+        {clientLogos.length > 0 && (
+          <motion.div
+            className="border-t border-white/10 py-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+          >
+            <LogoCarousel partners={clientLogos} title={dict.hero.trustedBy} strapiUrl={strapiUrl} surface="dark" />
+          </motion.div>
+        )}
       </div>
     </section>
   )

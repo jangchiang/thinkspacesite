@@ -9,15 +9,19 @@ import { getPageHero, getContactInfo } from '@/lib/strapi'
 import { buildHeroBackground } from '@/lib/hero-utils'
 
 type Props = {
-  params: Promise<{ locale: Locale }>
+  params: Promise<{ locale: string }>
 }
 
 // Fallback contact info
 const fallbackContactInfo = {
   email: 'info@techthinkspace.com',
-  phone: '+66 082-808-7666',
+  phone: '082-808-7666 / +66 28087666',
   lineId: '@techthinkspace',
   lineUrl: 'https://lin.ee/PYH3ViE',
+  location: {
+    th: 'เชียงใหม่ ประเทศไทย',
+    en: 'Chiang Mai, Thailand',
+  },
   workingHours: {
     th: 'จันทร์ - ศุกร์: 9:00 - 18:00',
     en: 'Mon - Fri: 9:00 AM - 6:00 PM',
@@ -25,7 +29,7 @@ const fallbackContactInfo = {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
 
   return {
     title: locale === 'th' ? 'ติดต่อเรา' : 'Contact Us',
@@ -36,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ContactPage({ params }: Props): Promise<React.JSX.Element> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
 
   // Fetch hero and contact info in parallel
   const [heroData, strapiContactInfo] = await Promise.all([
@@ -51,6 +55,9 @@ export default async function ContactPage({ params }: Props): Promise<React.JSX.
   const phone = strapiContactInfo?.phone || fallbackContactInfo.phone
   const lineId = strapiContactInfo?.lineId || fallbackContactInfo.lineId
   const workingHours = strapiContactInfo?.workingHours || (locale === 'th' ? fallbackContactInfo.workingHours.th : fallbackContactInfo.workingHours.en)
+  const location = locale === 'th' ? fallbackContactInfo.location.th : fallbackContactInfo.location.en
+  // Use the first phone number for the tel: link
+  const primaryPhone = phone.split('/')[0].trim()
 
   const contactInfo = [
     {
@@ -63,13 +70,19 @@ export default async function ContactPage({ params }: Props): Promise<React.JSX.
       iconName: 'Phone',
       label: locale === 'th' ? 'โทรศัพท์' : 'Phone',
       value: phone,
-      href: `tel:${phone.replace(/\s/g, '')}`,
+      href: `tel:${primaryPhone.replace(/[\s-]/g, '')}`,
     },
     {
       iconName: 'MessageCircle',
       label: 'Line',
       value: lineId,
       href: fallbackContactInfo.lineUrl,
+    },
+    {
+      iconName: 'MapPin',
+      label: locale === 'th' ? 'ที่ตั้ง' : 'Location',
+      value: location,
+      href: '#',
     },
     {
       iconName: 'Clock',

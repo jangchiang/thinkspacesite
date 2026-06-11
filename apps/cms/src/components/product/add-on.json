@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_product_add_ons",
+  "info": {
+    "displayName": "Product Add-on",
+    "description": "An optional add-on product"
+  },
+  "options": {},
+  "attributes": {
+    "icon": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "body": {
+      "type": "text"
+    },
+    "features": {
+      "type": "json"
+    }
+  }
+}

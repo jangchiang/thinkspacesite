@@ -6,7 +6,7 @@ const STRAPI_API_TOKEN = process.env.STRAPI_API_TOKEN
 // Map frontend locale to Strapi locale
 const LOCALE_MAP: Record<string, string> = {
   'en': 'en',
-  'th': 'th-TH',
+  'th': 'th',
 }
 
 interface StrapiResponse<T> {
@@ -173,6 +173,18 @@ export async function getCaseStudies(locale: Locale, limit?: number) {
   return response.data
 }
 
+export async function getProduct(slug: string, locale: Locale) {
+  const response = await fetchStrapi<unknown[]>('/products', {
+    locale,
+    filters: { slug: { $eq: slug } },
+    populate: ['features', 'tiers', 'addOns'],
+    tags: ['products', `product-${slug}`],
+    revalidate: 0,
+  })
+
+  return (Array.isArray(response.data) && response.data[0]) || null
+}
+
 export async function getService(slug: string, locale: Locale) {
   const response = await fetchStrapi<unknown[]>('/services', {
     locale,
@@ -233,6 +245,18 @@ export async function getCaseStudy(slug: string, locale: Locale) {
   })
 
   return response.data?.[0] ?? null
+}
+
+export async function getClients() {
+  const response = await fetchStrapi<unknown[]>('/clients', {
+    locale: null,  // Client is not an i18n content type
+    populate: ['logo'],
+    sort: 'order:asc',
+    tags: ['clients'],
+    revalidate: 0,
+  })
+
+  return response.data
 }
 
 export async function getPartners() {

@@ -6,11 +6,11 @@ import { getPageHero, getServices } from '@/lib/strapi'
 import { buildHeroBackground } from '@/lib/hero-utils'
 
 type Props = {
-  params: Promise<{ locale: Locale }>
+  params: Promise<{ locale: string }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
 
   return {
     title: locale === 'th' ? 'บริการของเรา' : 'Our Services',
@@ -33,7 +33,7 @@ interface StrapiService {
 }
 
 export default async function ServicesPage({ params }: Props): Promise<React.JSX.Element> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
 
   // Fetch hero, dictionary, and services in parallel
   const [heroData, dict, strapiServices] = await Promise.all([

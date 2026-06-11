@@ -8,23 +8,23 @@ import Strapi from '@strapi/strapi';
 
 const statsData = [
   {
-    value: '500+',
-    label: { th: 'ลูกค้าองค์กร', en: 'Enterprise Clients' },
+    value: '20+',
+    label: { th: 'องค์กรที่ไว้วางใจ', en: 'Organizations Served' },
     order: 1,
   },
   {
-    value: '99.9%',
-    label: { th: 'SLA เวลาทำงาน', en: 'SLA Uptime' },
+    value: '6',
+    label: { th: 'กลุ่มโซลูชันหลัก', en: 'Solution Pillars' },
     order: 2,
   },
   {
-    value: '24/7',
-    label: { th: 'สนับสนุนตลอดเวลา', en: 'Support Available' },
+    value: '3',
+    label: { th: 'พันธมิตรเทคโนโลยี', en: 'Technology Partners' },
     order: 3,
   },
   {
-    value: '15+',
-    label: { th: 'ปีประสบการณ์', en: 'Years Experience' },
+    value: '2024',
+    label: { th: 'ก่อตั้งที่เชียงใหม่', en: 'Founded in Chiang Mai' },
     order: 4,
   },
 ];

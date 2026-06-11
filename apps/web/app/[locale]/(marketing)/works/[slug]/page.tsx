@@ -10,7 +10,7 @@ import { Breadcrumb } from '@/components/ui/breadcrumb'
 import { getResultDisplayMode } from '@/lib/case-study-utils'
 
 type Props = {
-  params: Promise<{ locale: Locale; slug: string }>
+  params: Promise<{ locale: string; slug: string }>
 }
 
 interface StrapiResultItem {
@@ -65,146 +65,125 @@ const fallbackWorks: Record<string, {
   testimonial?: { quote: { en: string; th: string }; author: string; role: { en: string; th: string } }
   technologies?: string[]
 }> = {
-  'fintech-cloud-migration': {
-    client: { en: 'FinTech Corp', th: 'FinTech Corp' },
-    industry: { en: 'Financial Services', th: 'บริการทางการเงิน' },
-    title: { en: 'Cloud Migration for FinTech', th: 'การย้ายระบบสู่คลาวด์สำหรับ FinTech' },
+  'cmu-railcfc-digital-twin': {
+    client: { en: 'CMU-RAILCFC', th: 'CMU-RAILCFC' },
+    industry: { en: 'Railway Engineering', th: 'วิศวกรรมระบบราง' },
+    title: { en: '3D Digital Twin for Railway Ballast', th: 'ดิจิทัลทวิน 3 มิติ สำหรับหินโรยทางรถไฟ' },
     excerpt: {
-      en: 'Transforming legacy infrastructure into a scalable, cloud-native platform',
-      th: 'การเปลี่ยนแปลงโครงสร้างพื้นฐานเดิมสู่แพลตฟอร์มคลาวด์ที่ยืดหยุ่น'
+      en: 'A high-fidelity 3D digital twin for assessing railway ballast condition',
+      th: 'ดิจิทัลทวิน 3 มิติความละเอียดสูงสำหรับประเมินสภาพหินโรยทางรถไฟ'
     },
     challenge: {
-      en: 'FinTech Corp faced significant challenges with their legacy systems that couldn\'t support rapid business growth. The aging infrastructure experienced frequent downtime, security vulnerabilities, and maintenance costs that consumed over 40% of their IT budget. They needed a modern solution that could scale with their expanding customer base while maintaining strict financial compliance requirements.',
-      th: 'FinTech Corp ประสบปัญหาระบบเก่าที่ไม่สามารถรองรับการเติบโตของธุรกิจที่รวดเร็ว โครงสร้างพื้นฐานเก่ามีการหยุดทำงานบ่อยครั้ง มีช่องโหว่ด้านความปลอดภัย และค่าใช้จ่ายในการดูแลรักษาที่สูงถึง 40% ของงบประมาณ IT พวกเขาต้องการโซลูชันที่ทันสมัยที่สามารถขยายตัวตามฐานลูกค้าที่เพิ่มขึ้น พร้อมรักษามาตรฐานการปฏิบัติตามข้อกำหนดทางการเงิน'
+      en: 'Inspecting and analysing railway ballast condition at scale required moving from manual surveys to a high-fidelity, data-driven model that engineers could explore interactively. The Railway Construction & Foundation Centre (CMU-RAILCFC) needed an accurate representation of ballast geometry to support condition assessment and maintenance planning.',
+      th: 'การตรวจสอบและวิเคราะห์สภาพหินโรยทางในวงกว้างจำเป็นต้องเปลี่ยนจากการสำรวจด้วยคนสู่แบบจำลองความละเอียดสูงที่ขับเคลื่อนด้วยข้อมูลซึ่งวิศวกรสามารถสำรวจแบบโต้ตอบได้ ศูนย์ CMU-RAILCFC ต้องการการแทนค่ารูปทรงของหินโรยทางที่แม่นยำเพื่อสนับสนุนการประเมินสภาพและการวางแผนบำรุงรักษา'
     },
     solution: {
-      en: 'We designed and executed a comprehensive cloud migration strategy, moving their entire infrastructure to AWS. Using Kubernetes for container orchestration and Terraform for Infrastructure as Code, we built a resilient, auto-scaling architecture. The migration was completed in phases to ensure zero downtime, with each component thoroughly tested before going live.',
-      th: 'เราได้ออกแบบและดำเนินกลยุทธ์การย้ายระบบสู่คลาวด์อย่างครบวงจร โดยย้ายโครงสร้างพื้นฐานทั้งหมดไปยัง AWS ใช้ Kubernetes สำหรับการจัดการ container และ Terraform สำหรับ Infrastructure as Code เราสร้างสถาปัตยกรรมที่ยืดหยุ่นและปรับขนาดได้อัตโนมัติ การย้ายระบบทำแบบเป็นขั้นตอนเพื่อให้มั่นใจว่าไม่มีการหยุดชะงัก'
+      en: 'We built an interactive 3D digital twin pipeline that reconstructs ballast geometry into an explorable model, enabling engineers to assess condition, visualise change over time, and ground their analysis in real survey data.',
+      th: 'เราพัฒนากระบวนการสร้างดิจิทัลทวิน 3 มิติแบบโต้ตอบที่จำลองรูปทรงของหินโรยทางให้เป็นแบบจำลองที่สำรวจได้ ช่วยให้วิศวกรประเมินสภาพ มองเห็นการเปลี่ยนแปลงตามเวลา และวิเคราะห์บนพื้นฐานข้อมูลสำรวจจริง'
     },
-    resultValue: '60%',
-    resultLabel: { en: 'IT Cost Reduction', th: 'ลดค่าใช้จ่าย IT' },
-    additionalResults: [
-      { value: '99.99%', label: { en: 'Uptime Achieved', th: 'ความพร้อมใช้งาน' } },
-      { value: '3x', label: { en: 'Faster Deployment', th: 'การ Deploy เร็วขึ้น' } },
-      { value: '0', label: { en: 'Security Incidents', th: 'เหตุการณ์ด้านความปลอดภัย' } },
-    ],
-    testimonial: {
-      quote: {
-        en: 'The migration exceeded our expectations. We now have a platform that can grow with us.',
-        th: 'การย้ายระบบเกินความคาดหมาย ตอนนี้เรามีแพลตฟอร์มที่สามารถเติบโตไปพร้อมกับเรา'
-      },
-      author: 'John Smith',
-      role: { en: 'CTO, FinTech Corp', th: 'CTO, FinTech Corp' }
-    },
-    technologies: ['AWS', 'Kubernetes', 'Terraform', 'Docker', 'PostgreSQL'],
+    resultValue: 'Interactive 3D digital twin delivered for ballast condition assessment.',
+    resultLabel: { en: 'Outcome', th: 'ผลลัพธ์' },
+    technologies: ['3D Reconstruction', 'Point Cloud', 'Digital Twin', 'WebGL'],
   },
-  'retail-digital-transformation': {
-    client: { en: 'RetailMax', th: 'RetailMax' },
-    industry: { en: 'Retail & E-commerce', th: 'ค้าปลีกและอีคอมเมิร์ซ' },
-    title: { en: 'Digital Transformation for Retail', th: 'การเปลี่ยนแปลงดิจิทัลสำหรับค้าปลีก' },
+  'egat-slope-risk-ai': {
+    client: { en: 'EGAT · CMU-RAILCFC', th: 'กฟผ. · CMU-RAILCFC' },
+    industry: { en: 'Energy & Infrastructure', th: 'พลังงานและโครงสร้างพื้นฐาน' },
+    title: { en: 'Slope-Stability Risk AI', th: 'AI ประเมินความเสี่ยงเสถียรภาพลาดชัน' },
     excerpt: {
-      en: 'Creating a seamless omnichannel experience that bridges online and offline retail',
-      th: 'สร้างประสบการณ์ Omnichannel ที่ไร้รอยต่อระหว่างออนไลน์และออฟไลน์'
+      en: 'An AI risk model for slope-stability monitoring and early warning',
+      th: 'โมเดล AI สำหรับติดตามและเตือนภัยความเสี่ยงเสถียรภาพลาดชัน'
     },
     challenge: {
-      en: 'RetailMax operated with disconnected systems across their 50+ stores and online platform. Inventory data was often 24 hours outdated, customer profiles were fragmented, and the checkout experience varied dramatically between channels. They were losing customers to competitors with more integrated experiences.',
-      th: 'RetailMax ดำเนินงานด้วยระบบที่ไม่เชื่อมต่อกันในกว่า 50 สาขาและแพลตฟอร์มออนไลน์ ข้อมูลสินค้าคงคลังล่าช้า 24 ชั่วโมง ข้อมูลลูกค้ากระจัดกระจาย และประสบการณ์การชำระเงินแตกต่างกันในแต่ละช่องทาง พวกเขาสูญเสียลูกค้าให้กับคู่แข่งที่มีระบบบูรณาการดีกว่า'
+      en: 'EGAT needed early-warning insight into slope-stability risks across critical infrastructure corridors, where slope failures can threaten safety and operational continuity. Existing monitoring lacked a predictive, data-driven view of evolving risk.',
+      th: 'กฟผ. ต้องการระบบเตือนล่วงหน้าเพื่อประเมินความเสี่ยงด้านเสถียรภาพของลาดชันตามแนวโครงสร้างพื้นฐานสำคัญ ซึ่งความเสียหายของลาดชันอาจกระทบต่อความปลอดภัยและความต่อเนื่องของการดำเนินงาน การติดตามแบบเดิมยังขาดมุมมองเชิงพยากรณ์ที่ขับเคลื่อนด้วยข้อมูล'
     },
     solution: {
-      en: 'We developed a unified commerce platform that synchronizes inventory in real-time, provides a 360-degree customer view, and enables features like buy-online-pickup-in-store. The new CRM system uses AI to personalize recommendations and predict customer needs.',
-      th: 'เราพัฒนาแพลตฟอร์มการค้าแบบรวมที่ซิงโครไนซ์สินค้าคงคลังแบบเรียลไทม์ ให้มุมมองลูกค้า 360 องศา และเปิดใช้งานฟีเจอร์ซื้อออนไลน์รับที่ร้าน ระบบ CRM ใหม่ใช้ AI เพื่อปรับแต่งคำแนะนำและคาดการณ์ความต้องการของลูกค้า'
+      en: 'We developed an AI risk model that analyses geotechnical and environmental data to assess slope-stability risk and support early-warning decisions for monitoring teams.',
+      th: 'เราพัฒนาโมเดลความเสี่ยงด้วย AI ที่วิเคราะห์ข้อมูลธรณีเทคนิคและสิ่งแวดล้อมเพื่อประเมินความเสี่ยงเสถียรภาพลาดชันและสนับสนุนการตัดสินใจเตือนภัยล่วงหน้าสำหรับทีมติดตาม'
     },
-    resultValue: '3x',
-    resultLabel: { en: 'Online Sales Increase', th: 'เพิ่มยอดขายออนไลน์' },
-    additionalResults: [
-      { value: '45%', label: { en: 'Customer Retention', th: 'การรักษาลูกค้า' } },
-      { value: '2hr', label: { en: 'Inventory Sync Time', th: 'เวลาซิงค์สต็อก' } },
-      { value: '28%', label: { en: 'AOV Increase', th: 'มูลค่าคำสั่งซื้อเฉลี่ย' } },
-    ],
-    technologies: ['React', 'Node.js', 'Redis', 'Elasticsearch', 'AWS'],
+    resultValue: 'AI risk model deployed for slope-stability monitoring and early warning.',
+    resultLabel: { en: 'Outcome', th: 'ผลลัพธ์' },
+    technologies: ['Machine Learning', 'Geotechnical Analytics', 'Risk Modelling', 'Python'],
   },
-  'healthcare-security': {
-    client: { en: 'MediCare Plus', th: 'MediCare Plus' },
-    industry: { en: 'Healthcare', th: 'การแพทย์และสุขภาพ' },
-    title: { en: 'Healthcare Data Security', th: 'ความปลอดภัยข้อมูลสุขภาพ' },
+  'bedding-houze-erp': {
+    client: { en: 'Bedding Houze', th: 'Bedding Houze' },
+    industry: { en: 'Retail · Cross-border', th: 'ค้าปลีก · ข้ามพรมแดน' },
+    title: { en: 'Cross-border ERP (TH–MY)', th: 'ระบบ ERP ข้ามพรมแดน (ไทย–มาเลเซีย)' },
     excerpt: {
-      en: 'Building a fortress around sensitive patient data while maintaining seamless access for healthcare providers',
-      th: 'สร้างระบบป้องกันข้อมูลผู้ป่วยที่แข็งแกร่ง พร้อมรักษาการเข้าถึงที่ราบรื่นสำหรับผู้ให้บริการทางการแพทย์'
+      en: 'A unified ERP spanning Thailand and Malaysia operations',
+      th: 'ระบบ ERP แบบรวมศูนย์ที่ครอบคลุมการดำเนินงานไทยและมาเลเซีย'
     },
     challenge: {
-      en: 'MediCare Plus needed to protect sensitive patient data across 12 hospitals and 200+ clinics while complying with HIPAA and PDPA regulations. Previous security audits had identified vulnerabilities, and the threat of cyberattacks on healthcare organizations was increasing exponentially.',
-      th: 'MediCare Plus ต้องปกป้องข้อมูลผู้ป่วยที่ละเอียดอ่อนใน 12 โรงพยาบาลและคลินิกกว่า 200 แห่ง พร้อมปฏิบัติตามข้อกำหนด HIPAA และ PDPA การตรวจสอบความปลอดภัยก่อนหน้านี้พบช่องโหว่ และภัยคุกคามจากการโจมตีทางไซเบอร์ต่อองค์กรด้านสุขภาพเพิ่มขึ้นอย่างทวีคูณ'
+      en: 'Operations spanning Thailand and Malaysia ran on fragmented systems, making it hard to keep inventory, sales and fulfilment consistent across borders. Bedding Houze needed a single source of truth to coordinate cross-border commerce.',
+      th: 'การดำเนินงานระหว่างไทยและมาเลเซียทำงานบนระบบที่กระจัดกระจาย ทำให้ยากต่อการรักษาความสอดคล้องของสต็อก การขาย และการจัดส่งข้ามพรมแดน Bedding Houze ต้องการแหล่งข้อมูลเดียวเพื่อประสานการค้าข้ามพรมแดน'
     },
     solution: {
-      en: 'We implemented a comprehensive security framework including a 24/7 Security Operation Center, end-to-end encryption for all data, Zero Trust Architecture, and advanced threat detection using AI. Regular penetration testing ensures ongoing security posture.',
-      th: 'เราได้วางระบบ Security Operation Center (SOC) ที่ทำงาน 24/7 การเข้ารหัสข้อมูลแบบ end-to-end สถาปัตยกรรม Zero Trust และการตรวจจับภัยคุกคามขั้นสูงด้วย AI การทดสอบการเจาะระบบอย่างสม่ำเสมอเพื่อรักษาความปลอดภัย'
+      en: 'We delivered a unified, cross-border ERP that consolidates inventory, sales and fulfilment across both markets, giving the team a single, consistent operating picture.',
+      th: 'เราส่งมอบระบบ ERP ข้ามพรมแดนแบบรวมศูนย์ที่รวมสต็อก การขาย และการจัดส่งของทั้งสองตลาด ให้ทีมงานมีภาพการดำเนินงานเดียวที่สอดคล้องกัน'
     },
-    resultValue: '100%',
-    resultLabel: { en: 'Compliance Achieved', th: 'ปฏิบัติตามข้อกำหนด' },
-    additionalResults: [
-      { value: '0', label: { en: 'Data Breaches', th: 'การรั่วไหลของข้อมูล' } },
-      { value: '< 5min', label: { en: 'Threat Response', th: 'เวลาตอบสนองภัยคุกคาม' } },
-      { value: '99.9%', label: { en: 'Threat Detection Rate', th: 'อัตราการตรวจจับ' } },
-    ],
-    technologies: ['SIEM', 'Zero Trust', 'Azure Sentinel', 'CrowdStrike', 'Splunk'],
+    resultValue: 'Unified cross-border ERP for inventory, sales and fulfilment.',
+    resultLabel: { en: 'Outcome', th: 'ผลลัพธ์' },
+    technologies: ['ERP', 'PostgreSQL', 'Next.js', 'API Integration'],
   },
-  'manufacturing-iot': {
-    client: { en: 'Thai Manufacturing Co.', th: 'Thai Manufacturing Co.' },
-    industry: { en: 'Manufacturing', th: 'อุตสาหกรรมการผลิต' },
-    title: { en: 'IoT System for Smart Factory', th: 'ระบบ IoT สำหรับโรงงานอัจฉริยะ' },
+  'suppaisan-gold-savings': {
+    client: { en: 'Suppaisan Goldsmith', th: 'ห้างทองศุภพิศาล' },
+    industry: { en: 'Jewellery · FinTech', th: 'อัญมณี · ฟินเทค' },
+    title: { en: 'Gold-Savings Web Application', th: 'เว็บแอปพลิเคชันออมทอง' },
     excerpt: {
-      en: 'Transforming traditional manufacturing into an intelligent, predictive operation',
-      th: 'เปลี่ยนการผลิตแบบดั้งเดิมสู่การดำเนินงานอัจฉริยะที่คาดการณ์ได้'
+      en: 'A digital gold-savings platform for a traditional goldsmith',
+      th: 'แพลตฟอร์มออมทองดิจิทัลสำหรับห้างทองดั้งเดิม'
     },
     challenge: {
-      en: 'Thai Manufacturing Co. was experiencing unexpected machine downtime averaging 15 hours per month, costing millions in lost production. Maintenance was purely reactive, and there was no visibility into machine health until failures occurred.',
-      th: 'Thai Manufacturing Co. ประสบปัญหาเครื่องจักรหยุดทำงานโดยไม่คาดคิดเฉลี่ย 15 ชั่วโมงต่อเดือน สูญเสียเงินหลายล้านบาท การบำรุงรักษาทำแบบตั้งรับ และไม่มีการมองเห็นสุขภาพของเครื่องจักรจนกว่าจะเกิดความเสียหาย'
+      en: 'A traditional goldsmith wanted to offer a digital savings programme letting customers accumulate gold over time, but lacked the online platform to manage balances, transactions and customer relationships.',
+      th: 'ห้างทองดั้งเดิมต้องการเสนอโปรแกรมออมเงินดิจิทัลให้ลูกค้าสะสมทองอย่างต่อเนื่อง แต่ยังขาดแพลตฟอร์มออนไลน์สำหรับจัดการยอด ธุรกรรม และความสัมพันธ์กับลูกค้า'
     },
     solution: {
-      en: 'We deployed 500+ IoT sensors across the factory floor, connected to a central analytics platform. Machine learning models analyze vibration, temperature, and power consumption patterns to predict failures 2-3 weeks in advance, enabling planned maintenance.',
-      th: 'เราติดตั้งเซ็นเซอร์ IoT กว่า 500 ตัวทั่วโรงงาน เชื่อมต่อกับแพลตฟอร์มวิเคราะห์ข้อมูลส่วนกลาง โมเดล Machine Learning วิเคราะห์รูปแบบการสั่นสะเทือน อุณหภูมิ และการใช้พลังงาน เพื่อทำนายความเสียหายล่วงหน้า 2-3 สัปดาห์'
+      en: 'We built a gold-savings web application that lets customers accumulate gold digitally, with clear balances and transaction history, modernising a traditional business.',
+      th: 'เราพัฒนาเว็บแอปพลิเคชันออมทองที่ให้ลูกค้าสะสมทองแบบดิจิทัล พร้อมยอดและประวัติธุรกรรมที่ชัดเจน ยกระดับธุรกิจดั้งเดิมให้ทันสมัย'
     },
-    resultValue: '45%',
-    resultLabel: { en: 'Reduced Downtime', th: 'ลดเวลาหยุดทำงาน' },
-    additionalResults: [
-      { value: '30%', label: { en: 'Maintenance Cost Savings', th: 'ลดค่าบำรุงรักษา' } },
-      { value: '95%', label: { en: 'Prediction Accuracy', th: 'ความแม่นยำการทำนาย' } },
-      { value: '12%', label: { en: 'Production Increase', th: 'เพิ่มผลผลิต' } },
-    ],
-    technologies: ['Azure IoT Hub', 'TensorFlow', 'Time Series DB', 'Grafana', 'Edge Computing'],
+    resultValue: 'Digital gold-savings platform launched for accumulating customers.',
+    resultLabel: { en: 'Outcome', th: 'ผลลัพธ์' },
+    technologies: ['Next.js', 'Web App', 'Payments', 'PostgreSQL'],
   },
-  'logistics-ai': {
-    client: { en: 'FastShip Logistics', th: 'FastShip Logistics' },
-    industry: { en: 'Logistics & Supply Chain', th: 'โลจิสติกส์และซัพพลายเชน' },
-    title: { en: 'AI for Route Optimization', th: 'AI สำหรับการจัดเส้นทางขนส่ง' },
+  'ubah-marketplace': {
+    client: { en: 'Nana Digital', th: 'Nana Digital' },
+    industry: { en: 'Marketplace · Platform', th: 'มาร์เก็ตเพลส · แพลตฟอร์ม' },
+    title: { en: 'Ubah Marketplace', th: 'Ubah Marketplace' },
     excerpt: {
-      en: 'Revolutionizing delivery operations with intelligent route planning and real-time optimization',
-      th: 'ปฏิวัติการดำเนินงานจัดส่งด้วยการวางแผนเส้นทางอัจฉริยะและการปรับแต่งแบบเรียลไทม์'
+      en: 'A scalable marketplace platform connecting buyers and sellers',
+      th: 'แพลตฟอร์มมาร์เก็ตเพลสที่ขยายตัวได้ เชื่อมผู้ซื้อและผู้ขาย'
     },
     challenge: {
-      en: 'FastShip Logistics managed a fleet of 200+ vehicles making 5,000+ daily deliveries. Manual route planning took hours each morning, often resulting in suboptimal routes. Fuel costs were spiraling, and late deliveries were damaging customer relationships and resulting in penalty fees.',
-      th: 'FastShip Logistics บริหารรถขนส่งกว่า 200 คัน จัดส่งกว่า 5,000 รายการต่อวัน การวางแผนเส้นทางด้วยมือใช้เวลาหลายชั่วโมงทุกเช้า มักได้เส้นทางที่ไม่เหมาะสม ค่าเชื้อเพลิงพุ่งสูง และการจัดส่งล่าช้าทำให้สูญเสียความสัมพันธ์กับลูกค้าและถูกปรับ'
+      en: 'Nana Digital needed a scalable marketplace platform to connect buyers and sellers, with the catalogue, transaction and management capabilities a growing marketplace demands.',
+      th: 'Nana Digital ต้องการแพลตฟอร์มมาร์เก็ตเพลสที่ขยายตัวได้เพื่อเชื่อมผู้ซื้อและผู้ขาย พร้อมความสามารถด้านแคตตาล็อก ธุรกรรม และการจัดการที่มาร์เก็ตเพลสที่เติบโตต้องการ'
     },
     solution: {
-      en: 'We developed an AI-powered route optimization platform that considers real-time traffic, weather conditions, delivery time windows, and vehicle capacity. The system generates optimal routes in minutes and dynamically adjusts throughout the day as conditions change.',
-      th: 'เราพัฒนาแพลตฟอร์มปรับเส้นทางด้วย AI ที่พิจารณาการจราจรแบบเรียลไทม์ สภาพอากาศ กรอบเวลาจัดส่ง และความจุของยานพาหนะ ระบบสร้างเส้นทางที่เหมาะสมภายในไม่กี่นาที และปรับตัวตลอดทั้งวันตามสถานการณ์ที่เปลี่ยนแปลง'
+      en: 'We launched the Ubah Marketplace platform, connecting buyers and sellers with a scalable foundation for catalogue, transactions and ongoing growth.',
+      th: 'เราเปิดตัวแพลตฟอร์ม Ubah Marketplace เชื่อมผู้ซื้อและผู้ขายด้วยรากฐานที่ขยายตัวได้สำหรับแคตตาล็อก ธุรกรรม และการเติบโตในระยะยาว'
     },
-    resultValue: '30%',
-    resultLabel: { en: 'Fuel Cost Reduction', th: 'ลดค่าเชื้อเพลิง' },
-    additionalResults: [
-      { value: '25%', label: { en: 'More Deliveries/Day', th: 'จัดส่งได้มากขึ้น/วัน' } },
-      { value: '98%', label: { en: 'On-Time Delivery', th: 'จัดส่งตรงเวลา' } },
-      { value: '< 5min', label: { en: 'Route Planning Time', th: 'เวลาวางแผนเส้นทาง' } },
-    ],
-    testimonial: {
-      quote: {
-        en: 'This AI system has transformed our operations. What used to take hours now happens in minutes, and our drivers are happier with smarter routes.',
-        th: 'ระบบ AI นี้เปลี่ยนแปลงการดำเนินงานของเราอย่างสิ้นเชิง สิ่งที่เคยใช้เวลาหลายชั่วโมง ตอนนี้เกิดขึ้นในไม่กี่นาที และคนขับของเรามีความสุขกับเส้นทางที่ชาญฉลาดขึ้น'
-      },
-      author: 'Somchai Thanakorn',
-      role: { en: 'Operations Director, FastShip', th: 'ผู้อำนวยการฝ่ายปฏิบัติการ, FastShip' }
+    resultValue: 'Marketplace platform launched, connecting buyers and sellers.',
+    resultLabel: { en: 'Outcome', th: 'ผลลัพธ์' },
+    technologies: ['Next.js', 'Marketplace', 'Elysia', 'PostgreSQL'],
+  },
+  'lum-dee-pos': {
+    client: { en: 'Hidden Cafe', th: 'Hidden Cafe' },
+    industry: { en: 'Food & Beverage', th: 'อาหารและเครื่องดื่ม' },
+    title: { en: 'LUM-DEE Point of Sale', th: 'ระบบ POS LUM-DEE' },
+    excerpt: {
+      en: 'A modern point-of-sale tailored to cafe operations',
+      th: 'ระบบ POS ที่ทันสมัยออกแบบสำหรับการดำเนินงานคาเฟ่'
     },
-    technologies: ['Python', 'TensorFlow', 'Google OR-Tools', 'Real-time APIs', 'React Native'],
+    challenge: {
+      en: 'A growing cafe needed a modern, reliable point-of-sale tailored to its service flow, replacing ad-hoc tools that could not keep pace with daily operations.',
+      th: 'คาเฟ่ที่กำลังเติบโตต้องการระบบ POS ที่ทันสมัยและเชื่อถือได้ ออกแบบให้เข้ากับการบริการ แทนเครื่องมือชั่วคราวที่ตามการดำเนินงานประจำวันไม่ทัน'
+    },
+    solution: {
+      en: 'We built the LUM-DEE point-of-sale, designed around the cafe’s real service flow for fast, reliable day-to-day operations.',
+      th: 'เราพัฒนาระบบ POS LUM-DEE ที่ออกแบบรอบการบริการจริงของคาเฟ่ เพื่อการดำเนินงานประจำวันที่รวดเร็วและเชื่อถือได้'
+    },
+    resultValue: 'Modern POS delivered, tailored to cafe operations.',
+    resultLabel: { en: 'Outcome', th: 'ผลลัพธ์' },
+    technologies: ['POS', 'Next.js', 'Offline-first', 'PostgreSQL'],
   },
 }
 
@@ -215,7 +194,7 @@ function getStrapiImageUrl(url: string | undefined): string | undefined {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale, slug } = await params
+  const { locale, slug } = await params as { locale: Locale; slug: string }
   let title = ''
   let description = ''
 
@@ -240,7 +219,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function WorkDetailPage({ params }: Props): Promise<React.JSX.Element> {
-  const { locale, slug } = await params
+  const { locale, slug } = await params as { locale: Locale; slug: string }
 
   let strapiWork: StrapiWork | null = null
   try {
@@ -333,8 +312,8 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
 
   return (
     <>
-      {/* Hero Section - Full Width with Gradient */}
-      <section className="relative min-h-[70vh] flex items-center bg-gradient-to-br from-neutral-900 via-neutral-800 to-primary/20 text-white overflow-hidden">
+      {/* Hero Section - Full Width with Navy Surface */}
+      <section className="relative min-h-[70vh] flex items-center bg-secondary text-white overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -353,7 +332,7 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
               className="object-cover opacity-20"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-neutral-900 via-neutral-900/90 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-secondary via-secondary/90 to-transparent" />
           </div>
         )}
 
@@ -370,14 +349,14 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               {/* Client Badge */}
-              <div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
+              <div className="inline-flex items-center gap-3 bg-white/10 border border-white/15 px-4 py-2">
                 {work.clientLogo ? (
                   <Image
                     src={work.clientLogo}
                     alt={work.client}
                     width={32}
                     height={32}
-                    className="object-contain rounded"
+                    className="object-contain"
                   />
                 ) : (
                   <Building2 className="w-5 h-5 text-primary" />
@@ -388,7 +367,7 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
               </div>
 
               {/* Title */}
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
                 {work.title}
               </h1>
 
@@ -409,7 +388,7 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
                     </div>
                   </div>
                 ) : (
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-5 border border-white/10 max-w-lg mt-4">
+                  <div className="bg-white/10 p-5 border-l-2 border-primary max-w-lg mt-4">
                     <div className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">
                       {work.resultLabel}
                     </div>
@@ -428,7 +407,7 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
                   {allResults.slice(0, 4).map((result, index) => (
                     <div
                       key={index}
-                      className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:bg-white/15 transition-colors"
+                      className="bg-white/10 p-6 border border-white/10 hover:bg-white/15 transition-colors"
                     >
                       <div className="text-3xl font-bold text-primary mb-1">
                         {result.value}
@@ -444,7 +423,7 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
                   {allResults.slice(0, 4).map((result, index) => (
                     <div
                       key={index}
-                      className="flex items-start gap-3 bg-white/10 backdrop-blur-md rounded-xl px-5 py-4 border border-white/10"
+                      className="flex items-start gap-3 bg-white/10 px-5 py-4 border-l-2 border-primary"
                     >
                       <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                       <div>
@@ -465,16 +444,16 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
       </section>
 
       {/* Journey Timeline */}
-      <section className="py-16 bg-base-100 border-b border-base-200">
+      <section className="py-16 bg-base-100 border-b border-base-300">
         <div className="container-custom">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
             {journeySteps.map((step, index) => (
               <div key={index} className="flex items-center gap-4 flex-1">
-                <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+                <div className="flex-shrink-0 w-14 h-14 bg-primary/10 flex items-center justify-center">
                   <step.icon className="w-7 h-7 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg">{step.title}</h3>
+                  <h3 className="font-bold text-lg text-base-content">{step.title}</h3>
                   <p className="text-sm text-base-content/60">{step.description}</p>
                 </div>
                 {index < journeySteps.length - 1 && (
@@ -495,7 +474,7 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
                 {allResults.map((result, index) => (
                   <div
                     key={index}
-                    className="bg-base-100 rounded-xl p-4 text-center"
+                    className="card-surface bg-base-100 p-4 text-center"
                   >
                     <div className="text-2xl font-bold text-primary mb-1">
                       {result.value}
@@ -511,7 +490,7 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
                 {allResults.map((result, index) => (
                   <div
                     key={index}
-                    className="flex items-start gap-3 bg-base-100 rounded-xl p-4"
+                    className="flex items-start gap-3 card-surface bg-base-100 p-4"
                   >
                     <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                     <div>
@@ -535,10 +514,10 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-xl bg-error/10 flex items-center justify-center">
-                <Target className="w-6 h-6 text-error" />
+              <div className="w-12 h-12 bg-secondary/10 flex items-center justify-center">
+                <Target className="w-6 h-6 text-base-content" />
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold">
+              <h2 className="display-heading text-3xl md:text-4xl">
                 {locale === 'th' ? 'ความท้าทาย' : 'The Challenge'}
               </h2>
             </div>
@@ -556,10 +535,10 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+              <div className="w-12 h-12 bg-primary/10 flex items-center justify-center">
                 <Lightbulb className="w-6 h-6 text-primary" />
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold">
+              <h2 className="display-heading text-3xl md:text-4xl">
                 {locale === 'th' ? 'โซลูชันของเรา' : 'Our Solution'}
               </h2>
             </div>
@@ -580,7 +559,7 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
                     {work.technologies.map((tech, index) => (
                       <span
                         key={index}
-                        className="px-4 py-2 bg-base-100 rounded-lg text-sm font-medium border border-base-300"
+                        className="px-4 py-2 bg-base-100 text-sm font-medium border border-base-300"
                       >
                         {tech}
                       </span>
@@ -594,14 +573,14 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
       </section>
 
       {/* Results Section */}
-      <section className="py-20 bg-gradient-to-br from-neutral-800 to-neutral-900 text-white">
+      <section className="py-20 bg-secondary text-white">
         <div className="container-custom">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/20 mb-4">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/20 mb-4">
                 <Rocket className="w-8 h-8 text-primary" />
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold">
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
                 {locale === 'th' ? 'ผลลัพธ์ที่ได้' : 'The Results'}
               </h2>
             </div>
@@ -611,7 +590,7 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
                 {allResults.map((result, index) => (
                   <div
                     key={index}
-                    className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center border border-white/20"
+                    className="bg-white/10 p-6 text-center border border-white/20"
                   >
                     <CheckCircle2 className="w-8 h-8 mx-auto mb-3 text-primary" />
                     <div className="text-4xl font-bold text-primary mb-2">{result.value}</div>
@@ -624,7 +603,7 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
                 {allResults.map((result, index) => (
                   <div
                     key={index}
-                    className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 flex items-start gap-4"
+                    className="bg-white/10 p-6 border border-white/20 flex items-start gap-4"
                   >
                     <CheckCircle2 className="w-7 h-7 text-primary flex-shrink-0 mt-0.5" />
                     <div>
@@ -650,7 +629,7 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
                   {work.results.map((achievement, index) => (
                     <div
                       key={index}
-                      className="flex items-start gap-3 bg-white/10 backdrop-blur-sm rounded-xl px-5 py-4 border border-white/10"
+                      className="flex items-start gap-3 bg-white/10 px-5 py-4 border-l-2 border-primary"
                     >
                       <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                       <span className="text-sm leading-relaxed">{achievement}</span>
@@ -668,14 +647,14 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
         <section className="py-20 bg-base-100">
           <div className="container-custom">
             <div className="max-w-4xl mx-auto">
-              <div className="relative bg-base-200 rounded-3xl p-8 md:p-12">
+              <div className="relative card-surface bg-base-200 p-8 md:p-12">
                 <Quote className="absolute top-6 left-6 w-12 h-12 text-primary/20" />
                 <blockquote className="relative z-10">
-                  <p className="text-xl md:text-2xl font-medium leading-relaxed mb-8 pl-8">
+                  <p className="text-xl md:text-2xl font-medium leading-relaxed mb-8 pl-8 text-base-content">
                     "{locale === 'th' ? work.testimonial.quote.th : work.testimonial.quote.en}"
                   </p>
                   <footer className="flex items-center gap-4 pl-8">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                    <div className="w-12 h-12 bg-primary/10 flex items-center justify-center">
                       <span className="text-lg font-bold text-primary">
                         {work.testimonial.author.charAt(0)}
                       </span>
@@ -697,10 +676,10 @@ export default async function WorkDetailPage({ params }: Props): Promise<React.J
       )}
 
       {/* CTA Section */}
-      <section className="py-20 bg-neutral-900 text-white">
+      <section className="py-20 bg-secondary text-white">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">
               {locale === 'th'
                 ? 'พร้อมที่จะเริ่มโปรเจกต์ของคุณ?'
                 : 'Ready to Start Your Project?'}

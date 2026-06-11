@@ -39,7 +39,8 @@ export async function POST(request: NextRequest) {
     const revalidated: string[] = []
     for (const tag of tags) {
       if (tag) {
-        revalidateTag(tag)
+        // Next 16: revalidateTag now takes a cache profile; { expire: 0 } purges immediately
+        revalidateTag(tag, { expire: 0 })
         revalidated.push(tag)
       }
     }

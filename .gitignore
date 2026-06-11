@@ -41,3 +41,6 @@ apps/cms/scripts/seed-stats.ts
 apps/cms/scripts/seed-stats.ts
 apps/cms/scripts/seed-stats.ts
 thinkspace-fadeup.html
+
+# Next.js build output
+.next/

@@ -4,7 +4,7 @@ import { locales, type Locale } from '@/lib/i18n'
 import { getDictionary } from '@/lib/dictionary'
 
 type Props = {
-  params: Promise<{ locale: Locale }>
+  params: Promise<{ locale: string }>
 }
 
 export async function generateStaticParams() {
@@ -12,7 +12,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
   const dict = await getDictionary(locale)
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://techthinkspace.com'
 
@@ -29,22 +29,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       'techthinkspace',
       'Think Space',
       // Service keywords
-      'enterprise technology',
-      'IT consulting',
-      'cloud services',
-      'managed services',
-      'cybersecurity',
-      'digital transformation',
       'AI solutions',
+      'data science',
+      'high-performance computing',
+      'simulation',
+      'digital engineering',
+      'cybersecurity',
       'software development',
+      'Logix AI platform',
+      'Proxmox reseller Thailand',
       // Location keywords
       'Thailand',
-      'Bangkok',
+      'Chiang Mai',
       // Thai keywords
-      locale === 'th' ? 'บริษัท Thinkspace Technology' : '',
-      locale === 'th' ? 'เทคโนโลยีองค์กร' : '',
-      locale === 'th' ? 'บริการคลาวด์' : '',
-      locale === 'th' ? 'ที่ปรึกษาไอที' : '',
+      locale === 'th' ? 'บริษัท ธิงค์สเปซ เทคโนโลยี' : '',
+      locale === 'th' ? 'ปัญญาประดิษฐ์' : '',
+      locale === 'th' ? 'วิทยาการข้อมูล' : '',
+      locale === 'th' ? 'การประมวลผลสมรรถนะสูง' : '',
     ].filter(Boolean),
     authors: [{ name: 'Thinkspace Technology' }],
     creator: 'Thinkspace Technology',
@@ -64,22 +65,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       siteName: 'Thinkspace Technology',
       title: dict.metadata.title,
       description: dict.metadata.description,
-      images: [
-        {
-          url: `${siteUrl}/og-image.jpg`,
-          width: 1200,
-          height: 630,
-          alt: 'Thinkspace Technology - Enterprise Technology Solutions',
-        },
-      ],
     },
     twitter: {
       card: 'summary_large_image',
       title: dict.metadata.title,
       description: dict.metadata.description,
-      site: '@thinkspacetech',
-      creator: '@thinkspacetech',
-      images: [`${siteUrl}/og-image.jpg`],
+      site: '@techthinkspace',
+      creator: '@techthinkspace',
     },
     robots: {
       index: true,
@@ -107,9 +99,9 @@ export default async function LocaleLayout({
   params,
 }: {
   children: React.ReactNode
-  params: Promise<{ locale: Locale }>
+  params: Promise<{ locale: string }>
 }): Promise<React.JSX.Element> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
 
   if (!locales.includes(locale)) {
     notFound()

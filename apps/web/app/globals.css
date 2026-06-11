@@ -52,12 +52,36 @@
     @apply py-16 md:py-24 lg:py-32;
   }
 
-  /* Gradient text */
+  /* Gradient text — green brand */
   .text-gradient {
-    background: linear-gradient(135deg, #22c55e 0%, #16a34a 50%, #22c55e 100%);
+    background: linear-gradient(120deg, #15803d 0%, #16a34a 55%, #22c55e 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  /* Eyebrow label — uppercase, letter-spaced, deep-teal (enterprise section kicker).
+     Uses accent (darker teal in light, bright teal in dark) for legibility in both themes. */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent;
+  }
+
+  /* Thin teal rule used under eyebrows / headings */
+  .rule-accent {
+    @apply inline-block h-px w-8 bg-primary align-middle;
+  }
+
+  /* Formal card surface: 1px border + soft shadow, sharp corners */
+  .card-surface {
+    @apply rounded-md border border-base-300 bg-base-100 shadow-sm transition-all duration-300;
+  }
+  .card-surface:hover {
+    @apply -translate-y-0.5 border-primary/30 shadow-md;
+  }
+
+  /* Section eyebrow heading block helper */
+  .display-heading {
+    @apply font-bold tracking-tight text-base-content;
   }
 
   /* Radial gradient */
@@ -208,6 +232,21 @@
 /* Improve button press feedback */
 .btn:active:not(:disabled) {
   transform: scale(0.98);
+}
+
+/* Accessible primary buttons.
+   The vibrant #22C55E primary stays for accents/icons/borders, but white text on
+   it fails WCAG AA (~2.3:1). Solid primary buttons use a darker green-700 fill so
+   white text clears AA (~5:1) while keeping the same white-on-green look.
+   Outline/ghost variants keep the bright primary for their text/border. */
+.btn-primary:not(.btn-outline):not(.btn-ghost):not(.btn-link) {
+  background-color: #15803d; /* green-700 */
+  border-color: #15803d;
+  color: #ffffff;
+}
+.btn-primary:not(.btn-outline):not(.btn-ghost):not(.btn-link):hover:not(:disabled) {
+  background-color: #166534; /* green-800 */
+  border-color: #166534;
 }
 
 /* Smooth link transitions */

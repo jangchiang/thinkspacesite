@@ -2,7 +2,7 @@
 
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { Mail, Phone, MessageCircle, Clock, type LucideIcon } from 'lucide-react'
+import { Mail, Phone, MessageCircle, Clock, MapPin, type LucideIcon } from 'lucide-react'
 import Image from 'next/image'
 import { type HeroBackground } from '@/lib/hero-utils'
 
@@ -12,6 +12,7 @@ const iconMap: Record<string, LucideIcon> = {
   Phone,
   MessageCircle,
   Clock,
+  MapPin,
 }
 
 // Animation variants
@@ -72,13 +73,13 @@ export function ContactHero({ title, description, background }: ContactHeroProps
 
   if (!hasBackground) {
     return (
-      <section className="section-padding bg-gradient-to-br from-base-100 to-primary/5" ref={ref}>
+      <section className="section-padding bg-base-200 border-b border-base-300" ref={ref}>
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center">
             <motion.h1
-              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+              className="display-heading text-4xl md:text-5xl lg:text-6xl mb-6"
+              initial={{ opacity: 0, y: 24 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
               {title}
@@ -188,9 +189,9 @@ export function ContactInfoSection({ title, items, children, formTitle }: Contac
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <h2 className="text-2xl font-bold mb-6">{title}</h2>
+            <h2 className="display-heading text-2xl md:text-3xl mb-6">{title}</h2>
             <motion.div
-              className="space-y-6"
+              className="space-y-4"
               variants={staggerContainer}
               initial="hidden"
               animate={isInView ? 'visible' : 'hidden'}
@@ -201,20 +202,15 @@ export function ContactInfoSection({ title, items, children, formTitle }: Contac
                   <motion.a
                     key={item.label}
                     href={item.href}
-                    className="flex items-start gap-4 group"
+                    className="card-surface bg-base-100 flex items-start gap-4 p-4 group"
                     variants={staggerItem}
-                    whileHover={{ x: 5 }}
-                    transition={{ type: 'spring', stiffness: 300 }}
                   >
-                    <motion.div
-                      className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-colors duration-300"
-                      whileHover={{ scale: 1.1 }}
-                    >
+                    <div className="w-12 h-12 bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary transition-colors duration-300">
                       <IconComponent className="w-5 h-5 text-primary group-hover:text-primary-content transition-colors duration-300" />
-                    </motion.div>
+                    </div>
                     <div>
-                      <p className="font-medium">{item.label}</p>
-                      <p className="text-base-content/70">{item.value}</p>
+                      <p className="eyebrow mb-1">{item.label}</p>
+                      <p className="text-base-content font-medium">{item.value}</p>
                     </div>
                   </motion.a>
                 )
@@ -229,9 +225,9 @@ export function ContactInfoSection({ title, items, children, formTitle }: Contac
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
             transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="card bg-base-100 shadow-xl">
-              <div className="card-body">
-                <h2 className="card-title text-2xl mb-6">{formTitle}</h2>
+            <div className="card-surface bg-base-100">
+              <div className="p-6 md:p-8">
+                <h2 className="display-heading text-2xl mb-6">{formTitle}</h2>
                 {children}
               </div>
             </div>
@@ -255,9 +251,9 @@ export function MapSection({ placeholder }: MapSectionProps): React.JSX.Element 
     <section className="section-padding bg-base-200" ref={ref}>
       <div className="container-custom">
         <motion.div
-          className="aspect-video bg-base-300 rounded-2xl flex items-center justify-center overflow-hidden"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          className="aspect-video card-surface bg-base-300 flex items-center justify-center overflow-hidden"
+          initial={{ opacity: 0, y: 24 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <p className="text-base-content/50">{placeholder}</p>

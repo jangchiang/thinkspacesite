@@ -23,18 +23,21 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: 'Think Space | Enterprise Technology Solutions',
+    default: 'ThinkSpace Technologies | AI, Data & Digital Engineering',
     template: '%s | Think Space',
   },
   description:
-    'Think Space is a leading enterprise technology company providing cloud services, IT consulting, managed services, cybersecurity, and digital transformation solutions.',
+    'ThinkSpace Technologies is a Chiang Mai–based technology and engineering partner specialising in AI, Data Science, High-Performance Computing, simulation, cybersecurity, and digital engineering solutions — including Logix, our sovereign AI-native platform for on-premise and on-cloud deployment.',
   keywords: [
-    'enterprise technology',
-    'IT consulting',
-    'cloud services',
-    'managed services',
+    'AI solutions',
+    'data science',
+    'high-performance computing',
+    'simulation',
+    'digital engineering',
     'cybersecurity',
-    'digital transformation',
+    'Logix AI platform',
+    'Proxmox reseller Thailand',
+    'Chiang Mai technology company',
   ],
   authors: [{ name: 'Think Space' }],
   openGraph: {
@@ -42,15 +45,15 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: process.env.NEXT_PUBLIC_SITE_URL,
     siteName: 'Think Space',
-    title: 'Think Space | Enterprise Technology Solutions',
+    title: 'ThinkSpace Technologies | AI, Data & Digital Engineering',
     description:
-      'Leading enterprise technology company providing cloud services, IT consulting, and digital transformation.',
+      'AI, Data Science, HPC, simulation and cybersecurity from Chiang Mai. Maker of Logix — a sovereign AI-native platform for on-premise and on-cloud.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Think Space | Enterprise Technology Solutions',
+    title: 'ThinkSpace Technologies | AI, Data & Digital Engineering',
     description:
-      'Leading enterprise technology company providing cloud services, IT consulting, and digital transformation.',
+      'AI, Data Science, HPC, simulation and cybersecurity from Chiang Mai. Maker of Logix — a sovereign AI-native platform for on-premise and on-cloud.',
   },
   robots: {
     index: true,
@@ -68,34 +71,41 @@ const organizationJsonLd = {
   alternateName: ['Think Space', 'techthinkspace', 'Thinkspace Tech'],
   url: siteUrl,
   logo: `${siteUrl}/logo.png`,
-  description: 'Thinkspace Technology is a leading enterprise technology company providing cloud services, IT consulting, cybersecurity, AI solutions, software development, and digital transformation services in Thailand.',
-  foundingDate: '2020',
+  description: 'ThinkSpace Technologies Co., Ltd. is a Chiang Mai–based technology and engineering partner specialising in AI, Data Science, High-Performance Computing, simulation, cybersecurity, and digital engineering — and the maker of Logix, a sovereign AI-native platform.',
+  foundingDate: '2024',
   address: {
     '@type': 'PostalAddress',
-    addressLocality: 'Bangkok',
+    streetAddress: '211/141 Moo 2, Mae Hia',
+    addressLocality: 'Muang Chiang Mai',
+    addressRegion: 'Chiang Mai',
+    postalCode: '50100',
     addressCountry: 'TH',
   },
+  telephone: '+66-82-808-7666',
+  email: 'info@techthinkspace.com',
   areaServed: {
     '@type': 'Country',
     name: 'Thailand',
   },
   sameAs: [
-    'https://www.facebook.com/thinkspacetechnology',
-    'https://www.linkedin.com/company/thinkspace-technology',
-    'https://twitter.com/thinkspacetech',
+    'https://www.facebook.com/techthinkspace',
+    'https://www.linkedin.com/company/techthinkspace',
   ],
   contactPoint: {
     '@type': 'ContactPoint',
     contactType: 'customer service',
+    telephone: '+66-82-808-7666',
+    email: 'info@techthinkspace.com',
     availableLanguage: ['English', 'Thai'],
   },
   knowsAbout: [
-    'Cloud Computing',
+    'Artificial Intelligence',
+    'Data Science',
+    'High-Performance Computing',
+    'Simulation & Digital Engineering',
     'Cybersecurity',
-    'AI Solutions',
-    'Software Development',
-    'IT Consulting',
-    'Digital Transformation',
+    'Private AI',
+    'Proxmox Virtualization',
   ],
 }
 

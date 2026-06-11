@@ -39,28 +39,30 @@ ENV NODE_ENV=production
 ENV PORT=1337
 ENV HOST=0.0.0.0
 
-# Copy package.json and install production dependencies
-COPY package.json ./
+# Create the runtime user up front and own the workdir. Installing as this user
+# and using COPY --chown keeps every file strapi-owned without a separate
+# `chown -R /app` step, which would otherwise duplicate node_modules into a
+# ~1GB layer and balloon the final image.
+RUN addgroup --system --gid 1001 strapi && \
+    adduser --system --uid 1001 strapi && \
+    mkdir -p /app/public/uploads /app/data && \
+    chown -R strapi:strapi /app
+USER strapi
+
+# Install production dependencies (owned by strapi)
+COPY --chown=strapi:strapi package.json ./
 RUN npm install --omit=dev
 
 # Copy built application
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/config ./config
-COPY --from=builder /app/src ./src
-COPY --from=builder /app/database ./database
-COPY --from=builder /app/types ./types
-COPY --from=builder /app/tsconfig.json ./
-COPY --from=builder /app/favicon.png ./
-
-# Create non-root user and set permissions
-RUN addgroup --system --gid 1001 strapi && \
-    adduser --system --uid 1001 strapi && \
-    mkdir -p /app/public/uploads && \
-    mkdir -p /app/data && \
-    chown -R strapi:strapi /app
-
-USER strapi
+COPY --chown=strapi:strapi --from=builder /app/dist ./dist
+COPY --chown=strapi:strapi --from=builder /app/public ./public
+COPY --chown=strapi:strapi --from=builder /app/config ./config
+COPY --chown=strapi:strapi --from=builder /app/src ./src
+COPY --chown=strapi:strapi --from=builder /app/database ./database
+COPY --chown=strapi:strapi --from=builder /app/data ./data
+COPY --chown=strapi:strapi --from=builder /app/types ./types
+COPY --chown=strapi:strapi --from=builder /app/tsconfig.json ./
+COPY --chown=strapi:strapi --from=builder /app/favicon.png ./
 
 EXPOSE 1337
 

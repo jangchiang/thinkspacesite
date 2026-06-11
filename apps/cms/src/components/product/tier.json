@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_product_tiers",
+  "info": {
+    "displayName": "Product Tier",
+    "description": "A subscription / pricing tier"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "tagline": {
+      "type": "string"
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "points": {
+      "type": "json"
+    }
+  }
+}

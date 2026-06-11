@@ -2,7 +2,23 @@
 
 import { motion, useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
-import { Users, Target, Award, Globe, ChevronDown, ChevronUp, type LucideIcon } from 'lucide-react'
+import {
+  Users,
+  Target,
+  Award,
+  Globe,
+  ChevronDown,
+  ChevronUp,
+  Eye,
+  Compass,
+  Building2,
+  CalendarDays,
+  Wallet,
+  Hash,
+  MapPin,
+  GraduationCap,
+  type LucideIcon,
+} from 'lucide-react'
 import Image from 'next/image'
 import { type HeroBackground } from '@/lib/hero-utils'
 
@@ -12,6 +28,8 @@ const iconMap: Record<string, LucideIcon> = {
   Award,
   Users,
   Globe,
+  Eye,
+  Compass,
 }
 
 interface Value {
@@ -26,19 +44,19 @@ interface Milestone {
   detail: string
 }
 
-// Animation variants
+// Animation variants — calm, formal fade/translate
 const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
+      staggerChildren: 0.08,
     },
   },
 }
 
 const staggerItem = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 24 },
   visible: {
     opacity: 1,
     y: 0,
@@ -61,8 +79,8 @@ export function AboutHero({ title, description, background }: AboutHeroProps): R
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   const hasBackground = background && background.type !== 'none'
-  const overlayOpacity = background?.overlayOpacity ?? 60
-  const overlayColor = background?.overlayColor ?? '#000000'
+  const overlayOpacity = background?.overlayOpacity ?? 70
+  const overlayColor = background?.overlayColor ?? '#171717'
   const textColorClass = background?.textColor === 'dark' ? 'text-base-content' : 'text-white'
 
   // Convert hex to RGB for rgba
@@ -74,7 +92,7 @@ export function AboutHero({ title, description, background }: AboutHeroProps): R
           g: parseInt(result[2], 16),
           b: parseInt(result[3], 16),
         }
-      : { r: 0, g: 0, b: 0 }
+      : { r: 23, g: 23, b: 23 }
   }
 
   const rgb = hexToRgb(overlayColor)
@@ -83,22 +101,35 @@ export function AboutHero({ title, description, background }: AboutHeroProps): R
   }
 
   if (!hasBackground) {
+    // Formal navy editorial hero — clean, no background media
     return (
-      <section className="section-padding bg-gradient-to-br from-base-100 to-primary/5" ref={ref}>
-        <div className="container-custom">
-          <div className="max-w-3xl mx-auto text-center">
+      <section className="relative overflow-hidden bg-secondary text-white" ref={ref}>
+        <div className="absolute inset-0 bg-gradient-to-br from-secondary via-secondary to-[#171717]" />
+        <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-primary/20 blur-3xl" />
+        <div className="container-custom relative z-10 py-20 md:py-28 lg:py-32">
+          <div className="max-w-3xl">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="mb-5"
+            >
+              <span className="eyebrow text-accent">
+                <span className="rule-accent" /> About ThinkSpace
+              </span>
+            </motion.div>
             <motion.h1
-              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+              className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6"
+              initial={{ opacity: 0, y: 24 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
               {title}
             </motion.h1>
             <motion.p
-              className="text-lg md:text-xl text-base-content/70"
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+              className="text-lg md:text-xl text-white/70 leading-relaxed"
+              initial={{ opacity: 0, y: 24 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
               transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
             >
               {description}
@@ -147,19 +178,29 @@ export function AboutHero({ title, description, background }: AboutHeroProps): R
 
       {/* Content */}
       <div className={`container-custom relative z-10 py-20 ${textColorClass}`}>
-        <div className="max-w-3xl mx-auto text-center">
+        <div className="max-w-3xl">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-5"
+          >
+            <span className="eyebrow text-accent">
+              <span className="rule-accent" /> About ThinkSpace
+            </span>
+          </motion.div>
           <motion.h1
-            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6"
+            initial={{ opacity: 0, y: 24 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
             {title}
           </motion.h1>
           <motion.p
-            className="text-lg md:text-xl opacity-80"
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            className="text-lg md:text-xl opacity-80 leading-relaxed"
+            initial={{ opacity: 0, y: 24 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
             transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           >
             {description}
@@ -191,7 +232,7 @@ function ValueDescription({ text }: { text: string }): React.JSX.Element {
             const hasTitle = colonIdx > 0 && colonIdx < 50
             return (
               <li key={i} className="flex items-start gap-2">
-                <span className="text-primary font-semibold mt-0.5 flex-shrink-0">{i + 1}.</span>
+                <span className="text-accent font-semibold mt-0.5 flex-shrink-0">{i + 1}.</span>
                 <span>
                   {hasTitle ? (
                     <>
@@ -207,7 +248,7 @@ function ValueDescription({ text }: { text: string }): React.JSX.Element {
         {showToggle && (
           <button
             onClick={() => setExpanded(!expanded)}
-            className="flex items-center gap-1 text-primary text-xs font-medium mt-3 hover:underline"
+            className="flex items-center gap-1 text-accent text-xs font-medium mt-3 hover:underline"
           >
             {expanded ? (
               <><ChevronUp className="w-3 h-3" /> แสดงน้อยลง</>
@@ -229,7 +270,7 @@ function ValueDescription({ text }: { text: string }): React.JSX.Element {
         </p>
         <button
           onClick={() => setExpanded(!expanded)}
-          className="flex items-center gap-1 text-primary text-xs font-medium mt-2 hover:underline"
+          className="flex items-center gap-1 text-accent text-xs font-medium mt-2 hover:underline"
         >
           {expanded ? (
             <><ChevronUp className="w-3 h-3" /> แสดงน้อยลง</>
@@ -242,10 +283,10 @@ function ValueDescription({ text }: { text: string }): React.JSX.Element {
   }
 
   // Short text — render as-is
-  return <p className="text-sm text-base-content/70">{text}</p>
+  return <p className="text-sm text-base-content/70 leading-relaxed">{text}</p>
 }
 
-// Values Section
+// Values Section — Vision & Mission as formal 1px-border cards
 interface ValuesSectionProps {
   values: Value[]
 }
@@ -254,17 +295,25 @@ export function ValuesSection({ values }: ValuesSectionProps): React.JSX.Element
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
-  // Use 2-col layout when any value has long content (numbered list or long paragraph)
-  const hasLongContent = values.some(v => v.description.length > 150)
-  const gridClass = hasLongContent
-    ? 'grid md:grid-cols-2 gap-8'
-    : 'grid md:grid-cols-2 lg:grid-cols-4 gap-8'
-
   return (
-    <section className="section-padding" ref={ref}>
+    <section className="section-padding bg-base-100" ref={ref}>
       <div className="container-custom">
         <motion.div
-          className={gridClass}
+          className="max-w-2xl mb-12"
+          initial={{ opacity: 0, y: 24 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <span className="eyebrow mb-4">
+            <span className="rule-accent" /> Vision &amp; Mission
+          </span>
+          <h2 className="display-heading text-3xl md:text-4xl lg:text-5xl mt-4">
+            What drives us
+          </h2>
+        </motion.div>
+
+        <motion.div
+          className="grid md:grid-cols-2 gap-6 lg:gap-8"
           variants={staggerContainer}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
@@ -274,20 +323,14 @@ export function ValuesSection({ values }: ValuesSectionProps): React.JSX.Element
             return (
               <motion.div
                 key={value.title}
-                className="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow duration-300"
+                className="card-surface p-8 flex flex-col"
                 variants={staggerItem}
               >
-                <div className="card-body items-center text-center">
-                  <motion.div
-                    className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4"
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    transition={{ type: 'spring', stiffness: 300 }}
-                  >
-                    <IconComponent className="w-8 h-8 text-primary" />
-                  </motion.div>
-                  <h3 className="card-title">{value.title}</h3>
-                  <ValueDescription text={value.description} />
+                <div className="w-12 h-12 rounded-md bg-primary/10 flex items-center justify-center mb-5">
+                  <IconComponent className="w-6 h-6 text-primary" />
                 </div>
+                <h3 className="text-xl font-bold text-base-content mb-3">{value.title}</h3>
+                <ValueDescription text={value.description} />
               </motion.div>
             )
           })}
@@ -297,7 +340,32 @@ export function ValuesSection({ values }: ValuesSectionProps): React.JSX.Element
   )
 }
 
-// Story Section with Timeline
+// Company registration facts strip
+const COMPANY_FACTS_TH = [
+  { iconName: 'Building2', label: 'ชื่อบริษัท', value: 'บริษัท ธิงค์สเปซ เทคโนโลยี จำกัด' },
+  { iconName: 'CalendarDays', label: 'จดทะเบียน', value: '22 พฤศจิกายน 2567' },
+  { iconName: 'Wallet', label: 'ทุนจดทะเบียน', value: '1,000,000 บาท' },
+  { iconName: 'Hash', label: 'เลขทะเบียน', value: '0505567026400' },
+  { iconName: 'MapPin', label: 'สำนักงาน', value: 'จังหวัดเชียงใหม่' },
+] as const
+
+const COMPANY_FACTS_EN = [
+  { iconName: 'Building2', label: 'Company', value: 'THINKSPACE TECHNOLOGIES CO., LTD.' },
+  { iconName: 'CalendarDays', label: 'Registered', value: '22 November 2024' },
+  { iconName: 'Wallet', label: 'Capital', value: 'THB 1,000,000' },
+  { iconName: 'Hash', label: 'Registration No.', value: '0505567026400' },
+  { iconName: 'MapPin', label: 'Office', value: 'Chiang Mai, Thailand' },
+] as const
+
+const factIconMap: Record<string, LucideIcon> = {
+  Building2,
+  CalendarDays,
+  Wallet,
+  Hash,
+  MapPin,
+}
+
+// Story Section with company facts + milestone timeline
 interface StorySectionProps {
   locale: string
   storyTitle: string
@@ -308,7 +376,7 @@ interface StorySectionProps {
 }
 
 export function StorySection({
-  locale: _locale,
+  locale,
   storyTitle,
   storyParagraph1,
   storyParagraph2,
@@ -317,76 +385,109 @@ export function StorySection({
 }: StorySectionProps): React.JSX.Element {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const isTh = locale === 'th'
+
+  const facts = isTh ? COMPANY_FACTS_TH : COMPANY_FACTS_EN
+  const factsEyebrow = isTh ? 'ข้อมูลบริษัท' : 'Company Profile'
+  const timelineLabel = milestonesTitle || (isTh ? 'เส้นทางการเติบโต' : 'Our Journey')
 
   return (
     <section className="section-padding bg-base-200" ref={ref}>
       <div className="container-custom">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        {/* Story intro */}
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start mb-16 lg:mb-20">
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+            initial={{ opacity: 0, y: 24 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">{storyTitle}</h2>
-            <div className="space-y-4 text-base-content/70">
-              <p className="whitespace-pre-line">{storyParagraph1}</p>
-              <p className="whitespace-pre-line">{storyParagraph2}</p>
+            <span className="eyebrow mb-4">
+              <span className="rule-accent" /> {isTh ? 'เรื่องราวของเรา' : 'Our Story'}
+            </span>
+            <h2 className="display-heading text-3xl md:text-4xl lg:text-5xl mt-4 mb-6">
+              {storyTitle}
+            </h2>
+            <div className="space-y-4 text-base-content/70 leading-relaxed">
+              {storyParagraph1 && <p className="whitespace-pre-line">{storyParagraph1}</p>}
+              {storyParagraph2 && <p className="whitespace-pre-line">{storyParagraph2}</p>}
             </div>
           </motion.div>
 
+          {/* Company facts card */}
           <motion.div
-            className="bg-base-100 rounded-2xl p-8"
-            initial={{ opacity: 0, x: 30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="card-surface p-8"
+            initial={{ opacity: 0, y: 24 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+            transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
           >
-            <h3 className="text-xl font-semibold mb-8">{milestonesTitle}</h3>
-            <div className="relative">
-              {/* Timeline line */}
-              <motion.div
-                className="absolute left-[23px] top-3 bottom-3 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-primary/20"
-                initial={{ scaleY: 0 }}
-                animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-                style={{ transformOrigin: 'top' }}
-              />
+            <span className="eyebrow mb-6">
+              <span className="rule-accent" /> {factsEyebrow}
+            </span>
+            <dl className="mt-6 divide-y divide-base-300">
+              {facts.map((fact) => {
+                const FactIcon = factIconMap[fact.iconName] || Building2
+                return (
+                  <div key={fact.label} className="flex items-start gap-4 py-4 first:pt-0 last:pb-0">
+                    <div className="w-9 h-9 rounded-md bg-secondary/5 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <FactIcon className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <dt className="text-xs uppercase tracking-wider text-base-content/50 mb-0.5">
+                        {fact.label}
+                      </dt>
+                      <dd className="font-semibold text-base-content">{fact.value}</dd>
+                    </div>
+                  </div>
+                )
+              })}
+            </dl>
+          </motion.div>
+        </div>
 
-              <div className="space-y-8">
+        {/* Milestone timeline */}
+        {milestones.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="max-w-2xl mb-12">
+              <span className="eyebrow mb-4">
+                <span className="rule-accent" /> {isTh ? 'ก้าวสำคัญ' : 'Milestones'}
+              </span>
+              <h3 className="display-heading text-2xl md:text-3xl lg:text-4xl mt-4">
+                {timelineLabel}
+              </h3>
+            </div>
+
+            <div className="relative">
+              {/* Horizontal-ish staggered timeline as a grid of cards */}
+              <div className="grid gap-6 md:grid-cols-3">
                 {milestones.map((milestone, index) => (
                   <motion.div
-                    key={milestone.year}
-                    className="relative flex items-start gap-6 group"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-                    transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+                    key={`${milestone.year}-${index}`}
+                    className="card-surface p-6 relative"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                    transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
                   >
-                    {/* Timeline dot */}
-                    <div className="relative z-10 flex-shrink-0">
-                      <motion.div
-                        className="w-12 h-12 rounded-full bg-primary text-primary-content flex items-center justify-center font-bold text-sm shadow-lg shadow-primary/30"
-                        whileHover={{ scale: 1.15 }}
-                        transition={{ type: 'spring', stiffness: 300 }}
-                      >
-                        {milestone.year}
-                      </motion.div>
-                    </div>
-                    {/* Content */}
-                    <div className="flex-1 pb-2">
-                      <h4 className="font-semibold text-base-content mb-1">{milestone.event}</h4>
-                      <p className="text-sm text-base-content/60">{milestone.detail}</p>
-                    </div>
+                    <span className="absolute top-0 left-6 -translate-y-1/2 inline-flex items-center rounded bg-primary px-3 py-1 text-xs font-bold tracking-wide text-primary-content">
+                      {milestone.year}
+                    </span>
+                    <h4 className="font-bold text-base-content mt-4 mb-2">{milestone.event}</h4>
+                    <p className="text-sm text-base-content/60 leading-relaxed">{milestone.detail}</p>
                   </motion.div>
                 ))}
               </div>
             </div>
           </motion.div>
-        </div>
+        )}
       </div>
     </section>
   )
 }
 
-// Team Section
+// Team Section — leadership with credentials
 interface TeamMember {
   name: string
   role: string
@@ -406,62 +507,114 @@ interface TeamSectionProps {
   strapiUrl?: string
 }
 
+// Real leadership fallback with credentials (used when Strapi has no team data)
+const LEADERSHIP_FALLBACK: Array<{
+  name: string
+  role: string
+  credentials: string[]
+}> = [
+  {
+    name: 'นายธีรดนย์ สมศรี',
+    role: 'Chief Technology Officer (CTO)',
+    credentials: [
+      'M.CompSci (Artificial Intelligence), Monash University',
+      'B.IT, James Cook University Singapore',
+    ],
+  },
+  {
+    name: 'นางสาวสรารัตน์ ขวัญใจ',
+    role: 'Chief Executive Officer (CEO)',
+    credentials: [
+      'PhD, Civil Engineering, Chiang Mai University',
+      'M.Eng & B.Eng, Civil Engineering, Chiang Mai University',
+    ],
+  },
+  {
+    name: 'นายทีปัชลิต บินอารี',
+    role: 'Chief Design Officer (CDO)',
+    credentials: [
+      'PhD, Mechanical Engineering, Chiang Mai University',
+      'B.Eng, Mechanical Engineering, Chiang Mai University',
+    ],
+  },
+]
+
 export function TeamSection({ title, description, members, strapiUrl = '' }: TeamSectionProps): React.JSX.Element | null {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
-  if (!members || members.length === 0) {
-    return null
-  }
+  const hasStrapiMembers = members && members.length > 0
+
+  // Build photo lookup so we can reuse Strapi photos when present
+  const photoFor = (name: string): TeamMember['photo'] | undefined =>
+    members?.find((m) => m.name === name)?.photo
 
   return (
-    <section className="section-padding" ref={ref}>
+    <section className="section-padding bg-base-100" ref={ref}>
       <div className="container-custom">
         <motion.div
-          className="text-center mb-12"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.6 }}
+          className="max-w-2xl mb-12"
+          initial={{ opacity: 0, y: 24 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
-          <p className="text-base-content/70 max-w-2xl mx-auto">{description}</p>
+          <span className="eyebrow mb-4">
+            <span className="rule-accent" /> Leadership
+          </span>
+          <h2 className="display-heading text-3xl md:text-4xl lg:text-5xl mt-4 mb-4">
+            {title || 'Our Executive Team'}
+          </h2>
+          {description && (
+            <p className="text-base-content/70 leading-relaxed">{description}</p>
+          )}
         </motion.div>
 
         <motion.div
-          className="grid md:grid-cols-3 gap-8"
+          className="grid md:grid-cols-3 gap-6 lg:gap-8"
           variants={staggerContainer}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          {members.map((member) => {
-            const photoUrl = member.photo?.formats?.small?.url ||
-                             member.photo?.formats?.thumbnail?.url ||
-                             member.photo?.url
+          {(hasStrapiMembers
+            ? members.map((m) => ({ name: m.name, role: m.role, credentials: [] as string[] }))
+            : LEADERSHIP_FALLBACK
+          ).map((member) => {
+            const photo = photoFor(member.name)
+            const photoUrl =
+              photo?.formats?.small?.url ||
+              photo?.formats?.thumbnail?.url ||
+              photo?.url
             return (
               <motion.div
                 key={member.name}
-                className="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow duration-300"
+                className="card-surface p-8 flex flex-col items-start"
                 variants={staggerItem}
-                whileHover={{ y: -5 }}
               >
-                <div className="card-body items-center text-center">
-                  <motion.div
-                    className="w-24 h-24 rounded-full bg-base-300 mb-4 overflow-hidden relative"
-                    whileHover={{ scale: 1.05 }}
-                  >
-                    {photoUrl && (
-                      <Image
-                        src={`${strapiUrl}${photoUrl}`}
-                        alt={member.name}
-                        fill
-                        className="object-contain"
-                        unoptimized
-                      />
-                    )}
-                  </motion.div>
-                  <h3 className="card-title">{member.name}</h3>
-                  <p className="text-base-content/70">{member.role}</p>
+                <div className="w-20 h-20 rounded-md bg-secondary/5 mb-5 overflow-hidden relative flex items-center justify-center">
+                  {photoUrl ? (
+                    <Image
+                      src={`${strapiUrl}${photoUrl}`}
+                      alt={member.name}
+                      fill
+                      className="object-cover"
+                      unoptimized
+                    />
+                  ) : (
+                    <Users className="w-8 h-8 text-primary/60" />
+                  )}
                 </div>
+                <h3 className="text-lg font-bold text-base-content">{member.name}</h3>
+                <p className="text-sm font-medium text-accent mt-1 mb-4">{member.role}</p>
+                {member.credentials.length > 0 && (
+                  <ul className="space-y-2 border-t border-base-300 pt-4 w-full">
+                    {member.credentials.map((cred, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm text-base-content/70 leading-relaxed">
+                        <GraduationCap className="w-4 h-4 text-primary/70 flex-shrink-0 mt-0.5" />
+                        <span>{cred}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </motion.div>
             )
           })}

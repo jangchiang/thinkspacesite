@@ -93,41 +93,41 @@ export function Logo({ showTagline = false, size = 'md', animated = true }: Logo
                 {/* Trail effects - Northern Lights */}
                 <motion.path
                   d={bracketPath}
-                  stroke="#38bdf8"
+                  stroke="#4ADE80"
                   strokeWidth={s.bracket.strokeWidth}
                   strokeLinecap="square"
                   strokeDasharray="50 400"
                   initial={{ strokeDashoffset: 500 }}
                   animate={{ strokeDashoffset: 0 }}
                   transition={{ duration: 1.2, ease: 'linear', delay: 0.4 }}
-                  style={{ filter: 'drop-shadow(0 0 6px #38bdf8)' }}
+                  style={{ filter: 'drop-shadow(0 0 6px #4ADE80)' }}
                 />
                 <motion.path
                   d={bracketPath}
-                  stroke="#2dd4bf"
+                  stroke="#16A34A"
                   strokeWidth={s.bracket.strokeWidth}
                   strokeLinecap="square"
                   strokeDasharray="50 400"
                   initial={{ strokeDashoffset: 475 }}
                   animate={{ strokeDashoffset: -25 }}
                   transition={{ duration: 1.2, ease: 'linear', delay: 0.4 }}
-                  style={{ filter: 'drop-shadow(0 0 6px #2dd4bf)' }}
+                  style={{ filter: 'drop-shadow(0 0 6px #16A34A)' }}
                 />
                 <motion.path
                   d={bracketPath}
-                  stroke="#10B981"
+                  stroke="#22C55E"
                   strokeWidth={s.bracket.strokeWidth}
                   strokeLinecap="square"
                   strokeDasharray="50 400"
                   initial={{ strokeDashoffset: 450 }}
                   animate={{ strokeDashoffset: -50 }}
                   transition={{ duration: 1.2, ease: 'linear', delay: 0.4 }}
-                  style={{ filter: 'drop-shadow(0 0 8px #10B981)' }}
+                  style={{ filter: 'drop-shadow(0 0 8px #22C55E)' }}
                 />
                 {/* Final bracket */}
                 <motion.path
                   d={bracketPath}
-                  stroke="#10B981"
+                  stroke="#22C55E"
                   strokeWidth={s.bracket.strokeWidth}
                   strokeLinecap="square"
                   initial={{ pathLength: 0 }}
@@ -138,7 +138,7 @@ export function Logo({ showTagline = false, size = 'md', animated = true }: Logo
             ) : (
               <path
                 d={bracketPath}
-                stroke="#10B981"
+                stroke="#22C55E"
                 strokeWidth={s.bracket.strokeWidth}
                 strokeLinecap="square"
               />
@@ -171,7 +171,7 @@ export function Logo({ showTagline = false, size = 'md', animated = true }: Logo
               backgroundPosition: { duration: 1.8, ease: 'easeInOut', delay: 1.2 }
             }}
             style={{
-              background: 'linear-gradient(90deg, #10B981 0%, #10B981 45%, oklch(var(--bc)) 55%, oklch(var(--bc)) 100%)',
+              background: 'linear-gradient(90deg, #22C55E 0%, #22C55E 45%, oklch(var(--bc)) 55%, oklch(var(--bc)) 100%)',
               backgroundSize: '300% 100%',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',

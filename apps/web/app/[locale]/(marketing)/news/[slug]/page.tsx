@@ -9,7 +9,7 @@ import { MarkdownRenderer } from '@/components/markdown-renderer'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
 
 type Props = {
-  params: Promise<{ locale: Locale; slug: string }>
+  params: Promise<{ locale: string; slug: string }>
 }
 
 interface BlogPost {
@@ -32,7 +32,7 @@ interface BlogPost {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale, slug } = await params
+  const { locale, slug } = await params as { locale: Locale; slug: string }
   const post = await getBlogPost(slug, locale) as BlogPost | null
 
   if (!post) {
@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function BlogPostPage({ params }: Props): Promise<React.JSX.Element> {
-  const { locale, slug } = await params
+  const { locale, slug } = await params as { locale: Locale; slug: string }
   const post = await getBlogPost(slug, locale) as BlogPost | null
 
   if (!post) {

@@ -25,7 +25,7 @@ export function Breadcrumb({ items, locale, className = '' }: BreadcrumbProps): 
         <li className="flex items-center">
           <Link
             href={`/${locale}`}
-            className="flex items-center gap-1 text-base-content/60 hover:text-primary transition-colors"
+            className="flex items-center gap-1 text-base-content/70 hover:text-accent transition-colors"
           >
             <Home className="w-4 h-4" />
             <span className="hidden sm:inline">{homeLabel}</span>
@@ -35,11 +35,11 @@ export function Breadcrumb({ items, locale, className = '' }: BreadcrumbProps): 
         {/* Items */}
         {items.map((item, index) => (
           <li key={index} className="flex items-center">
-            <ChevronRight className="w-4 h-4 mx-1 text-base-content/40" />
+            <ChevronRight className="w-4 h-4 mx-1 text-base-content/70" />
             {item.href ? (
               <Link
                 href={item.href}
-                className="text-base-content/60 hover:text-primary transition-colors"
+                className="text-base-content/70 hover:text-accent transition-colors"
               >
                 {item.label}
               </Link>
@@ -66,7 +66,7 @@ export function generateBreadcrumbs(
   const routeLabels: Record<string, { th: string; en: string }> = {
     about: { th: 'เกี่ยวกับเรา', en: 'About' },
     services: { th: 'บริการ', en: 'Services' },
-    works: { th: 'ผลงาน', en: 'Works' },
+    works: { th: 'เรื่องราวความสำเร็จ', en: 'Customer Stories' },
     news: { th: 'ข่าวสาร', en: 'News' },
     careers: { th: 'ร่วมงาน', en: 'Careers' },
     contact: { th: 'ติดต่อ', en: 'Contact' },

@@ -37,49 +37,49 @@ interface WhyChooseUsSectionProps {
   data?: WhyChooseUsData | null
 }
 
-// Default features as fallback
+// Default features as fallback — real ThinkSpace positioning
 const defaultFeatures = [
   {
-    icon: Shield,
-    titleTh: 'ความปลอดภัยระดับองค์กร',
-    titleEn: 'Enterprise Security',
-    descTh: 'มาตรฐานความปลอดภัยสูงสุดพร้อมการรับรอง ISO 27001',
-    descEn: 'Highest security standards with ISO 27001 certification',
-  },
-  {
-    icon: Clock,
-    titleTh: 'ส่งมอบตรงเวลา',
-    titleEn: 'On-Time Delivery',
-    descTh: '99% ของโปรเจกต์ส่งมอบตามกำหนดเวลา',
-    descEn: '99% of projects delivered on schedule',
+    icon: Target,
+    titleTh: 'วิศวกรรมดิจิทัลเชิงลึก',
+    titleEn: 'Deep Digital Engineering',
+    descTh: 'รวมงานวิจัย AI การจำลองเชิงคำนวณ และวิศวกรรมซอฟต์แวร์เข้าด้วยกัน',
+    descEn: 'AI research, computational simulation, and software engineering under one roof',
   },
   {
     icon: Users,
-    titleTh: 'ทีมผู้เชี่ยวชาญ',
-    titleEn: 'Expert Team',
-    descTh: 'วิศวกรและที่ปรึกษาที่มีประสบการณ์มากกว่า 15 ปี',
-    descEn: 'Engineers and consultants with 15+ years experience',
+    titleTh: 'ทีมระดับมหาวิทยาลัย',
+    titleEn: 'Research-Grade Team',
+    descTh: 'ทีมผู้ก่อตั้งจากภาควิชาวิศวกรรมและงานวิจัยของมหาวิทยาลัยเชียงใหม่',
+    descEn: 'Founders rooted in Chiang Mai University engineering and research',
+  },
+  {
+    icon: Shield,
+    titleTh: 'อธิปไตยทางข้อมูล',
+    titleEn: 'Data Sovereignty',
+    descTh: 'รองรับการติดตั้งแบบ On-Premise ให้องค์กรเป็นเจ้าของข้อมูลและโครงสร้างพื้นฐานเอง',
+    descEn: 'On-premise deployments so you own your data and infrastructure',
+  },
+  {
+    icon: Zap,
+    titleTh: 'แพลตฟอร์ม AI ของเราเอง',
+    titleEn: 'Our Own AI Platform',
+    descTh: 'ขับเคลื่อนด้วย Logix แพลตฟอร์ม AI แบบ agentic ที่พัฒนาภายใน',
+    descEn: 'Powered by Logix, our in-house agentic AI platform',
   },
   {
     icon: Award,
-    titleTh: 'พันธมิตรระดับพรีเมียม',
-    titleEn: 'Premium Partners',
-    descTh: 'พันธมิตรอย่างเป็นทางการของ AWS, Microsoft, Google Cloud',
-    descEn: 'Official partners of AWS, Microsoft, Google Cloud',
-  },
-  {
-    icon: Headphones,
-    titleTh: 'สนับสนุน 24/7',
-    titleEn: '24/7 Support',
-    descTh: 'ทีมสนับสนุนพร้อมให้บริการตลอด 24 ชั่วโมง',
-    descEn: 'Support team available around the clock',
+    titleTh: 'พันธมิตรเทคโนโลยีที่ได้รับการรับรอง',
+    titleEn: 'Authorized Technology Partners',
+    descTh: 'Authorized Reseller ของ Proxmox พร้อมพันธมิตร Dell และ Google Cloud',
+    descEn: 'Proxmox Authorized Reseller, with Dell and Google Cloud partnerships',
   },
   {
     icon: TrendingUp,
-    titleTh: 'ปรับขนาดได้ยืดหยุ่น',
-    titleEn: 'Scalable Solutions',
-    descTh: 'โซลูชันที่เติบโตไปพร้อมกับธุรกิจของคุณ',
-    descEn: 'Solutions that grow with your business',
+    titleTh: 'ส่งมอบจริง พิสูจน์ได้',
+    titleEn: 'Proven Delivery',
+    descTh: 'ส่งมอบโครงการให้องค์กร ภาครัฐ และมหาวิทยาลัยทั้งในและต่างประเทศ',
+    descEn: 'Delivered for enterprises, government, and universities across borders',
   },
 ]
 
@@ -88,14 +88,14 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
+      staggerChildren: 0.08,
+      delayChildren: 0.1,
     },
   },
 }
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 24 },
   visible: {
     opacity: 1,
     y: 0,
@@ -109,6 +109,7 @@ const itemVariants = {
 export function WhyChooseUsSection({ locale, data }: WhyChooseUsSectionProps): React.JSX.Element | null {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const isTh = locale === 'th'
 
   // Check if section should be hidden
   if (data?.isVisible === false) {
@@ -117,32 +118,34 @@ export function WhyChooseUsSection({ locale, data }: WhyChooseUsSectionProps): R
 
   // Use Strapi data if available, otherwise fallback to defaults
   const hasStapiFeatures = data?.features && data.features.length > 0
-  const sectionTitle = data?.title || (locale === 'th' ? 'ทำไมต้องเลือกเรา' : 'Why Choose Us')
-  const sectionSubtitle = data?.subtitle || (locale === 'th'
-    ? 'เราพร้อมสนับสนุนการเปลี่ยนแปลงทางดิจิทัลของคุณด้วยทีมผู้เชี่ยวชาญและเทคโนโลยีชั้นนำ'
-    : 'We are ready to support your digital transformation with our expert team and leading technology')
+  const sectionTitle = data?.title || (isTh ? 'ทำไมต้องเลือก ThinkSpace' : 'Why ThinkSpace')
+  const sectionSubtitle = data?.subtitle || (isTh
+    ? 'เราผสานงานวิจัย วิศวกรรม และเทคโนโลยี AI เข้าด้วยกัน เพื่อสร้างโซลูชันที่องค์กรเป็นเจ้าของได้อย่างแท้จริง'
+    : 'We combine research, engineering, and AI to build solutions your organization can truly own.')
 
   return (
-    <section className="py-16 md:py-20 lg:py-24 bg-base-100" ref={ref}>
+    <section className="section-padding bg-base-100" ref={ref}>
       <div className="container-custom">
         {/* Header */}
         <motion.div
-          className="max-w-3xl mx-auto text-center mb-12"
+          className="max-w-3xl mb-12 md:mb-16"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+          <p className="eyebrow mb-3">{isTh ? 'จุดเด่นของเรา' : 'Our Difference'}</p>
+          <h2 className="display-heading text-3xl md:text-4xl lg:text-5xl mb-5">
             {sectionTitle}
           </h2>
-          <p className="text-lg md:text-xl text-base-content/70">
+          <div className="rule-accent mb-6" />
+          <p className="text-lg text-base-content/70 leading-relaxed">
             {sectionSubtitle}
           </p>
         </motion.div>
 
         {/* Features Grid */}
         <motion.div
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
           variants={containerVariants}
@@ -154,23 +157,18 @@ export function WhyChooseUsSection({ locale, data }: WhyChooseUsSectionProps): R
               return (
                 <motion.div
                   key={index}
-                  className="group p-6 rounded-2xl bg-base-200/50 hover:bg-base-200 border border-base-300 hover:border-primary/30 transition-all duration-300"
+                  className="card-surface p-7"
                   variants={itemVariants}
-                  whileHover={{ y: -5 }}
                 >
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-all duration-300 flex-shrink-0">
-                      <IconComponent className="w-6 h-6 text-primary group-hover:text-primary-content transition-colors" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-lg mb-2">
-                        {feature.title}
-                      </h3>
-                      <p className="text-base-content/60 text-sm">
-                        {feature.description}
-                      </p>
-                    </div>
+                  <div className="w-12 h-12 flex items-center justify-center bg-primary/10 text-primary mb-5">
+                    <IconComponent className="w-6 h-6" />
                   </div>
+                  <h3 className="font-bold text-lg text-base-content mb-2">
+                    {feature.title}
+                  </h3>
+                  <p className="text-base-content/70 text-sm leading-relaxed">
+                    {feature.description}
+                  </p>
                 </motion.div>
               )
             })
@@ -179,23 +177,18 @@ export function WhyChooseUsSection({ locale, data }: WhyChooseUsSectionProps): R
             defaultFeatures.map((feature, index) => (
               <motion.div
                 key={index}
-                className="group p-6 rounded-2xl bg-base-200/50 hover:bg-base-200 border border-base-300 hover:border-primary/30 transition-all duration-300"
+                className="card-surface p-7"
                 variants={itemVariants}
-                whileHover={{ y: -5 }}
               >
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-all duration-300 flex-shrink-0">
-                    <feature.icon className="w-6 h-6 text-primary group-hover:text-primary-content transition-colors" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-lg mb-2">
-                      {locale === 'th' ? feature.titleTh : feature.titleEn}
-                    </h3>
-                    <p className="text-base-content/60 text-sm">
-                      {locale === 'th' ? feature.descTh : feature.descEn}
-                    </p>
-                  </div>
+                <div className="w-12 h-12 flex items-center justify-center bg-primary/10 text-primary mb-5">
+                  <feature.icon className="w-6 h-6" />
                 </div>
+                <h3 className="font-bold text-lg text-base-content mb-2">
+                  {isTh ? feature.titleTh : feature.titleEn}
+                </h3>
+                <p className="text-base-content/70 text-sm leading-relaxed">
+                  {isTh ? feature.descTh : feature.descEn}
+                </p>
               </motion.div>
             ))
           )}

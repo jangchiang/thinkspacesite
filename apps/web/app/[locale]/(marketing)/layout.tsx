@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic'
 
 type Props = {
   children: React.ReactNode
-  params: Promise<{ locale: Locale }>
+  params: Promise<{ locale: string }>
 }
 
 interface StrapiService {
@@ -21,7 +21,7 @@ interface StrapiService {
 }
 
 export default async function MarketingLayout({ children, params }: Props): Promise<React.JSX.Element> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
 
   // Fetch dictionary, services, contact info, and site settings in parallel
   const [dict, strapiServices, contactInfo, siteSettings] = await Promise.all([

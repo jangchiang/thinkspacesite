@@ -8,7 +8,7 @@
     "description": "Hero section backgrounds and settings for pages"
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {
     "i18n": {
@@ -20,6 +20,7 @@
       "type": "string",
       "required": true,
       "unique": true,
+      "pluginOptions": { "i18n": { "localized": true } },
       "pluginOptions": {
         "i18n": {
           "localized": false

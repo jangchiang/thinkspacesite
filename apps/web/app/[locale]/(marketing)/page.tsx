@@ -1,8 +1,10 @@
 import { type Locale } from '@/lib/i18n'
 import { getDictionary } from '@/lib/dictionary'
-import { getPartners, getStats, getCaseStudies, getBlogPosts, getHomepage, getServices } from '@/lib/strapi'
+import { getPartners, getClients, getStats, getCaseStudies, getBlogPosts, getHomepage, getServices } from '@/lib/strapi'
 import { HeroSection } from '@/components/sections/hero'
 import { ServicesSection } from '@/components/sections/services'
+import { LogixHighlight } from '@/components/sections/logix-highlight'
+import { PartnersBand } from '@/components/sections/partners'
 import { WhyChooseUsSection } from '@/components/sections/why-choose-us'
 import { FeaturedWorksSection } from '@/components/sections/featured-works'
 import { NewsPreviewSection } from '@/components/sections/news-preview'
@@ -12,7 +14,7 @@ import { CTASection } from '@/components/sections/cta'
 export const dynamic = 'force-dynamic'
 
 type Props = {
-  params: Promise<{ locale: Locale }>
+  params: Promise<{ locale: string }>
 }
 
 interface Partner {
@@ -74,10 +76,11 @@ interface Service {
 }
 
 export default async function HomePage({ params }: Props): Promise<React.JSX.Element> {
-  const { locale } = await params
-  const [dict, partnersData, statsData, caseStudiesData, blogData, homepageData, servicesData] = await Promise.all([
+  const { locale } = await params as { locale: Locale }
+  const [dict, partnersData, clientsData, statsData, caseStudiesData, blogData, homepageData, servicesData] = await Promise.all([
     getDictionary(locale),
     getPartners().catch(() => []),
+    getClients().catch(() => []),
     getStats(locale).catch(() => []),
     getCaseStudies(locale, 4).catch(() => []),
     getBlogPosts(locale, { pageSize: 3 }).catch(() => ({ posts: [] })),
@@ -86,6 +89,7 @@ export default async function HomePage({ params }: Props): Promise<React.JSX.Ele
   ])
 
   const partners = (partnersData || []) as Partner[]
+  const clients = (clientsData || []) as Partner[]
   const stats = (statsData || []) as Stat[]
   const caseStudies = (caseStudiesData || []) as CaseStudy[]
   const blogPosts = (blogData?.posts || []) as BlogPost[]
@@ -112,12 +116,14 @@ export default async function HomePage({ params }: Props): Promise<React.JSX.Ele
 
   return (
     <>
-      <HeroSection dict={{ ...dict, hero: heroData }} locale={locale} partners={partners} strapiUrl={strapiUrl} />
+      <HeroSection dict={{ ...dict, hero: heroData }} locale={locale} partners={partners} clients={clients} strapiUrl={strapiUrl} />
       <ServicesSection dict={dict} locale={locale} services={services} />
+      <LogixHighlight locale={locale} />
+      <PartnersBand locale={locale} clients={clients} partners={partners} strapiUrl={strapiUrl} />
       <WhyChooseUsSection locale={locale} data={homepageData?.whyChooseUsSection} />
       <FeaturedWorksSection locale={locale} caseStudies={caseStudies} />
-      <NewsPreviewSection locale={locale} posts={blogPosts} strapiUrl={strapiUrl} />
       <StatsSection stats={stats} />
+      <NewsPreviewSection locale={locale} posts={blogPosts} strapiUrl={strapiUrl} />
       <CTASection dict={dict} locale={locale} />
     </>
   )

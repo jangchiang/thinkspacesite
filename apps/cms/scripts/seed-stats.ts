@@ -18,27 +18,27 @@ interface StatData {
 
 const stats: StatData[] = [
   {
-    value: '500+',
-    label: 'Enterprise Clients',
-    labelTh: 'ลูกค้าองค์กร',
+    value: '20+',
+    label: 'Organizations Served',
+    labelTh: 'องค์กรที่ไว้วางใจ',
     order: 1,
   },
   {
-    value: '99.9%',
-    label: 'SLA Uptime',
-    labelTh: 'SLA เวลาทำงาน',
+    value: '6',
+    label: 'Solution Pillars',
+    labelTh: 'กลุ่มโซลูชันหลัก',
     order: 2,
   },
   {
-    value: '24/7',
-    label: 'Support Available',
-    labelTh: 'สนับสนุนตลอดเวลา',
+    value: '3',
+    label: 'Technology Partners',
+    labelTh: 'พันธมิตรเทคโนโลยี',
     order: 3,
   },
   {
-    value: '15+',
-    label: 'Years Experience',
-    labelTh: 'ปีประสบการณ์',
+    value: '2024',
+    label: 'Founded in Chiang Mai',
+    labelTh: 'ก่อตั้งที่เชียงใหม่',
     order: 4,
   },
 ]

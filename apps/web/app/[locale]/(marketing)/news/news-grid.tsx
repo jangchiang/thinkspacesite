@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { Calendar, ArrowRight, Clock } from 'lucide-react'
+import { Calendar, ArrowRight, Clock, Newspaper } from 'lucide-react'
 
 interface BlogPost {
   slug: string
@@ -73,11 +73,10 @@ export function NewsGrid({ posts, locale, strapiUrl = '' }: NewsGridProps): Reac
         <motion.article
           key={post.slug}
           variants={itemVariants}
-          whileHover={{ y: -5 }}
-          className="group"
+          className="group hover-lift"
         >
           <Link href={`/${locale}/news/${post.slug}`}>
-            <div className="card bg-base-100 shadow-lg hover:shadow-xl transition-all duration-300 border border-base-300 hover:border-primary/30 overflow-hidden">
+            <div className="card-surface bg-base-100 overflow-hidden">
               <div className="aspect-video bg-base-200 relative overflow-hidden">
                 {post.featuredImage ? (
                   <Image
@@ -87,16 +86,16 @@ export function NewsGrid({ posts, locale, strapiUrl = '' }: NewsGridProps): Reac
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-                    <span className="text-6xl opacity-20">📰</span>
+                  <div className="w-full h-full bg-base-200 flex items-center justify-center">
+                    <Newspaper className="w-12 h-12 text-base-content/20" />
                   </div>
                 )}
                 <div className="absolute top-4 left-4">
-                  <span className="badge badge-primary">{post.category}</span>
+                  <span className="badge badge-primary rounded-none">{post.category}</span>
                 </div>
               </div>
-              <div className="card-body">
-                <div className="flex items-center gap-4 text-sm text-base-content/60 mb-2">
+              <div className="p-6">
+                <div className="flex items-center gap-4 text-sm text-base-content/70 mb-2">
                   <span className="flex items-center gap-1">
                     <Calendar className="w-4 h-4" />
                     {new Date(post.date).toLocaleDateString(locale === 'th' ? 'th-TH' : 'en-US', {
@@ -110,12 +109,12 @@ export function NewsGrid({ posts, locale, strapiUrl = '' }: NewsGridProps): Reac
                     {estimateReadTime(post.excerpt)} {locale === 'th' ? 'นาที' : 'min read'}
                   </span>
                 </div>
-                <h2 className="card-title text-xl group-hover:text-primary transition-colors">
+                <h2 className="text-xl font-bold text-base-content group-hover:text-primary transition-colors mb-2">
                   {post.title}
                 </h2>
                 <p className="text-base-content/70 line-clamp-2">{post.excerpt}</p>
-                <div className="card-actions mt-4">
-                  <span className="inline-flex items-center gap-2 text-primary font-medium group-hover:gap-3 transition-all">
+                <div className="mt-4">
+                  <span className="inline-flex items-center gap-2 text-accent font-medium group-hover:gap-3 transition-all">
                     {locale === 'th' ? 'อ่านเพิ่มเติม' : 'Read More'}
                     <ArrowRight className="w-4 h-4" />
                   </span>

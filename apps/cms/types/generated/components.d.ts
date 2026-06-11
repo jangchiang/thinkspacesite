@@ -163,6 +163,47 @@ export interface HomepageWhyChooseUsSection extends Struct.ComponentSchema {
   };
 }
 
+export interface ProductAddOn extends Struct.ComponentSchema {
+  collectionName: 'components_product_add_ons';
+  info: {
+    description: 'An optional add-on product';
+    displayName: 'Product Add-on';
+  };
+  attributes: {
+    body: Schema.Attribute.Text;
+    features: Schema.Attribute.JSON;
+    icon: Schema.Attribute.String;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface ProductFeature extends Struct.ComponentSchema {
+  collectionName: 'components_product_features';
+  info: {
+    description: 'An icon + title + body feature for a product';
+    displayName: 'Product Feature';
+  };
+  attributes: {
+    body: Schema.Attribute.Text;
+    icon: Schema.Attribute.String;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface ProductTier extends Struct.ComponentSchema {
+  collectionName: 'components_product_tiers';
+  info: {
+    description: 'A subscription / pricing tier';
+    displayName: 'Product Tier';
+  };
+  attributes: {
+    featured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    points: Schema.Attribute.JSON;
+    tagline: Schema.Attribute.String;
+  };
+}
+
 export interface ServiceFeature extends Struct.ComponentSchema {
   collectionName: 'components_service_features';
   info: {
@@ -349,6 +390,9 @@ declare module '@strapi/strapi' {
       'homepage.feature-item': HomepageFeatureItem;
       'homepage.hero-section': HomepageHeroSection;
       'homepage.why-choose-us-section': HomepageWhyChooseUsSection;
+      'product.add-on': ProductAddOn;
+      'product.feature': ProductFeature;
+      'product.tier': ProductTier;
       'service.feature': ServiceFeature;
       'service.process-step': ServiceProcessStep;
       'service.technology': ServiceTechnology;

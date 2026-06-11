@@ -39,7 +39,7 @@ const containerVariants = {
 }
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 24 },
   visible: {
     opacity: 1,
     y: 0,
@@ -61,32 +61,36 @@ export function NewsPreviewSection({ locale, posts, strapiUrl = '' }: NewsPrevie
 
   const latestPosts = posts.slice(0, 3)
 
+  const isTh = locale === 'th'
+
   return (
-    <section className="section-padding bg-base-200/30">
+    <section className="section-padding bg-base-200">
       <div className="container-custom">
         {/* Header */}
         <motion.div
-          className="flex flex-col md:flex-row md:items-end justify-between mb-12"
+          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 md:mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-2">
-              {locale === 'th' ? 'ข่าวสารล่าสุด' : 'Latest News'}
+          <div className="max-w-2xl">
+            <p className="eyebrow mb-3">{isTh ? 'ข่าวสาร' : 'Newsroom'}</p>
+            <h2 className="display-heading text-3xl md:text-4xl lg:text-5xl mb-5">
+              {isTh ? 'ข่าวสารและมุมมองล่าสุด' : 'Latest News & Insights'}
             </h2>
-            <p className="text-base-content/70">
-              {locale === 'th'
-                ? 'อัพเดทข่าวสารและความรู้จากทีมของเรา'
-                : 'Stay updated with news and insights from our team'}
+            <div className="rule-accent mb-6" />
+            <p className="text-lg text-base-content/70 leading-relaxed">
+              {isTh
+                ? 'อัปเดตข่าวสาร งานวิจัย และมุมมองจากทีมของเรา'
+                : 'Updates, research, and perspectives from our team.'}
             </p>
           </div>
           <Link
             href={`/${locale}/news`}
-            className="inline-flex items-center gap-2 text-primary font-medium mt-4 md:mt-0 group"
+            className="btn btn-outline btn-primary group shrink-0"
           >
-            {locale === 'th' ? 'ดูทั้งหมด' : 'View All'}
+            {isTh ? 'ดูทั้งหมด' : 'View All'}
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </motion.div>
@@ -105,52 +109,54 @@ export function NewsPreviewSection({ locale, posts, strapiUrl = '' }: NewsPrevie
               variants={itemVariants}
               className="group"
             >
-              <Link href={`/${locale}/news/${post.slug}`}>
-                <div className="relative overflow-hidden rounded-xl bg-base-100 shadow-md hover:shadow-lg transition-all duration-300 border border-base-300 hover:border-primary/30 h-full">
-                  <div className="aspect-[4/3] relative overflow-hidden">
-                    {post.featuredImage ? (
-                      <Image
-                        src={`${strapiUrl}${
-                          post.featuredImage.formats?.small?.url ||
-                          post.featuredImage.url
-                        }`}
-                        alt={post.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-                        <span className="text-4xl opacity-20">📰</span>
-                      </div>
-                    )}
-                    <div className="absolute top-3 left-3">
-                      <span className="badge badge-primary badge-sm">
-                        {post.category || 'General'}
-                      </span>
+              <Link href={`/${locale}/news/${post.slug}`} className="card-surface flex flex-col h-full overflow-hidden">
+                <div className="aspect-[16/10] relative overflow-hidden bg-base-200">
+                  {post.featuredImage ? (
+                    <Image
+                      src={`${strapiUrl}${
+                        post.featuredImage.formats?.small?.url ||
+                        post.featuredImage.url
+                      }`}
+                      alt={post.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-secondary/5 flex items-center justify-center">
+                      <Calendar className="w-8 h-8 text-base-content/20" />
                     </div>
+                  )}
+                  <div className="absolute top-3 left-3">
+                    <span className="inline-block bg-secondary text-secondary-content text-[11px] font-semibold uppercase tracking-wider px-2.5 py-1">
+                      {post.category || (isTh ? 'ทั่วไป' : 'General')}
+                    </span>
                   </div>
-                  <div className="p-4">
-                    <div className="flex items-center gap-3 text-xs text-base-content/60 mb-2">
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-3 h-3" />
-                        {new Date(post.publishedAt).toLocaleDateString(
-                          locale === 'th' ? 'th-TH' : 'en-US',
-                          { month: 'short', day: 'numeric' }
-                        )}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        {estimateReadTime(post.excerpt)}{' '}
-                        {locale === 'th' ? 'นาที' : 'min'}
-                      </span>
-                    </div>
-                    <h3 className="text-base font-semibold group-hover:text-primary transition-colors line-clamp-2 mb-1">
-                      {post.title}
-                    </h3>
-                    <p className="text-sm text-base-content/70 line-clamp-2">
-                      {post.excerpt}
-                    </p>
+                </div>
+                <div className="flex flex-col flex-1 p-6">
+                  <div className="flex items-center gap-4 text-xs text-base-content/70 mb-3">
+                    <span className="flex items-center gap-1.5">
+                      <Calendar className="w-3.5 h-3.5" />
+                      {new Date(post.publishedAt).toLocaleDateString(
+                        isTh ? 'th-TH' : 'en-US',
+                        { month: 'short', day: 'numeric', year: 'numeric' }
+                      )}
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5" />
+                      {estimateReadTime(post.excerpt)}{' '}
+                      {isTh ? 'นาที' : 'min'}
+                    </span>
                   </div>
+                  <h3 className="text-lg font-bold text-base-content group-hover:text-primary transition-colors line-clamp-2 mb-2 leading-snug">
+                    {post.title}
+                  </h3>
+                  <p className="text-sm text-base-content/70 line-clamp-3 leading-relaxed">
+                    {post.excerpt}
+                  </p>
+                  <span className="mt-auto pt-4 inline-flex items-center gap-1.5 text-accent font-medium text-sm">
+                    {isTh ? 'อ่านต่อ' : 'Read more'}
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </span>
                 </div>
               </Link>
             </motion.article>

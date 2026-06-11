@@ -4,7 +4,7 @@ import { getLegalPage } from '@/lib/strapi'
 import { MarkdownRenderer } from '@/components/markdown-renderer'
 
 type Props = {
-  params: Promise<{ locale: Locale }>
+  params: Promise<{ locale: string }>
 }
 
 // Fallback content
@@ -58,7 +58,7 @@ If you have questions about this privacy policy, please contact us at info@techt
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
   const page = await getLegalPage('privacy-policy', locale)
 
   return {
@@ -67,7 +67,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function PrivacyPage({ params }: Props): Promise<React.JSX.Element> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
   const page = await getLegalPage('privacy-policy', locale)
 
   const title = page?.title || (locale === 'th' ? 'นโยบายความเป็นส่วนตัว' : 'Privacy Policy')
