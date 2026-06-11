@@ -129,14 +129,14 @@ const config: Config = {
           'accent-content': '#04221c',
 
           // Neutral
-          'neutral': '#94a3b8',
-          'neutral-content': '#0b1a2e',
+          'neutral': '#a3a3a3',
+          'neutral-content': '#171717',
 
-          // Base colors - navy-tinted dark
-          'base-100': '#0b1a2e',
-          'base-200': '#102740',
-          'base-300': '#1e3a5f',
-          'base-content': '#e2e8f0',
+          // Base colors - neutral near-black (matches previous/live dark theme background)
+          'base-100': '#171717',
+          'base-200': '#262626',
+          'base-300': '#404040',
+          'base-content': '#f5f5f5',
 
           // State colors
           'info': '#3b82f6',
