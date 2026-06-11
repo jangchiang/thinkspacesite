@@ -8,7 +8,6 @@ interface CmsPartner {
   id: number
   name: string
   website?: string
-  category?: 'client' | 'technology'
   role?: string
   logo?: {
     url: string
@@ -18,6 +17,9 @@ interface CmsPartner {
 
 interface PartnersBandProps {
   locale: 'en' | 'th'
+  /** Client collection entries (Trusted-by wall) */
+  clients?: CmsPartner[]
+  /** Partner collection entries (technology partners) */
   partners?: CmsPartner[]
   strapiUrl?: string
 }
@@ -60,18 +62,19 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } },
 }
 
-export function PartnersBand({ locale, partners = [], strapiUrl = '' }: PartnersBandProps): React.JSX.Element {
+export function PartnersBand({ locale, clients: cmsClientsInput = [], partners = [], strapiUrl = '' }: PartnersBandProps): React.JSX.Element {
   const isTh = locale === 'th'
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
-  // Prefer CMS data (edit/upload in Strapi Admin → Partner); fall back to the bundled logos.
-  const cmsClients = partners
-    .filter((p) => p.category !== 'technology')
-    .map((p) => ({ name: p.name, src: logoUrl(strapiUrl, p.logo) }))
-  const cmsTech = partners
-    .filter((p) => p.category === 'technology')
-    .map((p) => ({ name: p.name, src: logoUrl(strapiUrl, p.logo), roleEn: p.role || 'Partner', roleTh: p.role || 'พันธมิตร' }))
+  // Prefer CMS data (edit/upload in Strapi Admin → Client / Partner); fall back to bundled logos.
+  const cmsClients = cmsClientsInput.map((c) => ({ name: c.name, src: logoUrl(strapiUrl, c.logo) }))
+  const cmsTech = partners.map((p) => ({
+    name: p.name,
+    src: logoUrl(strapiUrl, p.logo),
+    roleEn: p.role || 'Partner',
+    roleTh: p.role || 'พันธมิตร',
+  }))
 
   const clients: Client[] = cmsClients.length > 0 ? cmsClients : FALLBACK_CLIENTS
   const techPartners: TechPartner[] = cmsTech.length > 0 ? cmsTech : FALLBACK_TECH

@@ -247,6 +247,18 @@ export async function getCaseStudy(slug: string, locale: Locale) {
   return response.data?.[0] ?? null
 }
 
+export async function getClients() {
+  const response = await fetchStrapi<unknown[]>('/clients', {
+    locale: null,  // Client is not an i18n content type
+    populate: ['logo'],
+    sort: 'order:asc',
+    tags: ['clients'],
+    revalidate: 0,
+  })
+
+  return response.data
+}
+
 export async function getPartners() {
   const response = await fetchStrapi<unknown[]>('/partners', {
     locale: null,  // Partner is not an i18n content type

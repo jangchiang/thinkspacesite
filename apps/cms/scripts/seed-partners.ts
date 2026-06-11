@@ -26,38 +26,18 @@ interface PartnerData {
   name: string;
   website?: string;
   order: number;
-  category: 'client' | 'technology';
   role?: string;
   /** Optional logo filename inside PARTNERS_DIR (real files only). */
   logoFile?: string;
 }
 
 // Technology partners (real) — Proxmox logo asset exists; Dell/GCP show as wordmarks.
-const technologyPartners: PartnerData[] = [
-  { name: 'Proxmox', website: 'https://www.proxmox.com', order: 1, category: 'technology', role: 'Authorized Reseller', logoFile: 'proxmox-reseller.png' },
-  { name: 'Dell', website: 'https://www.dell.com', order: 2, category: 'technology', role: 'Technology Partner' },
-  { name: 'Google Cloud', website: 'https://cloud.google.com', order: 3, category: 'technology', role: 'Cloud Partner' },
+// Clients live in the separate Client collection (see seed-clients.ts).
+const partners: PartnerData[] = [
+  { name: 'Proxmox', website: 'https://www.proxmox.com', order: 1, role: 'Authorized Reseller', logoFile: 'proxmox-reseller.png' },
+  { name: 'Dell', website: 'https://www.dell.com', order: 2, role: 'Technology Partner' },
+  { name: 'Google Cloud', website: 'https://cloud.google.com', order: 3, role: 'Cloud Partner' },
 ];
-
-// Clients ("Trusted by") — real organizations; logos extracted to public/images/partners/clients/.
-const clients: PartnerData[] = [
-  { name: 'Chiang Mai University', website: 'https://www.cmu.ac.th', order: 10, category: 'client', logoFile: 'clients/cmu.png' },
-  { name: 'CMU-RAILCFC', order: 11, category: 'client', logoFile: 'clients/cmu-railcfc.png' },
-  { name: 'CMU Alumni Association', order: 12, category: 'client', logoFile: 'clients/cmu-alumni.png' },
-  { name: 'CMU Engineering Alumni', order: 13, category: 'client', logoFile: 'clients/cmueaa.png' },
-  { name: 'EGAT', website: 'https://www.egat.co.th', order: 14, category: 'client' },
-  { name: 'GETHÁ', order: 15, category: 'client', logoFile: 'clients/getha.png' },
-  { name: 'Bedding Houz', order: 16, category: 'client', logoFile: 'clients/bedding-houz.png' },
-  { name: 'Suppaisan Goldsmith', order: 17, category: 'client', logoFile: 'clients/suppaisan.png' },
-  { name: 'CCINNOMA', order: 18, category: 'client', logoFile: 'clients/ccinnoma.png' },
-  { name: 'Silver Temple Foundation', order: 19, category: 'client', logoFile: 'clients/silver-temple.png' },
-  { name: 'Hidden Cafe', order: 20, category: 'client', logoFile: 'clients/hidden-cafe.png' },
-  { name: 'Songkhla Rajabhat University', order: 21, category: 'client', logoFile: 'clients/songkhla-rajabhat.png' },
-  { name: 'Nana Digital', order: 22, category: 'client' },
-  { name: 'Wanawat Hardware', order: 23, category: 'client' },
-];
-
-const partners: PartnerData[] = [...technologyPartners, ...clients];
 
 function guessMime(file: string): string {
   if (file.endsWith('.png')) return 'image/png';
@@ -117,7 +97,6 @@ async function createPartner(partner: PartnerData) {
   const data: Record<string, unknown> = {
     name: partner.name,
     order: partner.order,
-    category: partner.category,
   };
   if (partner.role) data.role = partner.role;
   if (partner.website) data.website = partner.website;
@@ -168,7 +147,7 @@ async function main() {
   }
 
   console.log('Seeding complete!');
-  console.log(`\n${partners.length} partners created (${technologyPartners.length} technology, ${clients.length} clients).`);
+  console.log(`\n${partners.length} technology partners created.`);
 }
 
 main().catch(console.error);

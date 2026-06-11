@@ -24,11 +24,6 @@
     "website": {
       "type": "string"
     },
-    "category": {
-      "type": "enumeration",
-      "enum": ["client", "technology"],
-      "default": "client"
-    },
     "role": {
       "type": "string"
     },

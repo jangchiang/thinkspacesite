@@ -1,6 +1,6 @@
 import { type Locale } from '@/lib/i18n'
 import { getDictionary } from '@/lib/dictionary'
-import { getPartners, getStats, getCaseStudies, getBlogPosts, getHomepage, getServices } from '@/lib/strapi'
+import { getPartners, getClients, getStats, getCaseStudies, getBlogPosts, getHomepage, getServices } from '@/lib/strapi'
 import { HeroSection } from '@/components/sections/hero'
 import { ServicesSection } from '@/components/sections/services'
 import { LogixHighlight } from '@/components/sections/logix-highlight'
@@ -77,9 +77,10 @@ interface Service {
 
 export default async function HomePage({ params }: Props): Promise<React.JSX.Element> {
   const { locale } = await params
-  const [dict, partnersData, statsData, caseStudiesData, blogData, homepageData, servicesData] = await Promise.all([
+  const [dict, partnersData, clientsData, statsData, caseStudiesData, blogData, homepageData, servicesData] = await Promise.all([
     getDictionary(locale),
     getPartners().catch(() => []),
+    getClients().catch(() => []),
     getStats(locale).catch(() => []),
     getCaseStudies(locale, 4).catch(() => []),
     getBlogPosts(locale, { pageSize: 3 }).catch(() => ({ posts: [] })),
@@ -88,6 +89,7 @@ export default async function HomePage({ params }: Props): Promise<React.JSX.Ele
   ])
 
   const partners = (partnersData || []) as Partner[]
+  const clients = (clientsData || []) as Partner[]
   const stats = (statsData || []) as Stat[]
   const caseStudies = (caseStudiesData || []) as CaseStudy[]
   const blogPosts = (blogData?.posts || []) as BlogPost[]
@@ -117,7 +119,7 @@ export default async function HomePage({ params }: Props): Promise<React.JSX.Ele
       <HeroSection dict={{ ...dict, hero: heroData }} locale={locale} partners={partners} strapiUrl={strapiUrl} />
       <ServicesSection dict={dict} locale={locale} services={services} />
       <LogixHighlight locale={locale} />
-      <PartnersBand locale={locale} partners={partners} strapiUrl={strapiUrl} />
+      <PartnersBand locale={locale} clients={clients} partners={partners} strapiUrl={strapiUrl} />
       <WhyChooseUsSection locale={locale} data={homepageData?.whyChooseUsSection} />
       <FeaturedWorksSection locale={locale} caseStudies={caseStudies} />
       <StatsSection stats={stats} />
