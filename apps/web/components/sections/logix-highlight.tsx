@@ -46,7 +46,7 @@ export function LogixHighlight({ locale }: LogixHighlightProps) {
   ]
 
   return (
-    <section className="bg-secondary text-secondary-content">
+    <section className="bg-navy-950 text-white">
       <div className="container-custom section-padding">
         <motion.div
           ref={ref}
@@ -58,7 +58,7 @@ export function LogixHighlight({ locale }: LogixHighlightProps) {
           {/* Left: positioning */}
           <div className="lg:col-span-5">
             <p className="eyebrow">{isTh ? 'ผลิตภัณฑ์ของเรา' : 'Our Product'}</p>
-            <h2 className="mt-4 text-3xl font-bold tracking-tight text-secondary-content sm:text-4xl">
+            <h2 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">
               {isTh ? (
                 <>
                   Logix — แพลตฟอร์ม AI-native{' '}
@@ -71,7 +71,7 @@ export function LogixHighlight({ locale }: LogixHighlightProps) {
                 </>
               )}
             </h2>
-            <p className="mt-6 text-lg leading-relaxed text-secondary-content/80">
+            <p className="mt-6 text-lg leading-relaxed text-white/85">
               {isTh
                 ? 'เป็นเจ้าของพื้นที่ทำงาน AI ของคุณเอง ไม่ใช่แค่เช่าใช้ — โครงสร้างพื้นฐาน AI แบบ agentic ที่ให้องค์กรควบคุมข้อมูล ความรู้ และโครงสร้างพื้นฐานได้อย่างเต็มที่'
                 : 'Own your AI workspace, not rent it. Sovereign agentic AI infrastructure that gives your teams an AI workspace with full control over data, knowledge, and infrastructure.'}
@@ -79,16 +79,16 @@ export function LogixHighlight({ locale }: LogixHighlightProps) {
 
             {/* On-prem + on-cloud */}
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-6">
-              <div className="flex items-center gap-2.5 text-sm text-secondary-content/90">
+              <div className="flex items-center gap-2.5 text-sm text-white/90">
                 <Server className="h-5 w-5 text-primary" aria-hidden />
                 <span>{isTh ? 'ติดตั้งภายในองค์กร (On-Premise)' : 'On-Premise'}</span>
               </div>
-              <div className="flex items-center gap-2.5 text-sm text-secondary-content/90">
+              <div className="flex items-center gap-2.5 text-sm text-white/90">
                 <Cloud className="h-5 w-5 text-primary" aria-hidden />
                 <span>{isTh ? 'บนคลาวด์ (On-Cloud)' : 'On-Cloud'}</span>
               </div>
             </div>
-            <p className="mt-3 text-sm text-secondary-content/70">
+            <p className="mt-3 text-sm text-white/85">
               {isTh
                 ? 'Hybrid LLM Routing — สลับระหว่างคลาวด์และภายในองค์กรอย่างโปร่งใส'
                 : 'Hybrid LLM Routing — transparent Cloud + On-Premise routing'}
@@ -114,15 +114,15 @@ export function LogixHighlight({ locale }: LogixHighlightProps) {
                     initial={{ opacity: 0, y: 16 }}
                     animate={inView ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.5, ease: 'easeOut', delay: 0.15 + i * 0.08 }}
-                    className="bg-secondary p-6 sm:p-8"
+                    className="bg-navy-950 p-6 sm:p-8"
                   >
                     <span className="inline-flex h-11 w-11 items-center justify-center rounded-box bg-primary/10 text-primary">
                       <Icon className="h-5 w-5" aria-hidden />
                     </span>
-                    <h3 className="mt-5 text-base font-semibold text-secondary-content">
+                    <h3 className="mt-5 text-base font-semibold text-white">
                       {feature.title}
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-secondary-content/70">
+                    <p className="mt-2 text-sm leading-relaxed text-white/85">
                       {feature.desc}
                     </p>
                   </motion.div>
