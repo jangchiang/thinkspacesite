@@ -130,7 +130,7 @@ function NavDropdown({
             <div className="border-t border-base-200 p-2">
               <Link
                 href={item.href}
-                className="block px-4 py-2 text-sm font-medium text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                className="block px-4 py-2 text-sm font-medium text-accent hover:bg-primary/5 rounded-lg transition-colors"
                 onClick={() => setIsOpen(false)}
               >
                 {item.viewAllLabel || (locale === 'th' ? 'ดูบริการทั้งหมด' : 'View All Services')} →
@@ -268,7 +268,7 @@ export function Navbar({ locale, dict, services: servicesProp }: NavbarProps): R
                 <li>
                   <Link
                     href={getLocalizedPath('en')}
-                    className={`${locale === 'en' ? 'active bg-primary/10 text-primary' : ''} hover:bg-primary/10`}
+                    className={`${locale === 'en' ? 'active bg-primary/10 text-accent' : ''} hover:bg-primary/10`}
                   >
                     English
                   </Link>
@@ -276,7 +276,7 @@ export function Navbar({ locale, dict, services: servicesProp }: NavbarProps): R
                 <li>
                   <Link
                     href={getLocalizedPath('th')}
-                    className={`${locale === 'th' ? 'active bg-primary/10 text-primary' : ''} hover:bg-primary/10`}
+                    className={`${locale === 'th' ? 'active bg-primary/10 text-accent' : ''} hover:bg-primary/10`}
                   >
                     ไทย
                   </Link>
@@ -389,7 +389,7 @@ export function Navbar({ locale, dict, services: servicesProp }: NavbarProps): R
                               ))}
                               <Link
                                 href={item.href}
-                                className="block px-3 py-2 text-sm font-medium text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                                className="block px-3 py-2 text-sm font-medium text-accent hover:bg-primary/10 rounded-lg transition-colors"
                                 onClick={() => setMobileMenuOpen(false)}
                               >
                                 {locale === 'th' ? 'ดูบริการทั้งหมด' : 'View All Services'} →

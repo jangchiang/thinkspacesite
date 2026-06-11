@@ -234,6 +234,21 @@
   transform: scale(0.98);
 }
 
+/* Accessible primary buttons.
+   The vibrant #22C55E primary stays for accents/icons/borders, but white text on
+   it fails WCAG AA (~2.3:1). Solid primary buttons use a darker green-700 fill so
+   white text clears AA (~5:1) while keeping the same white-on-green look.
+   Outline/ghost variants keep the bright primary for their text/border. */
+.btn-primary:not(.btn-outline):not(.btn-ghost):not(.btn-link) {
+  background-color: #15803d; /* green-700 */
+  border-color: #15803d;
+  color: #ffffff;
+}
+.btn-primary:not(.btn-outline):not(.btn-ghost):not(.btn-link):hover:not(:disabled) {
+  background-color: #166534; /* green-800 */
+  border-color: #166534;
+}
+
 /* Smooth link transitions */
 a {
   transition: color 0.2s ease;

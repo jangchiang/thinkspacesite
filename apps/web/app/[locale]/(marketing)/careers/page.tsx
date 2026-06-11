@@ -5,11 +5,11 @@ import type { Metadata } from 'next'
 import { getCareerBenefits, getJobPositions } from '@/lib/strapi'
 
 type Props = {
-  params: Promise<{ locale: Locale }>
+  params: Promise<{ locale: string }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
 
   return {
     title: locale === 'th' ? 'ร่วมงานกับเรา' : 'Careers',
@@ -42,7 +42,7 @@ const employmentTypeLabels = {
 }
 
 export default async function CareersPage({ params }: Props): Promise<React.JSX.Element> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
 
   // Fetch data from Strapi
   const [strapiBenefits, strapiJobs] = await Promise.all([

@@ -14,7 +14,7 @@ import { CTASection } from '@/components/sections/cta'
 export const dynamic = 'force-dynamic'
 
 type Props = {
-  params: Promise<{ locale: Locale }>
+  params: Promise<{ locale: string }>
 }
 
 interface Partner {
@@ -76,7 +76,7 @@ interface Service {
 }
 
 export default async function HomePage({ params }: Props): Promise<React.JSX.Element> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
   const [dict, partnersData, clientsData, statsData, caseStudiesData, blogData, homepageData, servicesData] = await Promise.all([
     getDictionary(locale),
     getPartners().catch(() => []),

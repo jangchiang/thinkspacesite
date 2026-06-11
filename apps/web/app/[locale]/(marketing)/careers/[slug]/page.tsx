@@ -8,7 +8,7 @@ import { MarkdownRenderer } from '@/components/markdown-renderer'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
 
 type Props = {
-  params: Promise<{ locale: Locale; slug: string }>
+  params: Promise<{ locale: string; slug: string }>
 }
 
 // Generate static params for all job positions
@@ -20,7 +20,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale, slug } = await params
+  const { locale, slug } = await params as { locale: Locale; slug: string }
   const job = await getJobPosition(slug, locale)
 
   if (!job) {
@@ -113,7 +113,7 @@ const fallbackJobs: Record<string, {
 }
 
 export default async function JobDetailPage({ params }: Props): Promise<React.JSX.Element> {
-  const { locale, slug } = await params
+  const { locale, slug } = await params as { locale: Locale; slug: string }
 
   // Fetch job from Strapi
   const strapiJob = await getJobPosition(slug, locale)

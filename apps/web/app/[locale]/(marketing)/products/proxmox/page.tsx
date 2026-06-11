@@ -24,7 +24,7 @@ import { type Locale } from '@/lib/i18n'
 export const dynamic = 'force-dynamic'
 
 type Props = {
-  params: Promise<{ locale: Locale }>
+  params: Promise<{ locale: string }>
 }
 
 // Resolve a CMS string icon name (or fall back to Server)
@@ -37,7 +37,7 @@ interface PTier { name: string; tagline: string; featured?: boolean; points: str
 interface PAddOn { icon: string; title: string; body: string; features: string[] }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
   const isTh = locale === 'th'
   return {
     title: isTh
@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProxmoxProductPage({ params }: Props): Promise<React.JSX.Element> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
   const isTh = locale === 'th'
 
   // CMS content (editable in Strapi) — falls back to the in-code defaults below.

@@ -11,12 +11,12 @@ import { CategoryFilter } from '@/components/ui/category-filter'
 import { Suspense } from 'react'
 
 type Props = {
-  params: Promise<{ locale: Locale }>
+  params: Promise<{ locale: string }>
   searchParams: Promise<{ category?: string }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
 
   return {
     title: locale === 'th' ? 'เรื่องราวความสำเร็จ' : 'Customer Stories',
@@ -181,7 +181,7 @@ function getStrapiImageUrl(url: string | undefined): string | undefined {
 }
 
 export default async function WorksPage({ params, searchParams }: Props): Promise<React.JSX.Element> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
   const { category } = await searchParams
   const isTh = locale === 'th'
 

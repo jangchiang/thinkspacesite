@@ -4,7 +4,7 @@ import { getLegalPage } from '@/lib/strapi'
 import { MarkdownRenderer } from '@/components/markdown-renderer'
 
 type Props = {
-  params: Promise<{ locale: Locale }>
+  params: Promise<{ locale: string }>
 }
 
 // Fallback content
@@ -58,7 +58,7 @@ We may update these terms from time to time. Continued use constitutes acceptanc
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
   const page = await getLegalPage('terms-of-service', locale)
 
   return {
@@ -67,7 +67,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function TermsPage({ params }: Props): Promise<React.JSX.Element> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
   const page = await getLegalPage('terms-of-service', locale)
 
   const title = page?.title || (locale === 'th' ? 'ข้อกำหนดการใช้งาน' : 'Terms of Service')

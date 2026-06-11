@@ -80,7 +80,7 @@ const config: Config = {
           'secondary-content': '#ffffff',
 
           // Accent - Deeper teal (hover)
-          'accent': '#16a34a',
+          'accent': '#15803d',
           'accent-content': '#ffffff',
 
           // Neutral - Slate

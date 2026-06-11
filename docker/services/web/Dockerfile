@@ -9,7 +9,7 @@ WORKDIR /app
 
 # Install dependencies
 FROM base AS deps
-COPY package.json bun.lockb* ./
+COPY package.json bun.lock* ./
 COPY apps/web/package.json ./apps/web/
 COPY packages/types/package.json ./packages/types/
 COPY packages/config/package.json ./packages/config/
@@ -52,22 +52,22 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Create non-root user
+# Create non-root user and own the workdir up front (so installing as that user
+# avoids a `chown -R /app` step that duplicates node_modules into a large layer)
 RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 nextjs
+    adduser --system --uid 1001 nextjs && \
+    chown nextjs:nodejs /app
+USER nextjs
 
 # Copy the built .next folder, public, and config
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next ./.next
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/next.config.js ./next.config.js
 
-# Create a clean package.json without workspace dependencies and install
-# IMPORTANT: Versions must match what the app was built with (React 19.0.1, Next.js 15.0.7)
-RUN echo '{"name":"thinkspace-web","private":true,"dependencies":{"next":"15.0.7","react":"19.0.1","react-dom":"19.0.1"}}' > package.json && \
-    npm install --omit=dev && \
-    chown -R nextjs:nodejs /app
-
-USER nextjs
+# Create a clean package.json without workspace dependencies and install.
+# IMPORTANT: Versions MUST match what apps/web was built with (Next 16 / React 19.2.7).
+RUN echo '{"name":"thinkspace-web","private":true,"dependencies":{"next":"16.2.9","react":"19.2.7","react-dom":"19.2.7"}}' > package.json && \
+    npm install --omit=dev
 
 EXPOSE 3000
 

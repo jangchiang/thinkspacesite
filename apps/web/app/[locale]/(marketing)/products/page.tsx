@@ -6,11 +6,11 @@ import { ArrowRight, BrainCircuit, Server } from 'lucide-react'
 export const dynamic = 'force-dynamic'
 
 type Props = {
-  params: Promise<{ locale: Locale }>
+  params: Promise<{ locale: string }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
   const isTh = locale === 'th'
 
   return {
@@ -31,7 +31,7 @@ interface ProductCard {
 }
 
 export default async function ProductsPage({ params }: Props): Promise<React.JSX.Element> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
   const isTh = locale === 'th'
 
   const products: ProductCard[] = [

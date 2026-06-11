@@ -80,7 +80,7 @@ export function AboutHero({ title, description, background }: AboutHeroProps): R
 
   const hasBackground = background && background.type !== 'none'
   const overlayOpacity = background?.overlayOpacity ?? 70
-  const overlayColor = background?.overlayColor ?? '#0B2447'
+  const overlayColor = background?.overlayColor ?? '#171717'
   const textColorClass = background?.textColor === 'dark' ? 'text-base-content' : 'text-white'
 
   // Convert hex to RGB for rgba
@@ -92,7 +92,7 @@ export function AboutHero({ title, description, background }: AboutHeroProps): R
           g: parseInt(result[2], 16),
           b: parseInt(result[3], 16),
         }
-      : { r: 11, g: 36, b: 71 }
+      : { r: 23, g: 23, b: 23 }
   }
 
   const rgb = hexToRgb(overlayColor)
@@ -104,7 +104,7 @@ export function AboutHero({ title, description, background }: AboutHeroProps): R
     // Formal navy editorial hero — clean, no background media
     return (
       <section className="relative overflow-hidden bg-secondary text-white" ref={ref}>
-        <div className="absolute inset-0 bg-gradient-to-br from-secondary via-secondary to-[#0a1d3a]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-secondary via-secondary to-[#171717]" />
         <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-primary/20 blur-3xl" />
         <div className="container-custom relative z-10 py-20 md:py-28 lg:py-32">
           <div className="max-w-3xl">
@@ -114,7 +114,7 @@ export function AboutHero({ title, description, background }: AboutHeroProps): R
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               className="mb-5"
             >
-              <span className="eyebrow text-primary">
+              <span className="eyebrow text-accent">
                 <span className="rule-accent" /> About ThinkSpace
               </span>
             </motion.div>
@@ -185,7 +185,7 @@ export function AboutHero({ title, description, background }: AboutHeroProps): R
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="mb-5"
           >
-            <span className="eyebrow text-primary">
+            <span className="eyebrow text-accent">
               <span className="rule-accent" /> About ThinkSpace
             </span>
           </motion.div>
@@ -232,7 +232,7 @@ function ValueDescription({ text }: { text: string }): React.JSX.Element {
             const hasTitle = colonIdx > 0 && colonIdx < 50
             return (
               <li key={i} className="flex items-start gap-2">
-                <span className="text-primary font-semibold mt-0.5 flex-shrink-0">{i + 1}.</span>
+                <span className="text-accent font-semibold mt-0.5 flex-shrink-0">{i + 1}.</span>
                 <span>
                   {hasTitle ? (
                     <>
@@ -248,7 +248,7 @@ function ValueDescription({ text }: { text: string }): React.JSX.Element {
         {showToggle && (
           <button
             onClick={() => setExpanded(!expanded)}
-            className="flex items-center gap-1 text-primary text-xs font-medium mt-3 hover:underline"
+            className="flex items-center gap-1 text-accent text-xs font-medium mt-3 hover:underline"
           >
             {expanded ? (
               <><ChevronUp className="w-3 h-3" /> แสดงน้อยลง</>
@@ -270,7 +270,7 @@ function ValueDescription({ text }: { text: string }): React.JSX.Element {
         </p>
         <button
           onClick={() => setExpanded(!expanded)}
-          className="flex items-center gap-1 text-primary text-xs font-medium mt-2 hover:underline"
+          className="flex items-center gap-1 text-accent text-xs font-medium mt-2 hover:underline"
         >
           {expanded ? (
             <><ChevronUp className="w-3 h-3" /> แสดงน้อยลง</>
@@ -604,7 +604,7 @@ export function TeamSection({ title, description, members, strapiUrl = '' }: Tea
                   )}
                 </div>
                 <h3 className="text-lg font-bold text-base-content">{member.name}</h3>
-                <p className="text-sm font-medium text-primary mt-1 mb-4">{member.role}</p>
+                <p className="text-sm font-medium text-accent mt-1 mb-4">{member.role}</p>
                 {member.credentials.length > 0 && (
                   <ul className="space-y-2 border-t border-base-300 pt-4 w-full">
                     {member.credentials.map((cred, i) => (

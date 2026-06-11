@@ -4,7 +4,7 @@ import { getLegalPage } from '@/lib/strapi'
 import { MarkdownRenderer } from '@/components/markdown-renderer'
 
 type Props = {
-  params: Promise<{ locale: Locale }>
+  params: Promise<{ locale: string }>
 }
 
 // Fallback content
@@ -46,7 +46,7 @@ If you have questions about our cookie policy, please contact us at info@techthi
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
   const page = await getLegalPage('cookie-policy', locale)
 
   return {
@@ -55,7 +55,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function CookiesPage({ params }: Props): Promise<React.JSX.Element> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
   const page = await getLegalPage('cookie-policy', locale)
 
   const title = page?.title || (locale === 'th' ? 'นโยบายคุกกี้' : 'Cookie Policy')

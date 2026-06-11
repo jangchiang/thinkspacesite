@@ -4,7 +4,7 @@ import { locales, type Locale } from '@/lib/i18n'
 import { getDictionary } from '@/lib/dictionary'
 
 type Props = {
-  params: Promise<{ locale: Locale }>
+  params: Promise<{ locale: string }>
 }
 
 export async function generateStaticParams() {
@@ -12,7 +12,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
   const dict = await getDictionary(locale)
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://techthinkspace.com'
 
@@ -65,14 +65,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       siteName: 'Thinkspace Technology',
       title: dict.metadata.title,
       description: dict.metadata.description,
-      images: [
-        {
-          url: `${siteUrl}/logo.png`,
-          width: 512,
-          height: 512,
-          alt: 'ThinkSpace Technologies — AI, Data & Digital Engineering',
-        },
-      ],
     },
     twitter: {
       card: 'summary_large_image',
@@ -80,7 +72,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: dict.metadata.description,
       site: '@techthinkspace',
       creator: '@techthinkspace',
-      images: [`${siteUrl}/logo.png`],
     },
     robots: {
       index: true,
@@ -108,9 +99,9 @@ export default async function LocaleLayout({
   params,
 }: {
   children: React.ReactNode
-  params: Promise<{ locale: Locale }>
+  params: Promise<{ locale: string }>
 }): Promise<React.JSX.Element> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
 
   if (!locales.includes(locale)) {
     notFound()

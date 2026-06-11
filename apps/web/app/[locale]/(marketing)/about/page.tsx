@@ -10,11 +10,11 @@ import { getPageHero, getAboutPage } from '@/lib/strapi'
 import { buildHeroBackground } from '@/lib/hero-utils'
 
 type Props = {
-  params: Promise<{ locale: Locale }>
+  params: Promise<{ locale: string }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
   const isTh = locale === 'th'
 
   return {
@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function AboutPage({ params }: Props): Promise<React.JSX.Element> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
   const isTh = locale === 'th'
 
   // Fetch hero and about page in parallel

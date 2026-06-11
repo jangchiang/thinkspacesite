@@ -9,7 +9,7 @@ import { getPageHero, getContactInfo } from '@/lib/strapi'
 import { buildHeroBackground } from '@/lib/hero-utils'
 
 type Props = {
-  params: Promise<{ locale: Locale }>
+  params: Promise<{ locale: string }>
 }
 
 // Fallback contact info
@@ -29,7 +29,7 @@ const fallbackContactInfo = {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
 
   return {
     title: locale === 'th' ? 'ติดต่อเรา' : 'Contact Us',
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ContactPage({ params }: Props): Promise<React.JSX.Element> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
 
   // Fetch hero and contact info in parallel
   const [heroData, strapiContactInfo] = await Promise.all([

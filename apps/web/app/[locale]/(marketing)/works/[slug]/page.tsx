@@ -10,7 +10,7 @@ import { Breadcrumb } from '@/components/ui/breadcrumb'
 import { getResultDisplayMode } from '@/lib/case-study-utils'
 
 type Props = {
-  params: Promise<{ locale: Locale; slug: string }>
+  params: Promise<{ locale: string; slug: string }>
 }
 
 interface StrapiResultItem {
@@ -194,7 +194,7 @@ function getStrapiImageUrl(url: string | undefined): string | undefined {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale, slug } = await params
+  const { locale, slug } = await params as { locale: Locale; slug: string }
   let title = ''
   let description = ''
 
@@ -219,7 +219,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function WorkDetailPage({ params }: Props): Promise<React.JSX.Element> {
-  const { locale, slug } = await params
+  const { locale, slug } = await params as { locale: Locale; slug: string }
 
   let strapiWork: StrapiWork | null = null
   try {

@@ -26,7 +26,7 @@ import { getProduct } from '@/lib/strapi'
 export const dynamic = 'force-dynamic'
 
 type Props = {
-  params: Promise<{ locale: Locale }>
+  params: Promise<{ locale: string }>
 }
 
 const iconMap: Record<string, LucideIcon> = {
@@ -36,7 +36,7 @@ const iconMap: Record<string, LucideIcon> = {
 interface PFeature { icon: string; title: string; body: string }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
   const isTh = locale === 'th'
 
   return {
@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function LogixPage({ params }: Props): Promise<React.JSX.Element> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
   const isTh = locale === 'th'
 
   // CMS content (editable in Strapi) — falls back to the in-code defaults below.

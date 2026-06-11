@@ -82,7 +82,7 @@ export function ServiceHero({ iconName, title, description, background }: Servic
 
   const hasBackground = background && background.type !== 'none'
   const overlayOpacity = background?.overlayOpacity ?? 70
-  const overlayColor = background?.overlayColor ?? '#0B2447'
+  const overlayColor = background?.overlayColor ?? '#171717'
   const textColorClass = background?.textColor === 'dark' ? 'text-base-content' : 'text-white'
 
   const rgb = hexToRgb(overlayColor)
@@ -295,7 +295,7 @@ export function BenefitsSection({ title, benefits }: BenefitsSectionProps): Reac
               className="card-surface bg-base-100 p-8"
               variants={staggerItem}
             >
-              <span className="block text-sm font-semibold text-primary mb-4 tracking-widest">
+              <span className="block text-sm font-semibold text-accent mb-4 tracking-widest">
                 {String(index + 1).padStart(2, '0')}
               </span>
               <h3 className="text-lg font-semibold text-base-content mb-2">{item.title}</h3>
@@ -349,7 +349,7 @@ export function UseCasesSection({ title, subtitle, useCases }: UseCasesSectionPr
               className="card-surface bg-base-100 p-7 hover-lift"
               variants={staggerItem}
             >
-              <span className="block text-sm font-semibold text-primary mb-4 tracking-widest">
+              <span className="block text-sm font-semibold text-accent mb-4 tracking-widest">
                 {String(index + 1).padStart(2, '0')}
               </span>
               <h3 className="text-lg font-semibold text-base-content mb-2">{useCase.title}</h3>

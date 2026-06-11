@@ -142,7 +142,7 @@ export function ServicesPageContent({ locale, dict, heroBackground, heroTitle, h
 
   const hasBackground = heroBackground && heroBackground.type !== 'none'
   const overlayOpacity = heroBackground?.overlayOpacity ?? 70
-  const overlayColor = heroBackground?.overlayColor ?? '#0B2447'
+  const overlayColor = heroBackground?.overlayColor ?? '#171717'
   const textColorClass = heroBackground?.textColor === 'dark' ? 'text-base-content' : 'text-white'
 
   // Convert hex to RGB for rgba
@@ -284,7 +284,7 @@ export function ServicesPageContent({ locale, dict, heroBackground, heroTitle, h
                       href={service.href}
                       className="group card-surface bg-base-100 p-8 h-full flex flex-col hover-lift"
                     >
-                      <span className="inline-flex items-center justify-center w-12 h-12 border border-base-300 text-primary bg-primary/5 mb-6 group-hover:border-primary transition-colors">
+                      <span className="inline-flex items-center justify-center w-12 h-12 border border-base-300 text-accent bg-primary/5 mb-6 group-hover:border-primary transition-colors">
                         <Icon className="w-6 h-6" />
                       </span>
                       <h3 className="text-xl font-semibold text-base-content mb-3 group-hover:text-primary transition-colors">
@@ -293,7 +293,7 @@ export function ServicesPageContent({ locale, dict, heroBackground, heroTitle, h
                       <p className="text-base-content/70 leading-relaxed mb-6 flex-1">
                         {service.description}
                       </p>
-                      <span className="inline-flex items-center gap-2 text-primary font-medium text-sm mt-auto">
+                      <span className="inline-flex items-center gap-2 text-accent font-medium text-sm mt-auto">
                         {dict.services?.learnMore || (isTh ? 'เรียนรู้เพิ่มเติม' : 'Learn More')}
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </span>

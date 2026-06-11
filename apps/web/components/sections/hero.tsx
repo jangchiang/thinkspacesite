@@ -57,18 +57,10 @@ export function HeroSection({ dict, locale, clients = [], strapiUrl = '' }: Hero
 
   return (
     <section className="relative overflow-hidden bg-secondary text-white">
-      {/* Optional video background — drop a file at /public/videos/hero.mp4. */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="metadata"
-        poster="/images/hero-poster.jpg"
-        className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-      >
-        <source src="/videos/hero.mp4" type="video/mp4" />
-      </video>
+      {/* Background: animated matrix grid over a dark gradient.
+          To add a video background later, drop a file at /public/videos/hero.mp4
+          (and an optional /public/images/hero-poster.jpg) and render a <video>
+          element here above the gradient. */}
       <div className="absolute inset-0 bg-gradient-to-br from-secondary/92 via-secondary/72 to-secondary/88" />
       <MatrixGrid />
 
@@ -156,7 +148,7 @@ export function HeroSection({ dict, locale, clients = [], strapiUrl = '' }: Hero
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.35 }}
           >
-            <LogoCarousel partners={clientLogos} title={dict.hero.trustedBy} strapiUrl={strapiUrl} />
+            <LogoCarousel partners={clientLogos} title={dict.hero.trustedBy} strapiUrl={strapiUrl} surface="dark" />
           </motion.div>
         )}
       </div>

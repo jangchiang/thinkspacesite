@@ -9,12 +9,12 @@ import { Pagination } from '@/components/ui/pagination'
 import { Suspense } from 'react'
 
 type Props = {
-  params: Promise<{ locale: Locale }>
+  params: Promise<{ locale: string }>
   searchParams: Promise<{ category?: string; page?: string }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
 
   return {
     title: locale === 'th' ? 'ข่าวสาร' : 'News',
@@ -46,7 +46,7 @@ interface BlogPost {
 const PAGE_SIZE = 6
 
 export default async function NewsPage({ params, searchParams }: Props): Promise<React.JSX.Element> {
-  const { locale } = await params
+  const { locale } = await params as { locale: Locale }
   const { category, page } = await searchParams
   const currentPage = Number(page) || 1
 

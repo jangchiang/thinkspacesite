@@ -16,7 +16,7 @@ import {
 import { Breadcrumb } from '@/components/ui/breadcrumb'
 
 type Props = {
-  params: Promise<{ locale: Locale; slug: string }>
+  params: Promise<{ locale: string; slug: string }>
 }
 
 // Strapi service data interface
@@ -468,7 +468,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale, slug } = await params
+  const { locale, slug } = await params as { locale: Locale; slug: string }
   const service = serviceData[slug]
 
   if (!service) return { title: 'Service Not Found' }
@@ -480,7 +480,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ServiceDetailPage({ params }: Props): Promise<React.JSX.Element> {
-  const { locale, slug } = await params
+  const { locale, slug } = await params as { locale: Locale; slug: string }
 
   // Fetch dictionary, service, and hero data in parallel
   const [, strapiServiceResult, heroData] = await Promise.all([
