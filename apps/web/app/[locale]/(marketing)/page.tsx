@@ -117,7 +117,7 @@ export default async function HomePage({ params }: Props): Promise<React.JSX.Ele
       <HeroSection dict={{ ...dict, hero: heroData }} locale={locale} partners={partners} strapiUrl={strapiUrl} />
       <ServicesSection dict={dict} locale={locale} services={services} />
       <LogixHighlight locale={locale} />
-      <PartnersBand locale={locale} strapiUrl={strapiUrl} />
+      <PartnersBand locale={locale} partners={partners} strapiUrl={strapiUrl} />
       <WhyChooseUsSection locale={locale} data={homepageData?.whyChooseUsSection} />
       <FeaturedWorksSection locale={locale} caseStudies={caseStudies} />
       <StatsSection stats={stats} />

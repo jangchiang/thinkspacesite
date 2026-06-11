@@ -18,10 +18,18 @@
     "logo": {
       "type": "media",
       "multiple": false,
-      "required": true,
+      "required": false,
       "allowedTypes": ["images"]
     },
     "website": {
+      "type": "string"
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": ["client", "technology"],
+      "default": "client"
+    },
+    "role": {
       "type": "string"
     },
     "order": {
