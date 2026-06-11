@@ -32,14 +32,14 @@ export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: Her
   const isTh = locale === 'th'
 
   return (
-    <section className="relative overflow-hidden bg-secondary text-secondary-content">
-      {/* Subtle grid + teal glow */}
+    <section className="relative overflow-hidden bg-navy-950 text-white">
+      {/* Subtle grid + restrained teal glow (kept low so the panel reads as solid dark) */}
       <div
-        className="absolute inset-0 opacity-[0.06]"
+        className="absolute inset-0 opacity-[0.05]"
         style={{ backgroundImage: 'url(/grid.svg)', backgroundSize: '32px 32px' }}
       />
-      <div className="pointer-events-none absolute -top-1/3 right-0 h-[60rem] w-[60rem] rounded-full bg-primary/20 blur-[140px]" />
-      <div className="pointer-events-none absolute bottom-0 left-0 h-[40rem] w-[40rem] rounded-full bg-info/10 blur-[120px]" />
+      <div className="pointer-events-none absolute -top-1/4 right-0 h-[44rem] w-[44rem] rounded-full bg-primary/10 blur-[160px]" />
+      <div className="pointer-events-none absolute bottom-0 left-0 h-[30rem] w-[30rem] rounded-full bg-info/[0.05] blur-[150px]" />
 
       <div className="container-custom relative z-10">
         <div className="grid items-center gap-10 py-20 md:py-28 lg:grid-cols-12 lg:py-32">
@@ -69,7 +69,7 @@ export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: Her
             </motion.h1>
 
             <motion.p
-              className="mt-6 max-w-2xl text-base leading-relaxed text-secondary-content/70 md:text-lg"
+              className="mt-6 max-w-2xl text-base leading-relaxed text-white/85 md:text-lg"
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -92,7 +92,7 @@ export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: Her
               </Link>
               <Link
                 href={`/${locale}/products/logix`}
-                className="btn btn-outline btn-md gap-2 border-secondary-content/30 text-secondary-content hover:border-primary hover:bg-primary/10 hover:text-secondary-content md:btn-lg"
+                className="btn btn-outline btn-md gap-2 border-white/40 text-white hover:border-primary hover:bg-primary/10 hover:text-white md:btn-lg"
               >
                 {isTh ? 'รู้จัก Logix' : 'Discover Logix'}
                 <ArrowUpRight className="h-4 w-4" />
@@ -107,16 +107,16 @@ export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: Her
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <div className="grid grid-cols-2 gap-px overflow-hidden rounded-md border border-secondary-content/15 bg-secondary-content/5">
+            <div className="grid grid-cols-2 gap-px overflow-hidden rounded-md border border-white/20 bg-white/10">
               {[
                 { k: isTh ? 'องค์กรที่ไว้วางใจ' : 'Organizations served', v: '20+' },
                 { k: isTh ? 'พันธมิตรเทคโนโลยี' : 'Technology partners', v: '3' },
                 { k: isTh ? 'สาขาความเชี่ยวชาญ' : 'Solution pillars', v: '6' },
                 { k: isTh ? 'ฐานที่ตั้ง' : 'Based in', v: isTh ? 'เชียงใหม่' : 'Chiang Mai' },
               ].map((s) => (
-                <div key={s.k} className="bg-secondary p-5">
+                <div key={s.k} className="bg-navy-950 p-5">
                   <div className="text-2xl font-bold text-primary md:text-3xl">{s.v}</div>
-                  <div className="mt-1 text-xs text-secondary-content/60">{s.k}</div>
+                  <div className="mt-1 text-xs text-white/75">{s.k}</div>
                 </div>
               ))}
             </div>
