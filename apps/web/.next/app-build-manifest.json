@@ -36,80 +36,10 @@
       "static/chunks/main-app.js",
       "static/chunks/app/[locale]/(marketing)/page.js"
     ],
-    "/[locale]/(marketing)/products/logix/page": [
+    "/_not-found/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/(marketing)/products/logix/page.js"
-    ],
-    "/[locale]/(marketing)/products/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/(marketing)/products/page.js"
-    ],
-    "/[locale]/(marketing)/services/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/(marketing)/services/page.js"
-    ],
-    "/[locale]/(marketing)/works/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/(marketing)/works/page.js"
-    ],
-    "/[locale]/(marketing)/works/[slug]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/(marketing)/works/[slug]/page.js"
-    ],
-    "/[locale]/(marketing)/about/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/(marketing)/about/page.js"
-    ],
-    "/[locale]/(marketing)/news/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/(marketing)/news/page.js"
-    ],
-    "/[locale]/(marketing)/contact/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/(marketing)/contact/page.js"
-    ],
-    "/[locale]/(marketing)/services/[slug]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/(marketing)/services/[slug]/page.js"
-    ],
-    "/[locale]/(marketing)/products/proxmox/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/(marketing)/products/proxmox/page.js"
-    ],
-    "/[locale]/(marketing)/careers/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/(marketing)/careers/page.js"
-    ],
-    "/[locale]/(marketing)/privacy/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/(marketing)/privacy/page.js"
-    ],
-    "/[locale]/(marketing)/terms/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/(marketing)/terms/page.js"
-    ],
-    "/[locale]/(marketing)/cookies/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/(marketing)/cookies/page.js"
-    ],
-    "/[locale]/(marketing)/careers/[slug]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/(marketing)/careers/[slug]/page.js"
+      "static/chunks/app/_not-found/page.js"
     ]
   }
 }

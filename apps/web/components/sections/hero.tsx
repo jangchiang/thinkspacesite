@@ -107,14 +107,14 @@ export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: Her
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <div className="grid grid-cols-2 gap-px overflow-hidden rounded-md border border-white/20 bg-white/10">
+            <div className="grid grid-cols-2 gap-px overflow-hidden rounded-md border border-white/15 bg-white/[0.08]">
               {[
                 { k: isTh ? 'องค์กรที่ไว้วางใจ' : 'Organizations served', v: '20+' },
                 { k: isTh ? 'พันธมิตรเทคโนโลยี' : 'Technology partners', v: '3' },
                 { k: isTh ? 'สาขาความเชี่ยวชาญ' : 'Solution pillars', v: '6' },
                 { k: isTh ? 'ฐานที่ตั้ง' : 'Based in', v: isTh ? 'เชียงใหม่' : 'Chiang Mai' },
               ].map((s) => (
-                <div key={s.k} className="bg-secondary p-5">
+                <div key={s.k} className="bg-white/[0.04] p-5">
                   <div className="text-2xl font-bold text-primary md:text-3xl">{s.v}</div>
                   <div className="mt-1 text-xs text-white/75">{s.k}</div>
                 </div>
