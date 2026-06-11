@@ -1,4 +1,6 @@
 import type { Core } from '@strapi/strapi';
+import { existsSync, statSync } from 'fs';
+import { join, basename } from 'path';
 
 interface PageHeroSeedData {
   pageIdentifier: string;
@@ -2196,6 +2198,109 @@ async function seedHomepage(strapi: Core.Strapi) {
   }
 }
 
+// ---- Clients & Technology Partners (with logos) ----------------------------
+// Seeds the Client collection ("Trusted by" wall) and the Partner collection
+// (technology partners). Logos are uploaded from data/seed-logos/ which ships
+// inside the CMS image, so a fresh deploy (incl. production) self-populates.
+// Idempotent: skips if records already exist.
+
+interface LogoSeed {
+  name: string;
+  website?: string;
+  order: number;
+  role?: string;
+  /** filename inside data/seed-logos/<group>/ — omit for a text wordmark */
+  logoFile?: string;
+}
+
+const clientSeeds: LogoSeed[] = [
+  { name: 'Chiang Mai University', website: 'https://www.cmu.ac.th', order: 1, logoFile: 'cmu.png' },
+  { name: 'CMU-RAILCFC', order: 2, logoFile: 'cmu-railcfc.png' },
+  { name: 'CMU Alumni Association', order: 3, logoFile: 'cmu-alumni.png' },
+  { name: 'CMU Engineering Alumni', order: 4, logoFile: 'cmueaa.png' },
+  { name: 'EGAT', website: 'https://www.egat.co.th', order: 5 },
+  { name: 'GETHÁ', order: 6, logoFile: 'getha.png' },
+  { name: 'Bedding Houz', order: 7, logoFile: 'bedding-houz.png' },
+  { name: 'Suppaisan Goldsmith', order: 8, logoFile: 'suppaisan.png' },
+  { name: 'CCINNOMA', order: 9, logoFile: 'ccinnoma.png' },
+  { name: 'Silver Temple Foundation', order: 10, logoFile: 'silver-temple.png' },
+  { name: 'Hidden Cafe', order: 11, logoFile: 'hidden-cafe.png' },
+  { name: 'Songkhla Rajabhat University', order: 12, logoFile: 'songkhla-rajabhat.png' },
+  { name: 'Nana Digital', order: 13 },
+  { name: 'Wanawat Hardware', order: 14 },
+];
+
+const partnerSeeds: LogoSeed[] = [
+  { name: 'Proxmox', website: 'https://www.proxmox.com', order: 1, role: 'Authorized Reseller', logoFile: 'proxmox-reseller.png' },
+  { name: 'Dell', website: 'https://www.dell.com', order: 2, role: 'Technology Partner' },
+  { name: 'Google Cloud', website: 'https://cloud.google.com', order: 3, role: 'Cloud Partner' },
+];
+
+function seedLogosDir(strapi: Core.Strapi, group: string): string {
+  const root = (strapi.dirs?.app?.root as string) || process.cwd();
+  return join(root, 'data', 'seed-logos', group);
+}
+
+async function uploadSeedLogo(strapi: Core.Strapi, absPath: string, name: string): Promise<number | null> {
+  if (!existsSync(absPath)) {
+    strapi.log.warn(`Seed logo missing, using wordmark: ${absPath}`);
+    return null;
+  }
+  try {
+    const stats = statSync(absPath);
+    const uploaded = await strapi.plugin('upload').service('upload').upload({
+      data: { fileInfo: { name, alternativeText: name } },
+      files: {
+        filepath: absPath,
+        originalFilename: basename(absPath),
+        mimetype: 'image/png',
+        size: stats.size,
+      },
+    });
+    return Array.isArray(uploaded) ? uploaded[0]?.id ?? null : null;
+  } catch (error) {
+    strapi.log.error(`Failed to upload seed logo ${absPath}:`, error);
+    return null;
+  }
+}
+
+async function seedLogoCollection(
+  strapi: Core.Strapi,
+  uid: 'api::client.client' | 'api::partner.partner',
+  group: 'clients' | 'partners',
+  seeds: LogoSeed[],
+  label: string,
+) {
+  const existing = await strapi.documents(uid as any).findMany({});
+  if (existing.length > 0) {
+    strapi.log.info(`${existing.length} ${label} already exist, skipping seed`);
+    return;
+  }
+  strapi.log.info(`Seeding ${seeds.length} ${label}...`);
+  const dir = seedLogosDir(strapi, group);
+  for (const s of seeds) {
+    try {
+      const logoId = s.logoFile ? await uploadSeedLogo(strapi, join(dir, s.logoFile), s.name) : null;
+      const data: Record<string, unknown> = { name: s.name, order: s.order };
+      if (s.website) data.website = s.website;
+      if (s.role) data.role = s.role;
+      if (logoId) data.logo = logoId;
+      await strapi.documents(uid as any).create({ data });
+      strapi.log.info(`Created ${label.slice(0, -1)}: ${s.name}${logoId ? ' (with logo)' : ''}`);
+    } catch (error) {
+      strapi.log.error(`Failed to create ${label.slice(0, -1)} ${s.name}:`, error);
+    }
+  }
+}
+
+async function seedClients(strapi: Core.Strapi) {
+  await seedLogoCollection(strapi, 'api::client.client', 'clients', clientSeeds, 'clients');
+}
+
+async function seedPartners(strapi: Core.Strapi) {
+  await seedLogoCollection(strapi, 'api::partner.partner', 'partners', partnerSeeds, 'partners');
+}
+
 export default {
   /**
    * An asynchronous register function that runs before
@@ -2223,5 +2328,7 @@ export default {
     await seedLegalPages(strapi);
     await seedServices(strapi);
     await seedHomepage(strapi);
+    await seedClients(strapi);
+    await seedPartners(strapi);
   },
 };

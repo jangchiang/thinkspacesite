@@ -19,16 +19,18 @@
     "seed:heroes": "npx ts-node scripts/seed-page-heroes.ts"
   },
   "dependencies": {
-    "@strapi/email": "5.33.2",
-    "@strapi/plugin-cloud": "5.33.2",
-    "@strapi/plugin-users-permissions": "5.33.2",
-    "@strapi/provider-email-sendmail": "5.33.2",
-    "@strapi/strapi": "5.33.2",
+    "@strapi/admin": "5.48.0",
+    "@strapi/content-manager": "5.48.0",
+    "@strapi/email": "5.48.0",
+    "@strapi/plugin-cloud": "5.48.0",
+    "@strapi/plugin-users-permissions": "5.48.0",
+    "@strapi/provider-email-sendmail": "5.48.0",
+    "@strapi/strapi": "5.48.0",
     "pg": "^8.13.0",
     "groq-sdk": "^0.37.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-router-dom": "^6.0.0",
+    "react-router-dom": "^6.30.3",
     "styled-components": "^6.0.0"
   },
   "devDependencies": {
