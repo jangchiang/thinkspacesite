@@ -1,4 +1,3 @@
 {
-  "/[locale]/(marketing)/products/proxmox/page": "app/[locale]/(marketing)/products/proxmox/page.js",
-  "/[locale]/(marketing)/products/logix/page": "app/[locale]/(marketing)/products/logix/page.js"
+  "/[locale]/(marketing)/page": "app/[locale]/(marketing)/page.js"
 }

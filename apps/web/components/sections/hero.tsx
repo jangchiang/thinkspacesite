@@ -34,7 +34,25 @@ export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: Her
 
   return (
     <section className="relative overflow-hidden bg-secondary text-white">
-      {/* Animated scroll-reactive matrix grid */}
+      {/* Optional video background — drop a file at /public/videos/hero.mp4 (and an
+          optional /public/images/hero-poster.jpg). Degrades gracefully to the dark
+          background if the file is absent. */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        poster="/images/hero-poster.jpg"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+      >
+        <source src="/videos/hero.mp4" type="video/mp4" />
+      </video>
+      {/* Readability overlay (controls how much video shows through — tweak the
+          /NN opacities to taste; higher = darker/more legible). */}
+      <div className="absolute inset-0 bg-gradient-to-br from-secondary/92 via-secondary/72 to-secondary/88" />
+
+      {/* Animated scroll-reactive matrix grid (sits above the video) */}
       <MatrixGrid />
 
       <div className="container-custom relative z-10">
