@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { type Locale } from '@/lib/i18n'
 import { motion } from 'framer-motion'
+import { LogoCarousel } from '@/components/ui/logo-carousel'
 import { MatrixGrid } from '@/components/backgrounds/matrix-grid'
 
 type Dict = Record<string, any>
@@ -25,6 +26,7 @@ interface HeroSectionProps {
   dict: Dict
   locale: Locale
   partners?: Partner[]
+  clients?: Partner[]
   strapiUrl?: string
 }
 
@@ -36,8 +38,11 @@ const rise = (delay = 0) => ({
   transition: { duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
 })
 
-export function HeroSection({ dict, locale }: HeroSectionProps): React.JSX.Element {
+export function HeroSection({ dict, locale, clients = [], strapiUrl = '' }: HeroSectionProps): React.JSX.Element {
   const isTh = locale === 'th'
+
+  // Only clients that actually have a logo (avoids empty boxes in the marquee).
+  const clientLogos = clients.filter((c) => c.logo)
 
   const tags = isTh
     ? ['AI และวิทยาการข้อมูล', 'HPC', 'ความปลอดภัยไซเบอร์', 'Private AI', 'Digital Twin']
@@ -143,6 +148,17 @@ export function HeroSection({ dict, locale }: HeroSectionProps): React.JSX.Eleme
           </motion.div>
         </div>
 
+        {/* Trusted-by strip — clients (only those with a logo) */}
+        {clientLogos.length > 0 && (
+          <motion.div
+            className="border-t border-white/10 py-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+          >
+            <LogoCarousel partners={clientLogos} title={dict.hero.trustedBy} strapiUrl={strapiUrl} />
+          </motion.div>
+        )}
       </div>
     </section>
   )
