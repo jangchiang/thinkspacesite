@@ -5,6 +5,7 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { type Locale } from '@/lib/i18n'
 import { motion } from 'framer-motion'
 import { LogoCarousel } from '@/components/ui/logo-carousel'
+import { MatrixGrid } from '@/components/backgrounds/matrix-grid'
 
 type Dict = Record<string, any>
 
@@ -33,13 +34,8 @@ export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: Her
 
   return (
     <section className="relative overflow-hidden bg-secondary text-white">
-      {/* Subtle grid + restrained teal glow (kept low so the panel reads as solid dark) */}
-      <div
-        className="absolute inset-0 opacity-[0.05]"
-        style={{ backgroundImage: 'url(/grid.svg)', backgroundSize: '32px 32px' }}
-      />
-      <div className="pointer-events-none absolute -top-1/4 right-0 h-[44rem] w-[44rem] rounded-full bg-primary/10 blur-[160px]" />
-      <div className="pointer-events-none absolute bottom-0 left-0 h-[30rem] w-[30rem] rounded-full bg-primary/[0.06] blur-[150px]" />
+      {/* Animated scroll-reactive matrix grid */}
+      <MatrixGrid />
 
       <div className="container-custom relative z-10">
         <div className="grid items-center gap-10 py-20 md:py-28 lg:grid-cols-12 lg:py-32">

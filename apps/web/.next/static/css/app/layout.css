@@ -2279,6 +2279,14 @@ html {
   cursor: pointer;
   text-decoration-line: underline;
 }
+.mask {
+  -webkit-mask-size: contain;
+          mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+          mask-position: center;
+}
 .menu {
   display: flex;
   flex-direction: column;
@@ -3868,6 +3876,15 @@ html {
 .top-full {
   top: 100%;
 }
+.-top-\[14\%\] {
+  top: -14%;
+}
+.left-\[6\%\] {
+  left: 6%;
+}
+.right-\[8\%\] {
+  right: 8%;
+}
 .z-10 {
   z-index: 10;
 }
@@ -4130,6 +4147,12 @@ html {
 .h-px {
   height: 1px;
 }
+.h-\[128\%\] {
+  height: 128%;
+}
+.h-\[42rem\] {
+  height: 42rem;
+}
 .min-h-\[12rem\] {
   min-height: 12rem;
 }
@@ -4255,6 +4278,9 @@ html {
 }
 .w-full {
   width: 100%;
+}
+.w-\[42rem\] {
+  width: 42rem;
 }
 .min-w-0 {
   min-width: 0px;
@@ -4762,6 +4788,9 @@ html {
 }
 .to-transparent {
   --tw-gradient-to: transparent var(--tw-gradient-to-position);
+}
+.to-secondary\/60 {
+  --tw-gradient-to: var(--fallback-s,oklch(var(--s)/0.6)) var(--tw-gradient-to-position);
 }
 .bg-clip-text {
   -webkit-background-clip: text;
