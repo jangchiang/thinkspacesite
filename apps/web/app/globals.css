@@ -52,7 +52,7 @@
     @apply py-16 md:py-24 lg:py-32;
   }
 
-  /* Gradient text — navy → teal (brand) */
+  /* Gradient text — green brand */
   .text-gradient {
     background: linear-gradient(120deg, #15803d 0%, #16a34a 55%, #22c55e 100%);
     -webkit-background-clip: text;

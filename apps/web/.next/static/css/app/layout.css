@@ -3676,7 +3676,7 @@ html {
     padding-bottom: 8rem;
   }
 }
-/* Gradient text — navy → teal (brand) */
+/* Gradient text — green brand */
 /* Eyebrow label — uppercase, letter-spaced, deep-teal (enterprise section kicker).
      Uses accent (darker teal in light, bright teal in dark) for legibility in both themes. */
 .eyebrow {
@@ -4583,9 +4583,6 @@ html {
   --tw-bg-opacity: 1;
   background-color: var(--fallback-b3,oklch(var(--b3)/var(--tw-bg-opacity, 1)));
 }
-.bg-info\/\[0\.05\] {
-  background-color: var(--fallback-in,oklch(var(--in)/0.05));
-}
 .bg-primary {
   --tw-bg-opacity: 1;
   background-color: var(--fallback-p,oklch(var(--p)/var(--tw-bg-opacity, 1)));
@@ -4613,6 +4610,9 @@ html {
 }
 .bg-primary\/60 {
   background-color: var(--fallback-p,oklch(var(--p)/0.6));
+}
+.bg-primary\/\[0\.06\] {
+  background-color: var(--fallback-p,oklch(var(--p)/0.06));
 }
 .bg-secondary {
   --tw-bg-opacity: 1;

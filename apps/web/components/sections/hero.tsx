@@ -39,7 +39,7 @@ export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: Her
         style={{ backgroundImage: 'url(/grid.svg)', backgroundSize: '32px 32px' }}
       />
       <div className="pointer-events-none absolute -top-1/4 right-0 h-[44rem] w-[44rem] rounded-full bg-primary/10 blur-[160px]" />
-      <div className="pointer-events-none absolute bottom-0 left-0 h-[30rem] w-[30rem] rounded-full bg-info/[0.05] blur-[150px]" />
+      <div className="pointer-events-none absolute bottom-0 left-0 h-[30rem] w-[30rem] rounded-full bg-primary/[0.06] blur-[150px]" />
 
       <div className="container-custom relative z-10">
         <div className="grid items-center gap-10 py-20 md:py-28 lg:grid-cols-12 lg:py-32">
