@@ -3889,6 +3889,10 @@ html {
   margin-top: 3.5rem;
   margin-bottom: 3.5rem;
 }
+.my-16 {
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+}
 .mb-0\.5 {
   margin-bottom: 0.125rem;
 }
@@ -4291,6 +4295,9 @@ html {
 .max-w-xl {
   max-width: 36rem;
 }
+.max-w-xs {
+  max-width: 20rem;
+}
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -4404,6 +4411,20 @@ html {
 }
 .gap-y-3 {
   row-gap: 0.75rem;
+}
+.gap-x-10 {
+  -moz-column-gap: 2.5rem;
+       column-gap: 2.5rem;
+}
+.gap-x-16 {
+  -moz-column-gap: 4rem;
+       column-gap: 4rem;
+}
+.gap-y-10 {
+  row-gap: 2.5rem;
+}
+.gap-y-9 {
+  row-gap: 2.25rem;
 }
 .space-y-1 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
@@ -5103,6 +5124,9 @@ html {
 .text-white\/90 {
   color: rgb(255 255 255 / 0.9);
 }
+.text-base-content\/45 {
+  color: var(--fallback-bc,oklch(var(--bc)/0.45));
+}
 .underline-offset-4 {
   text-underline-offset: 4px;
 }
@@ -5129,6 +5153,9 @@ html {
 }
 .opacity-\[0\.4\] {
   opacity: 0.4;
+}
+.opacity-90 {
+  opacity: 0.9;
 }
 .shadow-lg {
   --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
@@ -5205,6 +5232,11 @@ html {
 }
 .transition-transform {
   transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-opacity {
+  transition-property: opacity;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
@@ -5736,6 +5768,16 @@ select:focus-visible {
     gap: 2rem;
   }
 
+  .sm\:gap-x-14 {
+    -moz-column-gap: 3.5rem;
+         column-gap: 3.5rem;
+  }
+
+  .sm\:gap-x-20 {
+    -moz-column-gap: 5rem;
+         column-gap: 5rem;
+  }
+
   .sm\:p-8 {
     padding: 2rem;
   }
@@ -5765,6 +5807,11 @@ select:focus-visible {
   .md\:my-16 {
     margin-top: 4rem;
     margin-bottom: 4rem;
+  }
+
+  .md\:my-20 {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
   }
 
   .md\:mb-16 {
@@ -5821,6 +5868,11 @@ select:focus-visible {
 
   .md\:gap-12 {
     gap: 3rem;
+  }
+
+  .md\:gap-x-16 {
+    -moz-column-gap: 4rem;
+         column-gap: 4rem;
   }
 
   .md\:p-10 {

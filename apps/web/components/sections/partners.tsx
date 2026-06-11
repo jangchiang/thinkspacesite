@@ -80,53 +80,48 @@ export function PartnersBand({ locale }: PartnersBandProps): React.JSX.Element {
       <div className="container-custom">
         {/* Band A — Clients / Trusted by */}
         <motion.div
-          className="max-w-3xl"
+          className="text-center max-w-2xl mx-auto"
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
           variants={fadeUp}
         >
-          <p className="eyebrow">{isTh ? 'ลูกค้าของเรา' : 'Our Clients'}</p>
+          <p className="eyebrow justify-center">{isTh ? 'ลูกค้าของเรา' : 'Our Clients'}</p>
           <h2 className="display-heading text-2xl md:text-3xl lg:text-4xl mt-3">
             {isTh ? 'ได้รับความไว้วางใจจากองค์กรชั้นนำ' : 'Trusted by leading organizations'}
           </h2>
         </motion.div>
 
+        {/* Tile-free monochrome logo wall */}
         <motion.div
-          className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-box border border-base-300 bg-base-300 sm:grid-cols-3 lg:grid-cols-4"
+          className="mt-12 flex flex-wrap items-center justify-center gap-x-10 gap-y-9 sm:gap-x-14 md:gap-x-16"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           {CLIENTS.map((client) => (
-            <div
-              key={client.name}
-              className="flex h-24 items-center justify-center bg-white px-6 py-6 text-center"
-            >
+            <div key={client.name} className="flex h-10 md:h-12 items-center justify-center">
               <PartnerLogo
                 name={client.name}
                 src={client.src}
-                className={
-                  client.src
-                    ? 'opacity-80 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0'
-                    : 'text-sm md:text-base font-semibold text-slate-500 transition-colors duration-300 hover:text-slate-800'
-                }
+                className="h-full grayscale opacity-50 transition-all duration-300 hover:grayscale-0 hover:opacity-100"
+                wordmarkClassName="text-base md:text-lg text-base-content/45 transition-colors duration-300 hover:text-base-content"
               />
             </div>
           ))}
         </motion.div>
 
         {/* Divider */}
-        <div className="my-14 md:my-16 border-t border-base-300" />
+        <div className="mx-auto my-16 md:my-20 max-w-xs border-t border-base-300" />
 
         {/* Band B — Technology Partners */}
         <motion.div
-          className="max-w-3xl"
+          className="text-center max-w-2xl mx-auto"
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
           variants={fadeUp}
           transition={{ delay: 0.1 }}
         >
-          <p className="eyebrow">{isTh ? 'พันธมิตรเทคโนโลยี' : 'Technology Partners'}</p>
+          <p className="eyebrow justify-center">{isTh ? 'พันธมิตร' : 'Partners'}</p>
           <h2 className="display-heading text-2xl md:text-3xl lg:text-4xl mt-3">
             {isTh ? 'พันธมิตรเทคโนโลยี' : 'Technology Partners'}
           </h2>
@@ -137,23 +132,25 @@ export function PartnersBand({ locale }: PartnersBandProps): React.JSX.Element {
           </p>
         </motion.div>
 
-        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
+        {/* Tile-free partner row */}
+        <div className="mt-12 flex flex-wrap items-start justify-center gap-x-16 gap-y-10 sm:gap-x-20">
           {TECH_PARTNERS.map((partner, index) => (
             <motion.div
               key={partner.name}
-              className="card-surface flex flex-col items-center justify-center gap-4 px-6 py-10"
+              className="flex flex-col items-center gap-3"
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5, delay: 0.2 + index * 0.1, ease: [0.22, 1, 0.36, 1] }}
             >
-              <div className="relative flex h-16 w-full max-w-[200px] items-center justify-center rounded-md bg-white px-4 py-3">
+              <div className="flex h-10 md:h-12 items-center justify-center">
                 <PartnerLogo
                   name={partner.name}
                   src={partner.src}
-                  className="text-xl font-bold text-slate-700"
+                  className="h-full opacity-90 transition-opacity duration-300 hover:opacity-100"
+                  wordmarkClassName="text-xl md:text-2xl font-bold text-base-content"
                 />
               </div>
-              <span className="eyebrow text-[10px]">
+              <span className="eyebrow justify-center text-[10px]">
                 {isTh ? partner.roleTh : partner.roleEn}
               </span>
             </motion.div>
