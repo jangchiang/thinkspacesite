@@ -18,17 +18,17 @@ const config: Config = {
       colors: {
         // Think Space brand colors — teal-green (logo) accent
         brand: {
-          50: '#ecfdf8',
-          100: '#d0f9ee',
-          200: '#a3f1dd',
-          300: '#6ee5c9',
-          400: '#38d2af',
-          500: '#16c79a',
-          600: '#11a88a',
-          700: '#0f8870',
-          800: '#116b5a',
-          900: '#12574b',
-          950: '#04322b',
+          50: '#f0fdf4',
+          100: '#dcfce7',
+          200: '#bbf7d0',
+          300: '#86efac',
+          400: '#4ade80',
+          500: '#22c55e',
+          600: '#16a34a',
+          700: '#15803d',
+          800: '#166534',
+          900: '#14532d',
+          950: '#052e16',
         },
         // Deep corporate navy — headings, dark surfaces
         navy: {
@@ -72,15 +72,15 @@ const config: Config = {
       {
         thinkspace: {
           // Primary - Teal-green (logo accent: actions, links)
-          'primary': '#16c79a',
-          'primary-content': '#052e26',
+          'primary': '#22c55e',
+          'primary-content': '#ffffff',
 
           // Secondary - Deep navy (primary buttons, dark surfaces)
           'secondary': '#171717',
           'secondary-content': '#ffffff',
 
           // Accent - Deeper teal (hover)
-          'accent': '#0f8870',
+          'accent': '#16a34a',
           'accent-content': '#ffffff',
 
           // Neutral - Slate
@@ -96,8 +96,8 @@ const config: Config = {
           // State colors
           'info': '#2563eb',
           'info-content': '#ffffff',
-          'success': '#16c79a',
-          'success-content': '#052e26',
+          'success': '#22c55e',
+          'success-content': '#ffffff',
           'warning': '#d9a21b',
           'warning-content': '#1a2433',
           'error': '#e5484d',
@@ -116,8 +116,8 @@ const config: Config = {
         },
         thinkspaceDark: {
           // Primary - Brighter teal for dark surfaces
-          'primary': '#2dd4b0',
-          'primary-content': '#04221c',
+          'primary': '#22c55e',
+          'primary-content': '#ffffff',
 
           // Secondary - Deep navy surface (kept dark in BOTH themes so bg-secondary
           // panels — hero, CTAs, Logix band — never invert. Headings use base-content.)
@@ -125,8 +125,8 @@ const config: Config = {
           'secondary-content': '#ffffff',
 
           // Accent - Light teal
-          'accent': '#5eead4',
-          'accent-content': '#04221c',
+          'accent': '#4ade80',
+          'accent-content': '#14532d',
 
           // Neutral
           'neutral': '#a3a3a3',
@@ -141,7 +141,7 @@ const config: Config = {
           // State colors
           'info': '#3b82f6',
           'info-content': '#ffffff',
-          'success': '#2dd4b0',
+          'success': '#22c55e',
           'success-content': '#04221c',
           'warning': '#eab308',
           'warning-content': '#0b1a2e',

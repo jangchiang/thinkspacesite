@@ -63,7 +63,7 @@ export function HeroSection({ dict, locale, partners = [], strapiUrl = '' }: Her
             >
               {dict.hero.title}
               <br />
-              <span className="bg-gradient-to-r from-primary to-[#5eead4] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary to-[#4ade80] bg-clip-text text-transparent">
                 {dict.hero.titleHighlight}
               </span>
             </motion.h1>

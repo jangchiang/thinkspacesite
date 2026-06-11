@@ -54,7 +54,7 @@
 
   /* Gradient text — navy → teal (brand) */
   .text-gradient {
-    background: linear-gradient(120deg, #0b2447 0%, #0f8870 55%, #16c79a 100%);
+    background: linear-gradient(120deg, #15803d 0%, #16a34a 55%, #22c55e 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

@@ -19,7 +19,7 @@ export default function GlobalError({
           padding: '1rem',
         }}>
           <div style={{ textAlign: 'center', maxWidth: '400px' }}>
-            <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem', color: '#0B2447' }}>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem', color: '#171717' }}>
               Something went wrong
             </h2>
             <p style={{ color: '#666', marginBottom: '1.5rem' }}>
@@ -28,7 +28,7 @@ export default function GlobalError({
             <button
               onClick={() => reset()}
               style={{
-                backgroundColor: '#16C79A',
+                backgroundColor: '#22C55E',
                 color: 'white',
                 padding: '0.75rem 1.5rem',
                 borderRadius: '0.5rem',
