@@ -31,15 +31,15 @@
       "static/chunks/main-app.js",
       "static/chunks/app/[locale]/(marketing)/loading.js"
     ],
-    "/[locale]/(marketing)/products/proxmox/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/(marketing)/products/proxmox/page.js"
-    ],
     "/[locale]/(marketing)/products/logix/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/[locale]/(marketing)/products/logix/page.js"
+    ],
+    "/[locale]/(marketing)/services/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/[locale]/(marketing)/services/page.js"
     ],
     "/[locale]/(marketing)/page": [
       "static/chunks/webpack.js",

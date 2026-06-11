@@ -8,7 +8,7 @@
     "description": "Flagship products (Logix, Proxmox reseller) shown under /products"
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {
     "i18n": {
@@ -23,7 +23,8 @@
     "slug": {
       "type": "uid",
       "targetField": "name",
-      "required": true
+      "required": true,
+      "pluginOptions": { "i18n": { "localized": true } }
     },
     "kind": {
       "type": "enumeration",

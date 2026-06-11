@@ -1,3 +1,5 @@
 {
-  "/[locale]/(marketing)/page": "app/[locale]/(marketing)/page.js"
+  "/[locale]/(marketing)/page": "app/[locale]/(marketing)/page.js",
+  "/[locale]/(marketing)/products/logix/page": "app/[locale]/(marketing)/products/logix/page.js",
+  "/[locale]/(marketing)/services/page": "app/[locale]/(marketing)/services/page.js"
 }

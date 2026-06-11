@@ -8,7 +8,7 @@
     "description": "Client and partner logos for the trusted by section"
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "attributes": {
     "name": {

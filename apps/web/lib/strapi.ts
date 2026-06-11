@@ -6,7 +6,7 @@ const STRAPI_API_TOKEN = process.env.STRAPI_API_TOKEN
 // Map frontend locale to Strapi locale
 const LOCALE_MAP: Record<string, string> = {
   'en': 'en',
-  'th': 'th-TH',
+  'th': 'th',
 }
 
 interface StrapiResponse<T> {
