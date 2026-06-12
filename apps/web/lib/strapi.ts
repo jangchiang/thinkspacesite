@@ -143,7 +143,6 @@ export async function getServices(locale: Locale) {
     populate: ['featuredImage', 'features'],
     sort: 'order:asc',
     tags: ['services'],
-    revalidate: 0,
   })
 
   return response.data
@@ -154,7 +153,6 @@ export async function getStats(locale: Locale) {
     locale,
     sort: 'order:asc',
     tags: ['stats'],
-    revalidate: 0,
   })
 
   return response.data
@@ -167,7 +165,6 @@ export async function getCaseStudies(locale: Locale, limit?: number) {
     sort: 'createdAt:desc',
     pagination: limit ? { pageSize: limit } : undefined,
     tags: ['case-studies'],
-    revalidate: 0,
   })
 
   return response.data
@@ -177,12 +174,32 @@ export async function getProduct(slug: string, locale: Locale) {
   const response = await fetchStrapi<unknown[]>('/products', {
     locale,
     filters: { slug: { $eq: slug } },
-    populate: ['features', 'tiers', 'addOns'],
+    populate: ['features', 'tiers', 'addOns', 'pillars', 'useCases', 'faqs', 'roadmap'],
     tags: ['products', `product-${slug}`],
-    revalidate: 0,
   })
 
   return (Array.isArray(response.data) && response.data[0]) || null
+}
+
+export interface ProductListItem {
+  id: number
+  name?: string
+  slug: string
+  kind?: string
+  order?: number
+  eyebrow?: string
+  intro?: string
+  ctaLabel?: string
+}
+
+export async function getProducts(locale: Locale) {
+  const response = await fetchStrapi<ProductListItem[]>('/products', {
+    locale,
+    sort: 'order:asc',
+    tags: ['products'],
+  })
+
+  return response.data
 }
 
 export async function getService(slug: string, locale: Locale) {
@@ -191,7 +208,6 @@ export async function getService(slug: string, locale: Locale) {
     filters: { slug: { $eq: slug } },
     populate: ['featuredImage', 'features', 'useCases', 'technologies', 'processSteps'],
     tags: ['services', `service-${slug}`],
-    revalidate: 0,
   })
 
   return response.data?.[0] ?? null
@@ -241,7 +257,6 @@ export async function getCaseStudy(slug: string, locale: Locale) {
     filters: { slug: { $eq: slug } },
     populate: ['featuredImage', 'clientLogo', 'services', 'additionalResults'],
     tags: ['case-studies', `case-study-${slug}`],
-    revalidate: 0,
   })
 
   return response.data?.[0] ?? null
@@ -253,7 +268,7 @@ export async function getClients() {
     populate: ['logo'],
     sort: 'order:asc',
     tags: ['clients'],
-    revalidate: 0,
+    revalidate: 3600,
   })
 
   return response.data
@@ -265,7 +280,46 @@ export async function getPartners() {
     populate: ['logo'],
     sort: 'order:asc',
     tags: ['partners'],
-    revalidate: 0,  // Don't cache partners for now
+    revalidate: 3600,
+  })
+
+  return response.data
+}
+
+export interface HeroCard {
+  id: number
+  title: string
+  caption?: string
+  icon?: string
+  linkUrl?: string
+  accentColor?: string
+  order?: number
+  image?: {
+    url: string
+    formats?: {
+      large?: { url: string }
+      medium?: { url: string }
+      small?: { url: string }
+    }
+  }
+  /** Optional per-card section background: image, gif, or video */
+  background?: {
+    url: string
+    mime?: string
+    formats?: {
+      large?: { url: string }
+      medium?: { url: string }
+    }
+  }
+}
+
+export async function getHeroCards(locale: Locale) {
+  const response = await fetchStrapi<HeroCard[]>('/hero-cards', {
+    locale,  // i18n content type (en / th)
+    populate: ['image', 'background'],
+    sort: 'order:asc',
+    tags: ['hero-cards'],
+    revalidate: 3600,
   })
 
   return response.data
@@ -302,7 +356,6 @@ export async function getPageHero(pageIdentifier: string, locale: Locale): Promi
       filters: { pageIdentifier: { $eq: pageIdentifier } },
       populate: '*',
       tags: ['page-heroes', `hero-${pageIdentifier}`],
-      revalidate: 0,
     })
 
     return response.data?.[0] ?? null
@@ -360,7 +413,6 @@ export async function getAboutPage(locale: Locale): Promise<AboutPage | null> {
       locale,
       populate: ['values', 'milestones', 'teamMembers', 'teamMembers.photo'],
       tags: ['about-page'],
-      revalidate: 0,
     })
 
     return response.data ?? null
@@ -403,7 +455,6 @@ export async function getCareerBenefits(locale: Locale): Promise<CareerBenefit[]
       locale,
       sort: 'order:asc',
       tags: ['career-benefits'],
-      revalidate: 0,
     })
 
     return response.data ?? []
@@ -420,7 +471,6 @@ export async function getJobPositions(locale: Locale): Promise<JobPosition[]> {
       filters: { isActive: { $eq: true } },
       sort: 'order:asc',
       tags: ['job-positions'],
-      revalidate: 0,
     })
 
     return response.data ?? []
@@ -436,7 +486,6 @@ export async function getJobPosition(slug: string, locale: Locale): Promise<JobP
       locale,
       filters: { slug: { $eq: slug } },
       tags: ['job-positions', `job-${slug}`],
-      revalidate: 0,
     })
 
     return response.data?.[0] ?? null
@@ -466,7 +515,6 @@ export async function getContactInfo(locale: Locale): Promise<ContactInfo | null
     const response = await fetchStrapi<ContactInfo>('/contact-info', {
       locale,
       tags: ['contact-info'],
-      revalidate: 0,
     })
 
     return response.data ?? null
@@ -492,7 +540,6 @@ export async function getLegalPage(slug: string, locale: Locale): Promise<LegalP
       locale,
       filters: { slug: { $eq: slug } },
       tags: ['legal-pages', `legal-${slug}`],
-      revalidate: 0,
     })
 
     return response.data?.[0] ?? null
@@ -590,7 +637,6 @@ export async function getHomepage(locale: Locale): Promise<Homepage | null> {
       locale,
       populate: ['heroSection', 'whyChooseUsSection', 'whyChooseUsSection.features', 'ctaSection'],
       tags: ['homepage'],
-      revalidate: 0,
     })
 
     return response.data ?? null

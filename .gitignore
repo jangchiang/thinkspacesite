@@ -44,3 +44,6 @@ thinkspace-fadeup.html
 
 # Next.js build output
 .next/
+
+# Strapi runtime-uploaded media (managed by the cms-uploads volume / bootstrap)
+apps/cms/public/uploads/

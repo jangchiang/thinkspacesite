@@ -25,12 +25,23 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Map Strapi model names to cache tags
+    // Map Strapi model names to cache tags (keeps the cached fetches fresh the
+    // moment content changes, instead of waiting for the revalidate window).
     const tagMap: Record<string, string[]> = {
       page: ['pages', entry?.slug ? `page-${entry.slug}` : ''],
       service: ['services', entry?.slug ? `service-${entry.slug}` : ''],
       'blog-post': ['blog-posts', entry?.slug ? `blog-${entry.slug}` : ''],
       'case-study': ['case-studies', entry?.slug ? `case-study-${entry.slug}` : ''],
+      product: ['products', entry?.slug ? `product-${entry.slug}` : ''],
+      client: ['clients'],
+      partner: ['partners'],
+      'hero-card': ['hero-cards'],
+      stat: ['stats'],
+      homepage: ['homepage'],
+      'about-page': ['about-page'],
+      'contact-info': ['contact-info'],
+      'site-setting': ['site-settings'],
+      'page-hero': ['page-heroes'],
     }
 
     const tags = tagMap[model] || [model]

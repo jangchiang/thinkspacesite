@@ -1,0 +1,11 @@
+{
+  "collectionName": "components_product_roadmap_nodes",
+  "info": { "displayName": "Roadmap Node", "description": "A milestone on the product roadmap timeline" },
+  "options": {},
+  "attributes": {
+    "milestone": { "type": "string", "required": true },
+    "status": { "type": "enumeration", "enum": ["live", "soon", "planned"], "default": "soon" },
+    "statusLabel": { "type": "string" },
+    "features": { "type": "text", "description": "One feature per line" }
+  }
+}

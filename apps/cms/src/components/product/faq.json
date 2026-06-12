@@ -1,0 +1,9 @@
+{
+  "collectionName": "components_product_faqs",
+  "info": { "displayName": "Product FAQ", "description": "A question and answer for a product page" },
+  "options": {},
+  "attributes": {
+    "question": { "type": "string", "required": true },
+    "answer": { "type": "text", "required": true }
+  }
+}

@@ -1,9 +1,12 @@
 import { type Locale } from '@/lib/i18n'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, BrainCircuit, Server } from 'lucide-react'
+import { ArrowRight, BrainCircuit, Server, type LucideIcon } from 'lucide-react'
+import { getProducts } from '@/lib/strapi'
 
 export const dynamic = 'force-dynamic'
+// Render dynamically but reuse cached CMS responses (revalidate + tags) — fast TTFB, no per-request Strapi round-trips.
+export const fetchCache = 'default-cache'
 
 type Props = {
   params: Promise<{ locale: string }>
@@ -27,14 +30,19 @@ interface ProductCard {
   title: string
   blurb: string
   cta: string
-  Icon: typeof BrainCircuit
+  Icon: LucideIcon
 }
+
+// Map a product slug to an icon (the CMS product type has no icon field).
+const iconForSlug = (slug: string): LucideIcon =>
+  /prox/i.test(slug) ? Server : BrainCircuit
 
 export default async function ProductsPage({ params }: Props): Promise<React.JSX.Element> {
   const { locale } = await params as { locale: Locale }
   const isTh = locale === 'th'
 
-  const products: ProductCard[] = [
+  // Hardcoded fallback (used only if the CMS has no products).
+  const fallbackProducts: ProductCard[] = [
     {
       href: `/${locale}/products/logix`,
       eyebrow: isTh ? 'แพลตฟอร์ม AI อธิปไตย' : 'Sovereign AI Platform',
@@ -56,6 +64,19 @@ export default async function ProductsPage({ params }: Props): Promise<React.JSX
       Icon: Server,
     },
   ]
+
+  // Prefer CMS products (sorted by order); fall back to the in-code list when empty.
+  const cmsProducts = (await getProducts(locale).catch(() => [])) || []
+  const products: ProductCard[] = cmsProducts.length > 0
+    ? cmsProducts.map((p) => ({
+        href: `/${locale}/products/${p.slug}`,
+        eyebrow: p.eyebrow || (isTh ? 'ผลิตภัณฑ์' : 'Product'),
+        title: p.name || p.slug,
+        blurb: p.intro || '',
+        cta: p.ctaLabel || (isTh ? 'ดูรายละเอียด' : 'Explore'),
+        Icon: iconForSlug(p.slug),
+      }))
+    : fallbackProducts
 
   return (
     <>
@@ -93,7 +114,7 @@ export default async function ProductsPage({ params }: Props): Promise<React.JSX
                 <p className="eyebrow">{p.eyebrow}</p>
                 <h2 className="display-heading text-2xl md:text-3xl mt-3">{p.title}</h2>
                 <p className="mt-4 text-base-content/70 leading-relaxed flex-1">{p.blurb}</p>
-                <span className="mt-8 inline-flex items-center gap-2 text-primary font-semibold">
+                <span className="mt-8 inline-flex items-center gap-2 text-accent font-semibold">
                   {p.cta}
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </span>

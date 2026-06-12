@@ -2248,12 +2248,20 @@ async function uploadSeedLogo(strapi: Core.Strapi, absPath: string, name: string
   }
   try {
     const stats = statSync(absPath);
+    const lower = absPath.toLowerCase();
+    const mimetype = lower.endsWith('.jpg') || lower.endsWith('.jpeg')
+      ? 'image/jpeg'
+      : lower.endsWith('.webp')
+        ? 'image/webp'
+        : lower.endsWith('.svg')
+          ? 'image/svg+xml'
+          : 'image/png';
     const uploaded = await strapi.plugin('upload').service('upload').upload({
       data: { fileInfo: { name, alternativeText: name } },
       files: {
         filepath: absPath,
         originalFilename: basename(absPath),
-        mimetype: 'image/png',
+        mimetype,
         size: stats.size,
       },
     });
@@ -2301,6 +2309,87 @@ async function seedPartners(strapi: Core.Strapi) {
   await seedLogoCollection(strapi, 'api::partner.partner', 'partners', partnerSeeds, 'partners');
 }
 
+// ---- Hero accordion cards (bilingual) --------------------------------------
+// The homepage hero accordion. Admins can edit/reorder these or add new cards
+// (e.g. a news or product card) in Content Manager → Hero Card. Images are
+// uploaded from data/seed-hero/ on a fresh deploy. Idempotent.
+
+interface HeroCardSeed {
+  imageFile: string;
+  icon: string;
+  linkUrl: string;
+  accentColor: string;
+  order: number;
+  title: { th: string; en: string };
+  caption: { th: string; en: string };
+}
+
+const heroCardSeeds: HeroCardSeed[] = [
+  {
+    imageFile: 'ai-data-science.jpg', icon: 'Cpu', linkUrl: '/services', accentColor: 'rgba(34,197,94,0.22)', order: 1,
+    title: { th: 'AI และวิทยาการข้อมูล', en: 'AI & Data Science' },
+    caption: { th: 'โมเดล MLOps และการวิเคราะห์ที่เปลี่ยนข้อมูลให้เป็นการตัดสินใจ', en: 'Models, MLOps and analytics that turn data into decisions.' },
+  },
+  {
+    imageFile: 'cybersecurity.jpg', icon: 'ShieldCheck', linkUrl: '/services', accentColor: 'rgba(34,211,238,0.22)', order: 2,
+    title: { th: 'ความปลอดภัยไซเบอร์', en: 'Cybersecurity' },
+    caption: { th: 'สถาปัตยกรรม Zero-trust, SOC และโครงสร้างพื้นฐานที่ยืดหยุ่น', en: 'Zero-trust architecture, SOC and resilient infrastructure.' },
+  },
+  {
+    imageFile: 'iot-systems.jpg', icon: 'Server', linkUrl: '/services', accentColor: 'rgba(56,189,248,0.22)', order: 3,
+    title: { th: 'HPC และระบบ IoT', en: 'HPC & IoT Systems' },
+    caption: { th: 'การประมวลผลสมรรถนะสูงและระบบเชื่อมต่อในระดับองค์กร', en: 'High-performance compute and connected systems at scale.' },
+  },
+  {
+    imageFile: '3d-printing.jpg', icon: 'Boxes', linkUrl: '/services', accentColor: 'rgba(129,140,248,0.22)', order: 4,
+    title: { th: 'วิศวกรรมดิจิทัล', en: 'Digital Engineering' },
+    caption: { th: 'การจำลอง ดิจิทัลทวิน และการผลิตแบบเติมเนื้อวัสดุ', en: 'Simulation, digital twins and additive manufacturing.' },
+  },
+  {
+    imageFile: 'software-solutions.jpg', icon: 'Sparkles', linkUrl: '/products/logix', accentColor: 'rgba(45,212,191,0.22)', order: 5,
+    title: { th: 'แพลตฟอร์ม Logix', en: 'Logix Platform' },
+    caption: { th: 'แพลตฟอร์มที่ปรับแต่งได้และ Logix สแตก AI-native แบบอธิปไตยของเรา', en: 'Custom platforms and Logix — our sovereign AI-native stack.' },
+  },
+];
+
+async function seedHeroCards(strapi: Core.Strapi) {
+  const existing = await strapi.documents('api::hero-card.hero-card' as any).findMany({});
+  if (existing.length > 0) {
+    strapi.log.info(`${existing.length} hero cards already exist, skipping seed`);
+    return;
+  }
+  strapi.log.info(`Seeding ${heroCardSeeds.length} hero cards...`);
+  const root = (strapi.dirs?.app?.root as string) || process.cwd();
+  const dir = join(root, 'data', 'seed-hero');
+  for (const c of heroCardSeeds) {
+    try {
+      const imageId = await uploadSeedLogo(strapi, join(dir, c.imageFile), c.title.en);
+      // Thai (default locale) — non-localized fields (image/icon/link/accent/order) set here, shared across locales.
+      const thEntry = await strapi.documents('api::hero-card.hero-card' as any).create({
+        data: {
+          title: c.title.th,
+          caption: c.caption.th,
+          icon: c.icon,
+          linkUrl: c.linkUrl,
+          accentColor: c.accentColor,
+          order: c.order,
+          ...(imageId ? { image: imageId } : {}),
+        },
+        locale: 'th',
+      } as any);
+      // English localization — only the localized fields.
+      await strapi.documents('api::hero-card.hero-card' as any).update({
+        documentId: thEntry.documentId,
+        data: { title: c.title.en, caption: c.caption.en },
+        locale: 'en',
+      } as any);
+      strapi.log.info(`Created hero card: ${c.title.en}${imageId ? ' (with image)' : ''}`);
+    } catch (error) {
+      strapi.log.error(`Failed to create hero card ${c.title.en}:`, error);
+    }
+  }
+}
+
 export default {
   /**
    * An asynchronous register function that runs before
@@ -2330,5 +2419,6 @@ export default {
     await seedHomepage(strapi);
     await seedClients(strapi);
     await seedPartners(strapi);
+    await seedHeroCards(strapi);
   },
 };

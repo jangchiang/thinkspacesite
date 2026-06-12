@@ -224,6 +224,16 @@
   }
 }
 
+/* Interactive accordion autoplay progress rail (countdown to the next card) */
+@keyframes accordionProgress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
 /* Smooth page transitions */
 .page-transition {
   animation: fadeIn 0.4s ease-out;

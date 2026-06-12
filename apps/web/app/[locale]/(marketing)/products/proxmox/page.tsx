@@ -20,8 +20,13 @@ import {
 import { MatrixGrid } from '@/components/backgrounds/matrix-grid'
 import { getProduct } from '@/lib/strapi'
 import { type Locale } from '@/lib/i18n'
+import { FaqSection, type FaqItem } from '@/components/sections/faq-section'
+import { ComparisonTable } from '@/components/sections/comparison-table'
+import { JsonLd, productJsonLd, faqJsonLd, breadcrumbJsonLd } from '@/components/seo/json-ld'
 
 export const dynamic = 'force-dynamic'
+// Render dynamically but reuse cached CMS responses (revalidate + tags) — fast TTFB, no per-request Strapi round-trips.
+export const fetchCache = 'default-cache'
 
 type Props = {
   params: Promise<{ locale: string }>
@@ -125,6 +130,69 @@ export default async function ProxmoxProductPage({ params }: Props): Promise<Rea
   const nodes = [
     { name: 'pve-node-01', cpu: 38 }, { name: 'pve-node-02', cpu: 64 },
     { name: 'pve-node-03', cpu: 22 }, { name: 'ceph-osd-01', cpu: 51 },
+  ]
+
+  const faqs: FaqItem[] = (Array.isArray(cms?.faqs) && cms.faqs.length > 0
+    ? cms.faqs.map((f: any) => ({ q: f.question, a: f.answer }))
+    : (nonEmpty(extra.faqs) as FaqItem[])) || (isTh
+    ? [
+        { q: 'ThinkSpace เป็นตัวแทนจำหน่าย Proxmox อย่างเป็นทางการหรือไม่', a: 'ใช่ ThinkSpace เป็นตัวแทนจำหน่ายที่ได้รับอนุญาตของ Proxmox Server Solutions ให้บริการสมัครสมาชิก การติดตั้ง และการสนับสนุนระดับองค์กร' },
+        { q: 'Proxmox VE ต่างจาก VMware อย่างไร', a: 'Proxmox VE เป็นแพลตฟอร์มเวอร์ชวลไลเซชันโอเพนซอร์ส (KVM + LXC) ที่คุณเป็นเจ้าของเต็มที่ ไม่มีการผูกขาดกับผู้ขาย พร้อม ZFS/Ceph, HA และ SDN ในตัว ช่วยลดต้นทุนใบอนุญาตได้อย่างมาก' },
+        { q: 'มีบริการสนับสนุนและ SLA หรือไม่', a: 'มี เราเสนอแพ็กเกจสนับสนุนแบบ B2B พร้อม SLA การออกใบอนุญาตจาก Proxmox และการดูแลเชิงรุกตามระดับที่องค์กรเลือก' },
+        { q: 'ThinkSpace ช่วยย้ายระบบจาก VMware/Hyper-V ได้ไหม', a: 'ได้ เราวางแผนสถาปัตยกรรม ออกแบบคลัสเตอร์ และดำเนินการย้ายเวิร์กโหลดจาก VMware หรือ Hyper-V มาสู่ Proxmox VE อย่างปลอดภัย' },
+        { q: 'รองรับ High Availability และการสำรองข้อมูลหรือไม่', a: 'รองรับ ด้วย Proxmox VE HA, ZFS/Ceph storage และ Proxmox Backup Server เพื่อความต่อเนื่องและการกู้คืนระบบ' },
+        { q: 'ติดตั้งภายในองค์กรหรือบนคลาวด์ได้หรือไม่', a: 'ได้ทั้งสองแบบ เราออกแบบและดำเนินการ Proxmox VE ทั้งบนฮาร์ดแวร์ในองค์กรและบนคลาวด์ตามความต้องการ' },
+      ]
+    : [
+        { q: 'Is ThinkSpace an official Proxmox reseller?', a: 'Yes — ThinkSpace is an authorized reseller of Proxmox Server Solutions, providing subscriptions, deployment, and enterprise-grade support.' },
+        { q: 'How is Proxmox VE different from VMware?', a: 'Proxmox VE is an open-source virtualization platform (KVM + LXC) you fully own — no vendor lock-in — with ZFS/Ceph, HA, and SDN built in, dramatically reducing licensing cost.' },
+        { q: 'Do you provide support and SLAs?', a: 'Yes. We offer B2B support packages with SLAs, Proxmox licensing, and proactive management at the tier your organization chooses.' },
+        { q: 'Can ThinkSpace migrate us from VMware / Hyper-V?', a: 'Yes. We plan the architecture, design the cluster, and execute a safe migration of your workloads from VMware or Hyper-V to Proxmox VE.' },
+        { q: 'Does it support high availability and backups?', a: 'Yes — via Proxmox VE HA, ZFS/Ceph storage, and Proxmox Backup Server for continuity and disaster recovery.' },
+        { q: 'Can it run on-premise or in the cloud?', a: 'Both. We design and operate Proxmox VE on your on-premise hardware or in the cloud, to fit your requirements.' },
+      ])
+
+  const compareColumns = [
+    { label: isTh ? 'Proxmox VE (ThinkSpace)' : 'Proxmox VE (ThinkSpace)', highlight: true },
+    { label: 'VMware vSphere' },
+  ]
+  const compareRows = isTh
+    ? [
+        { feature: 'โอเพนซอร์ส', values: [true, false] },
+        { feature: 'ค่าใช้จ่ายใบอนุญาต', values: ['ต่ำ / สมัครสมาชิกเสริม', 'สูง ต่อคอร์'] },
+        { feature: 'การผูกขาดกับผู้ขาย', values: ['ไม่มี', 'สูง'] },
+        { feature: 'KVM + คอนเทนเนอร์ LXC', values: [true, 'เฉพาะ VM'] },
+        { feature: 'ZFS / Ceph ในตัว', values: [true, 'เสริม / vSAN'] },
+        { feature: 'High Availability', values: [true, true] },
+        { feature: 'SDN + Firewall ในตัว', values: [true, 'เสริม (NSX)'] },
+        { feature: 'สำรองข้อมูล (Proxmox Backup Server)', values: [true, 'ผลิตภัณฑ์แยก'] },
+        { feature: 'องค์กรเป็นเจ้าของแพลตฟอร์มเต็มที่', values: [true, false] },
+      ]
+    : [
+        { feature: 'Open source', values: [true, false] },
+        { feature: 'Licensing cost', values: ['Low / optional subscription', 'High per-core'] },
+        { feature: 'Vendor lock-in', values: ['None', 'High'] },
+        { feature: 'KVM + LXC containers', values: [true, 'VMs only'] },
+        { feature: 'Built-in ZFS / Ceph storage', values: [true, 'Add-on / vSAN'] },
+        { feature: 'High Availability', values: [true, true] },
+        { feature: 'Built-in SDN + firewall', values: [true, 'Add-on (NSX)'] },
+        { feature: 'Backup (Proxmox Backup Server)', values: [true, 'Separate product'] },
+        { feature: 'You fully own the platform', values: [true, false] },
+      ]
+
+  const structuredData = [
+    breadcrumbJsonLd(locale, [
+      { name: isTh ? 'ผลิตภัณฑ์' : 'Products', path: '/products' },
+      { name: 'Proxmox', path: '/products/proxmox' },
+    ]),
+    productJsonLd({
+      locale,
+      name: 'Proxmox VE — Enterprise Virtualization (ThinkSpace Reseller)',
+      description: data.intro,
+      path: '/products/proxmox',
+      category: 'BusinessApplication',
+    }),
+    faqJsonLd(faqs),
   ]
 
   return (
@@ -358,6 +426,28 @@ export default async function ProxmoxProductPage({ params }: Props): Promise<Rea
           </div>
         </div>
       </section>
+
+      {/* Comparison */}
+      <ComparisonTable
+        eyebrow={isTh ? 'เปรียบเทียบ' : 'Compare'}
+        heading={isTh ? 'Proxmox VE เทียบกับ VMware' : 'Proxmox VE vs. VMware'}
+        subheading={isTh
+          ? 'เวอร์ชวลไลเซชันระดับองค์กรที่คุณเป็นเจ้าของเต็มที่ — ไม่มีการผูกขาด ไม่มีค่าใบอนุญาตต่อคอร์ที่สูง'
+          : 'Enterprise virtualization you fully own — no lock-in, no steep per-core licensing.'}
+        columns={compareColumns}
+        rows={compareRows}
+      />
+
+      {/* FAQ */}
+      <FaqSection
+        eyebrow={isTh ? 'คำถามที่พบบ่อย' : 'FAQ'}
+        heading={isTh ? 'คำถามที่พบบ่อยเกี่ยวกับ Proxmox' : 'Frequently asked questions'}
+        faqs={faqs}
+        surface="muted"
+      />
+
+      {/* Structured data: Product · FAQ · Breadcrumb */}
+      <JsonLd data={structuredData} />
 
       {/* Social proof + CTA band */}
       <section className="relative overflow-hidden bg-secondary text-white">

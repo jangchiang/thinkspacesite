@@ -6,6 +6,8 @@ import { Footer } from '@/components/layouts/footer'
 
 // Force dynamic rendering - don't try to fetch from Strapi during build
 export const dynamic = 'force-dynamic'
+// Render dynamically but reuse cached CMS responses (revalidate + tags) — fast TTFB, no per-request Strapi round-trips.
+export const fetchCache = 'default-cache'
 
 type Props = {
   children: React.ReactNode
