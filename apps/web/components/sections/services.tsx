@@ -3,8 +3,6 @@
 import Link from 'next/link'
 import { Code2, ShieldCheck, BrainCircuit, Cpu, Radio, FlaskConical, ArrowRight, type LucideIcon } from 'lucide-react'
 import { type Locale } from '@/lib/i18n'
-import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
 
 type Dict = Record<string, any>
 
@@ -32,31 +30,6 @@ interface Pillar {
   description: string
 }
 
-const headerVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-    },
-  },
-}
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      delay: i * 0.08,
-      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-    },
-  }),
-}
-
 // Icon mapping for Strapi-provided icon keys
 const iconMap: Record<string, LucideIcon> = {
   software: Code2,
@@ -74,9 +47,7 @@ const iconMap: Record<string, LucideIcon> = {
   research: FlaskConical,
 }
 
-export function ServicesSection({ locale, services: strapiServices }: ServicesSectionProps): React.JSX.Element {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
+export function ServicesSection({ dict, locale, services: strapiServices }: ServicesSectionProps): React.JSX.Element {
   const isTh = locale === 'th'
 
   // Real 6 pillars (source of truth — always available as fallback)
@@ -141,63 +112,70 @@ export function ServicesSection({ locale, services: strapiServices }: ServicesSe
       }))
     : fallbackPillars
 
+  const heading = dict?.services?.title || (isTh ? 'โซลูชันเทคโนโลยีครบวงจร' : 'Comprehensive Technology Solutions')
+  const subtitle = dict?.services?.subtitle || (isTh
+    ? 'ตั้งแต่โครงสร้างพื้นฐานคลาวด์ไปจนถึงความปลอดภัยไซเบอร์ เราส่งมอบโซลูชันครบวงจรเพื่อขับเคลื่อนการเปลี่ยนผ่านสู่ดิจิทัลขององค์กรคุณ'
+    : 'From cloud infrastructure to cybersecurity, we provide end-to-end solutions to power your digital transformation journey.')
   const learnMore = isTh ? 'ดูเพิ่มเติม' : 'Learn more'
+  const viewAll = isTh ? 'ดูบริการทั้งหมด' : 'View All Services'
+
+  // Duplicate the cards for a seamless marquee loop.
+  const marquee = [...pillars, ...pillars]
 
   return (
-    <section className="section-padding bg-base-100" ref={ref}>
+    <section className="overflow-hidden bg-base-200 py-16 md:py-20 lg:py-24">
       <div className="container-custom">
-        {/* Header */}
-        <motion.div
-          className="max-w-2xl mb-12 md:mb-16"
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          variants={headerVariants}
-        >
-          <p className="eyebrow mb-3">{isTh ? 'บริการของเรา' : 'What we do'}</p>
-          <h2 className="display-heading text-3xl md:text-4xl lg:text-5xl mb-5">
-            {isTh ? 'ขีดความสามารถครบวงจรสำหรับองค์กร' : 'End-to-end capabilities for the modern enterprise'}
-          </h2>
-          <div className="rule-accent mb-6" />
-          <p className="text-lg text-base-content/70 leading-relaxed">
-            {isTh
-              ? 'หกเสาหลักด้านเทคโนโลยีที่ทำงานร่วมกัน ตั้งแต่ซอฟต์แวร์และความปลอดภัย ไปจนถึง AI การประมวลผลสมรรถนะสูง และงานวิจัยขั้นสูง'
-              : 'Six technology pillars working in concert — from software and security to AI, high-performance computing, and advanced research.'}
-          </p>
-        </motion.div>
+        <div className="mx-auto mb-12 max-w-3xl text-center">
+          <h2 className="mb-4 text-3xl font-bold md:text-4xl lg:text-5xl">{heading}</h2>
+          <p className="text-lg text-base-content/70 md:text-xl">{subtitle}</p>
+        </div>
+      </div>
 
-        {/* 6-card grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {pillars.map((pillar, index) => {
+      {/* Auto-scrolling marquee of service cards (pauses on hover) */}
+      <div className="relative">
+        <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-20 bg-gradient-to-r from-base-200 to-transparent md:w-32" />
+        <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-20 bg-gradient-to-l from-base-200 to-transparent md:w-32" />
+
+        <div className="flex w-max animate-marquee-slow hover:[animation-play-state:paused] motion-reduce:animate-none">
+          {marquee.map((pillar, i) => {
             const Icon = pillar.icon
             return (
-              <motion.div
-                key={pillar.slug}
-                custom={index}
-                initial="hidden"
-                animate={isInView ? 'visible' : 'hidden'}
-                variants={cardVariants}
+              <Link
+                key={`${pillar.slug}-${i}`}
+                href={`/${locale}/services/${pillar.slug}`}
+                className="group mx-4 flex-shrink-0"
+                aria-hidden={i >= pillars.length}
+                tabIndex={i >= pillars.length ? -1 : undefined}
               >
-                <Link
-                  href={`/${locale}/services/${pillar.slug}`}
-                  className="card-surface group flex h-full flex-col p-7"
-                >
-                  <div className="mb-5 flex h-12 w-12 items-center justify-center border border-base-300 bg-base-200 text-primary transition-colors duration-300 group-hover:bg-secondary group-hover:text-primary-content">
-                    <Icon className="h-6 w-6" strokeWidth={1.75} />
+                <div className="w-72 rounded-2xl border border-base-300 bg-base-100 p-6 shadow-lg transition-all duration-300 hover:border-primary/30 hover:shadow-xl md:w-80">
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 transition-all duration-300 group-hover:bg-primary">
+                      <Icon className="h-7 w-7 text-primary transition-colors group-hover:text-primary-content" strokeWidth={1.75} aria-hidden="true" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="mb-2 text-lg font-bold text-base-content transition-colors group-hover:text-accent">{pillar.title}</h3>
+                      <p className="line-clamp-2 text-sm text-base-content/60">{pillar.description}</p>
+                    </div>
                   </div>
-                  <h3 className="mb-3 text-xl font-semibold text-base-content">
-                    {pillar.title}
-                  </h3>
-                  <p className="mb-6 flex-1 text-base-content/70 leading-relaxed">
-                    {pillar.description}
-                  </p>
-                  <span className="inline-flex items-center gap-1.5 text-sm font-medium text-accent">
-                    {learnMore}
-                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                  </span>
-                </Link>
-              </motion.div>
+                  <div className="mt-4 border-t border-base-200 pt-4">
+                    <span className="inline-flex items-center gap-2 text-sm font-medium text-accent transition-all group-hover:gap-3">
+                      {learnMore}
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+                    </span>
+                  </div>
+                </div>
+              </Link>
             )
           })}
+        </div>
+      </div>
+
+      <div className="container-custom">
+        <div className="mt-12 text-center">
+          <Link href={`/${locale}/services`} className="btn btn-primary btn-lg group gap-2 shadow-lg shadow-primary/20">
+            {viewAll}
+            <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+          </Link>
         </div>
       </div>
     </section>
