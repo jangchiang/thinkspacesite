@@ -76,6 +76,30 @@
       "component": "product.add-on",
       "pluginOptions": { "i18n": { "localized": true } }
     },
+    "pillars": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.pillar",
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "useCases": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.feature",
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "faqs": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.faq",
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "roadmap": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.roadmap-node",
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
     "extra": {
       "type": "json",
       "pluginOptions": { "i18n": { "localized": true } }

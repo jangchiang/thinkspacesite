@@ -1,0 +1,11 @@
+{
+  "collectionName": "components_product_pillars",
+  "info": { "displayName": "Product Pillar", "description": "Build/Deploy/Govern-style pillar with bullet points" },
+  "options": {},
+  "attributes": {
+    "icon": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "tagline": { "type": "string" },
+    "points": { "type": "text", "description": "One point per line" }
+  }
+}
