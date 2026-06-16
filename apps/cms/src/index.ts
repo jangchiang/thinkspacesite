@@ -2125,6 +2125,60 @@ const homepageData = {
   },
 };
 
+// Idempotent backfill: when the Homepage already exists (so the full seed is
+// skipped), populate the hero credential fields that were added later — stats,
+// partners and the secondary button. Runs per locale and ONLY when those fields
+// are still empty, so it never clobbers values edited in the admin.
+async function backfillHeroCredentials(strapi: Core.Strapi) {
+  const byLocale: Array<{ locale: string; seed: any }> = [
+    { locale: 'th-TH', seed: homepageData.heroSection.th },
+    { locale: 'en', seed: homepageData.heroSection.en },
+  ];
+
+  for (const { locale, seed } of byLocale) {
+    try {
+      const hp = await strapi.documents('api::homepage.homepage').findFirst({
+        locale,
+        populate: { heroSection: { populate: ['stats', 'partners'] } } as any,
+      });
+      if (!hp) continue;
+
+      const hero: any = (hp as any).heroSection || {};
+      const statsEmpty = !Array.isArray(hero.stats) || hero.stats.length === 0;
+      const partnersEmpty = !Array.isArray(hero.partners) || hero.partners.length === 0;
+
+      // If either is already populated, assume it's been set up — leave it alone.
+      if (!statsEmpty || !partnersEmpty) {
+        strapi.log.info(`Hero credentials already present for ${locale}, skipping backfill`);
+        continue;
+      }
+
+      // Preserve every existing hero scalar (incl. the component id) and only
+      // add the missing credential fields.
+      const { stats: _s, partners: _p, ...heroScalars } = hero;
+
+      await strapi.documents('api::homepage.homepage').update({
+        documentId: hp.documentId,
+        data: {
+          heroSection: {
+            ...heroScalars,
+            secondaryButtonText: seed.secondaryButtonText,
+            secondaryButtonLink: seed.secondaryButtonLink,
+            showPartners: heroScalars.showPartners ?? true,
+            stats: seed.stats,
+            partners: seed.partners,
+          },
+        } as any,
+        locale,
+        status: 'published',
+      });
+      strapi.log.info(`Backfilled hero stats/partners/secondary button for ${locale}`);
+    } catch (err) {
+      strapi.log.error(`Hero credential backfill failed for ${locale}: ${err}`);
+    }
+  }
+}
+
 async function seedHomepage(strapi: Core.Strapi) {
   try {
     const existingHomepage = await strapi.documents('api::homepage.homepage').findFirst({
@@ -2132,7 +2186,8 @@ async function seedHomepage(strapi: Core.Strapi) {
     });
 
     if (existingHomepage) {
-      strapi.log.info('Homepage already exists, skipping seed');
+      await backfillHeroCredentials(strapi);
+      strapi.log.info('Homepage already exists, skipping full seed');
       return;
     }
 
