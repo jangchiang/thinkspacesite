@@ -3,10 +3,19 @@ import { type Locale } from './i18n'
 const STRAPI_URL = process.env.STRAPI_URL || 'http://localhost:1337'
 const STRAPI_API_TOKEN = process.env.STRAPI_API_TOKEN
 
-// Map frontend locale to Strapi locale
+// Map the frontend locale to the Strapi locale code.
+//
+// Thai is stored under different locale codes across environments — production
+// seeds Thai as 'th-TH' while local/dev uses plain 'th'. STRAPI_LOCALE_TH lets
+// each environment declare its primary Thai code; whichever it is, fetchStrapi
+// also retries the *other* Thai code when the first returns no data, so Thai CMS
+// content always resolves regardless of how that environment was set up.
+const TH_PRIMARY = process.env.STRAPI_LOCALE_TH || 'th'
+const TH_ALT = TH_PRIMARY === 'th' ? 'th-TH' : 'th'
+
 const LOCALE_MAP: Record<string, string> = {
   'en': 'en',
-  'th': 'th',
+  'th': TH_PRIMARY,
 }
 
 interface StrapiResponse<T> {
@@ -38,8 +47,35 @@ async function fetchStrapi<T>(
   endpoint: string,
   options: FetchOptions = {}
 ): Promise<StrapiResponse<T>> {
+  const { locale = 'en' } = options
+
+  // Thai may live under 'th' or 'th-TH' depending on the environment — try the
+  // primary code, then the alternate if the first yields no data. Other locales
+  // (and null = non-i18n) resolve to a single candidate.
+  const candidates: (string | null)[] =
+    locale === null
+      ? [null]
+      : locale === 'th'
+        ? [TH_PRIMARY, TH_ALT]
+        : [LOCALE_MAP[locale] || locale]
+
+  let last: StrapiResponse<T> | null = null
+  for (const strapiLocale of candidates) {
+    const response = await fetchStrapiForLocale<T>(endpoint, options, strapiLocale)
+    last = response
+    const d = response.data as unknown
+    const hasData = Array.isArray(d) ? d.length > 0 : d != null
+    if (hasData) return response
+  }
+  return last as StrapiResponse<T>
+}
+
+async function fetchStrapiForLocale<T>(
+  endpoint: string,
+  options: FetchOptions,
+  strapiLocale: string | null
+): Promise<StrapiResponse<T>> {
   const {
-    locale = 'en',
     populate,
     filters,
     sort,
@@ -50,9 +86,8 @@ async function fetchStrapi<T>(
 
   const url = new URL(`/api${endpoint}`, STRAPI_URL)
 
-  // Add locale (map to Strapi locale format) - skip if null for non-i18n content types
-  if (locale !== null) {
-    const strapiLocale = LOCALE_MAP[locale] || locale
+  // Add locale - skip if null for non-i18n content types
+  if (strapiLocale !== null) {
     url.searchParams.set('locale', strapiLocale)
   }
 
