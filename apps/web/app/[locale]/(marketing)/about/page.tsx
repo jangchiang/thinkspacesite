@@ -4,9 +4,9 @@ import {
   AboutHero,
   ValuesSection,
   StorySection,
-  TeamSection,
+  PartnersSection,
 } from '@/components/sections/about-sections'
-import { getPageHero, getAboutPage } from '@/lib/strapi'
+import { getPageHero, getAboutPage, getPartners } from '@/lib/strapi'
 import { buildHeroBackground } from '@/lib/hero-utils'
 
 type Props = {
@@ -29,10 +29,11 @@ export default async function AboutPage({ params }: Props): Promise<React.JSX.El
   const { locale } = await params as { locale: Locale }
   const isTh = locale === 'th'
 
-  // Fetch hero and about page in parallel
-  const [heroData, aboutData] = await Promise.all([
+  // Fetch hero, about page and partners in parallel
+  const [heroData, aboutData, partnersData] = await Promise.all([
     getPageHero('about', locale),
     getAboutPage(locale),
+    getPartners().catch(() => [] as unknown[]),
   ])
 
   const heroBackground = buildHeroBackground(heroData)
@@ -134,12 +135,26 @@ export default async function AboutPage({ params }: Props): Promise<React.JSX.El
       detail: m.detail,
     })) || milestonesFallback
 
-  const teamMembers =
-    aboutData?.teamMembers?.map((t) => ({
-      name: t.name,
-      role: t.role,
-      photo: t.photo,
-    })) || []
+  // Partner organizations — non-localized, so EN and TH render identically.
+  const partners = (partnersData || []) as Array<{
+    id?: number
+    name: string
+    website?: string
+    logo?: { url: string; formats?: Record<string, { url: string }> }
+  }>
+
+  const heroHighlights = isTh
+    ? ['ก่อตั้งปี 2567', 'เชียงใหม่', 'AI · Data · Simulation', 'Digital Engineering']
+    : ['Founded 2024', 'Chiang Mai', 'AI · Data · Simulation', 'Digital Engineering']
+
+  const partnersEyebrow = isTh ? 'พันธมิตร' : 'Partners'
+  const partnersTitle = isTh
+    ? 'พันธมิตรและองค์กรที่ไว้วางใจ'
+    : 'Partners & Collaborators'
+  const partnersDescription = isTh
+    ? 'เราทำงานร่วมกับสถาบันการศึกษา หน่วยงานภาครัฐ และพันธมิตรเทคโนโลยีชั้นนำ เพื่อส่งมอบโซลูชันที่เชื่อถือได้และใช้งานได้จริง'
+    : 'We work alongside academic institutions, public agencies and leading technology partners to deliver solutions that are trusted and built to last.'
+  const partnerFallbackNames = ['Proxmox', 'Dell', 'Google Cloud', 'Chiang Mai University', 'EGAT', 'CMU-RAILCFC']
 
   const storyTitle =
     aboutData?.storyTitle ||
@@ -157,13 +172,6 @@ export default async function AboutPage({ params }: Props): Promise<React.JSX.El
 
   const milestonesTitle =
     aboutData?.milestonesTitle || (isTh ? 'เส้นทางการเติบโต' : 'Our Journey')
-  const teamSectionTitle =
-    aboutData?.teamSectionTitle || (isTh ? 'ทีมผู้บริหาร' : 'Our Executive Team')
-  const teamSectionDescription =
-    aboutData?.teamSectionDescription ||
-    (isTh
-      ? 'ทีมผู้บริหารของเรารวมความเชี่ยวชาญด้าน AI วิศวกรรมโยธา และวิศวกรรมเครื่องกล จากสถาบันชั้นนำ'
-      : 'Our leadership combines expertise in AI, civil engineering and mechanical engineering from leading institutions.')
 
   // Get PUBLIC Strapi URL for client components (images need to be accessible from browser)
   const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'https://cms.techthinkspace.com'
@@ -174,6 +182,7 @@ export default async function AboutPage({ params }: Props): Promise<React.JSX.El
         title={heroTitle}
         description={heroDescription}
         background={heroBackground}
+        highlights={heroHighlights}
       />
 
       <ValuesSection values={values} />
@@ -187,10 +196,12 @@ export default async function AboutPage({ params }: Props): Promise<React.JSX.El
         milestones={milestones}
       />
 
-      <TeamSection
-        title={teamSectionTitle}
-        description={teamSectionDescription}
-        members={teamMembers}
+      <PartnersSection
+        eyebrow={partnersEyebrow}
+        title={partnersTitle}
+        description={partnersDescription}
+        partners={partners}
+        fallbackNames={partnerFallbackNames}
         strapiUrl={strapiUrl}
       />
     </>

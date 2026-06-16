@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_homepage_hero_partners",
+  "info": {
+    "displayName": "Hero Partner",
+    "description": "A partner shown in the hero credentials line (name + optional note)"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "note": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}

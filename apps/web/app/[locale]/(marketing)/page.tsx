@@ -109,13 +109,25 @@ export default async function HomePage({ params }: Props): Promise<React.JSX.Ele
   }
 
   // Build hero data from Strapi or fallback to dict
-  const heroData = homepageData?.heroSection ? {
-    badge: isValidText(homepageData.heroSection.badge) ? homepageData.heroSection.badge : dict.hero.badge,
-    title: isValidText(homepageData.heroSection.title) ? homepageData.heroSection.title : dict.hero.title,
-    titleHighlight: isValidText(homepageData.heroSection.titleHighlight) ? homepageData.heroSection.titleHighlight : dict.hero.titleHighlight,
-    subtitle: isValidText(homepageData.heroSection.subtitle) ? homepageData.heroSection.subtitle : dict.hero.subtitle,
-    cta: isValidText(homepageData.heroSection.ctaButtonText) ? homepageData.heroSection.ctaButtonText : dict.hero.cta,
-    trustedBy: isValidText(homepageData.heroSection.trustedByText) ? homepageData.heroSection.trustedByText : dict.hero.trustedBy,
+  const hs = homepageData?.heroSection as any
+  const heroData = hs ? {
+    badge: isValidText(hs.badge) ? hs.badge : dict.hero.badge,
+    title: isValidText(hs.title) ? hs.title : dict.hero.title,
+    titleHighlight: isValidText(hs.titleHighlight) ? hs.titleHighlight : dict.hero.titleHighlight,
+    subtitle: isValidText(hs.subtitle) ? hs.subtitle : dict.hero.subtitle,
+    cta: isValidText(hs.ctaButtonText) ? hs.ctaButtonText : dict.hero.cta,
+    trustedBy: isValidText(hs.trustedByText) ? hs.trustedByText : dict.hero.trustedBy,
+    // Secondary ("Discover Logix") button — CMS-managed, falls back to code defaults in the hero.
+    ctaSecondary: isValidText(hs.secondaryButtonText) ? hs.secondaryButtonText : undefined,
+    ctaSecondaryLink: isValidText(hs.secondaryButtonLink) ? hs.secondaryButtonLink : undefined,
+    // Stats + partners — only used when the CMS has entries, else the hero shows its built-in defaults.
+    stats: Array.isArray(hs.stats) && hs.stats.length > 0
+      ? hs.stats.filter((s: any) => isValidText(s?.value) && isValidText(s?.label)).map((s: any) => ({ v: s.value, k: s.label }))
+      : undefined,
+    showPartners: hs.showPartners !== false,
+    partners: Array.isArray(hs.partners) && hs.partners.length > 0
+      ? hs.partners.filter((p: any) => isValidText(p?.name)).map((p: any) => ({ name: p.name, note: isValidText(p?.note) ? p.note : undefined }))
+      : undefined,
   } : dict.hero
 
   return (

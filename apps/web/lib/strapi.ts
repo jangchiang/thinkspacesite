@@ -159,13 +159,23 @@ export async function getStats(locale: Locale) {
 }
 
 export async function getCaseStudies(locale: Locale, limit?: number) {
-  const response = await fetchStrapi<unknown[]>('/case-studies', {
-    locale,
-    populate: ['featuredImage', 'clientLogo'],
-    sort: 'createdAt:desc',
-    pagination: limit ? { pageSize: limit } : undefined,
-    tags: ['case-studies'],
-  })
+  const fetchFor = (loc: Locale) =>
+    fetchStrapi<unknown[]>('/case-studies', {
+      locale: loc,
+      populate: ['featuredImage', 'clientLogo'],
+      sort: 'createdAt:desc',
+      pagination: limit ? { pageSize: limit } : undefined,
+      tags: ['case-studies'],
+    })
+
+  let response = await fetchFor(locale)
+
+  // If this locale has no translated case studies, surface the other locale's
+  // real CMS entries rather than letting the page drop to hardcoded placeholders.
+  if (!response.data || response.data.length === 0) {
+    const other: Locale = locale === 'th' ? 'en' : 'th'
+    response = await fetchFor(other)
+  }
 
   return response.data
 }
@@ -252,12 +262,22 @@ export async function getBlogPost(slug: string, locale: Locale) {
 }
 
 export async function getCaseStudy(slug: string, locale: Locale) {
-  const response = await fetchStrapi<unknown[]>('/case-studies', {
-    locale,
-    filters: { slug: { $eq: slug } },
-    populate: ['featuredImage', 'clientLogo', 'services', 'additionalResults'],
-    tags: ['case-studies', `case-study-${slug}`],
-  })
+  const fetchFor = (loc: Locale) =>
+    fetchStrapi<unknown[]>('/case-studies', {
+      locale: loc,
+      filters: { slug: { $eq: slug } },
+      populate: ['featuredImage', 'clientLogo', 'services', 'additionalResults'],
+      tags: ['case-studies', `case-study-${slug}`],
+    })
+
+  let response = await fetchFor(locale)
+
+  // Fall back to the other locale's entry so a story authored in one language
+  // still opens (with real CMS content) from the other language's listing.
+  if (!response.data?.[0]) {
+    const other: Locale = locale === 'th' ? 'en' : 'th'
+    response = await fetchFor(other)
+  }
 
   return response.data?.[0] ?? null
 }
@@ -635,7 +655,7 @@ export async function getHomepage(locale: Locale): Promise<Homepage | null> {
   try {
     const response = await fetchStrapi<Homepage>('/homepage', {
       locale,
-      populate: ['heroSection', 'whyChooseUsSection', 'whyChooseUsSection.features', 'ctaSection'],
+      populate: ['heroSection', 'heroSection.stats', 'heroSection.partners', 'whyChooseUsSection', 'whyChooseUsSection.features', 'ctaSection'],
       tags: ['homepage'],
     })
 

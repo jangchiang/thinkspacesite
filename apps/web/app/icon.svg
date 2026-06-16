@@ -1,0 +1,27 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ThinkSpace">
+  <defs>
+    <linearGradient id="ts-bg" x1="64" y1="48" x2="448" y2="464" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#15803d"/>
+      <stop offset="0.55" stop-color="#16a34a"/>
+      <stop offset="1" stop-color="#22c55e"/>
+    </linearGradient>
+    <linearGradient id="ts-sheen" x1="256" y1="40" x2="256" y2="300" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- brand tile -->
+  <rect x="32" y="32" width="448" height="448" rx="116" fill="url(#ts-bg)"/>
+  <rect x="32" y="32" width="448" height="448" rx="116" fill="url(#ts-sheen)"/>
+
+  <!-- primary spark — "a spark of thought" (scaled lucide sparkle, filled) -->
+  <path transform="translate(52 56) scale(16.7)"
+        d="M12 3 10.088 8.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275Z"
+        fill="#ffffff"/>
+
+  <!-- secondary spark accent -->
+  <path transform="translate(330 96) scale(5.6)"
+        d="M12 3 11 8a2 2 0 0 1-1 1l-5 1 5 1a2 2 0 0 1 1 1l1 5 1-5a2 2 0 0 1 1-1l5-1-5-1a2 2 0 0 1-1-1Z"
+        fill="#ffffff" fill-opacity="0.9"/>
+</svg>
