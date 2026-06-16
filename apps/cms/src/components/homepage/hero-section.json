@@ -59,6 +59,10 @@
         }
       }
     },
+    "secondaryButtonLink": {
+      "type": "string",
+      "default": "/products/logix"
+    },
     "trustedByText": {
       "type": "string",
       "pluginOptions": {
@@ -66,6 +70,16 @@
           "localized": true
         }
       }
+    },
+    "stats": {
+      "type": "component",
+      "repeatable": true,
+      "component": "homepage.hero-stat"
+    },
+    "partners": {
+      "type": "component",
+      "repeatable": true,
+      "component": "homepage.hero-partner"
     },
     "showPartners": {
       "type": "boolean",

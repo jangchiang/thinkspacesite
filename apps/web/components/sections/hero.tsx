@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import Link from 'next/link'
 import {
   ArrowRight, ArrowUpRight,
@@ -164,12 +164,33 @@ export function HeroSection({ dict, locale, clients = [], heroCards = [], strapi
       })
     : fallbackPanels
 
-  const stats = [
-    { k: isTh ? 'องค์กรที่ไว้วางใจ' : 'Organizations served', v: '20+' },
-    { k: isTh ? 'สาขาความเชี่ยวชาญ' : 'Solution pillars', v: '6' },
-    { k: isTh ? 'ก่อตั้ง' : 'Founded', v: '2024' },
-    { k: isTh ? 'ฐานที่ตั้ง' : 'Based in', v: isTh ? 'เชียงใหม่' : 'Chiang Mai' },
-  ]
+  // Credentials are CMS-managed (Homepage → Hero Section → Stats / Partners),
+  // with these built-in defaults used until the CMS has entries.
+  const stats: { k: string; v: string }[] =
+    Array.isArray(dict.hero.stats) && dict.hero.stats.length > 0
+      ? dict.hero.stats
+      : [
+          { k: isTh ? 'องค์กรที่ไว้วางใจ' : 'Organizations served', v: '20+' },
+          { k: isTh ? 'สาขาความเชี่ยวชาญ' : 'Solution pillars', v: '6' },
+          { k: isTh ? 'ก่อตั้ง' : 'Founded', v: '2024' },
+          { k: isTh ? 'ฐานที่ตั้ง' : 'Based in', v: isTh ? 'เชียงใหม่' : 'Chiang Mai' },
+        ]
+
+  const ctaSecondary: string = dict.hero.ctaSecondary || (isTh ? 'รู้จัก Logix' : 'Discover Logix')
+  const ctaSecondaryLink: string = dict.hero.ctaSecondaryLink || '/products/logix'
+  const secondaryHref = ctaSecondaryLink.startsWith('http')
+    ? ctaSecondaryLink
+    : `/${locale}${ctaSecondaryLink.startsWith('/') ? ctaSecondaryLink : `/${ctaSecondaryLink}`}`
+
+  const showPartners: boolean = dict.hero.showPartners !== false
+  const partners: { name: string; note?: string }[] =
+    Array.isArray(dict.hero.partners) && dict.hero.partners.length > 0
+      ? dict.hero.partners
+      : [
+          { name: 'Proxmox', note: isTh ? 'ตัวแทนจำหน่าย' : 'Authorized Reseller' },
+          { name: 'Dell' },
+          { name: 'Google Cloud' },
+        ]
 
   // Autoplay: advance to the next card while idle. The timer is keyed on `active`,
   // so it restarts whenever the card changes (manually or automatically) — keeping
@@ -241,10 +262,10 @@ export function HeroSection({ dict, locale, clients = [], heroCards = [], strapi
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
               <Link
-                href={`/${locale}/products/logix`}
+                href={secondaryHref}
                 className="btn btn-outline btn-md gap-2 border-base-content/20 hover:border-primary hover:bg-primary/5 md:btn-lg"
               >
-                {isTh ? 'รู้จัก Logix' : 'Discover Logix'}
+                {ctaSecondary}
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
             </motion.div>
@@ -259,18 +280,22 @@ export function HeroSection({ dict, locale, clients = [], heroCards = [], strapi
                   </div>
                 ))}
               </div>
-              <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-base-content/45">
-                  {isTh ? 'พันธมิตร' : 'Partners'}
-                </span>
-                <span className="font-semibold text-base-content">
-                  Proxmox <span className="text-xs font-medium text-accent">{isTh ? 'ตัวแทนจำหน่าย' : 'Authorized Reseller'}</span>
-                </span>
-                <span className="text-base-content/25">·</span>
-                <span className="font-semibold text-base-content">Dell</span>
-                <span className="text-base-content/25">·</span>
-                <span className="font-semibold text-base-content">Google Cloud</span>
-              </div>
+              {showPartners && partners.length > 0 && (
+                <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm">
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-base-content/45">
+                    {isTh ? 'พันธมิตร' : 'Partners'}
+                  </span>
+                  {partners.map((p, i) => (
+                    <Fragment key={p.name}>
+                      {i > 0 && <span className="text-base-content/25">·</span>}
+                      <span className="font-semibold text-base-content">
+                        {p.name}
+                        {p.note && <span className="text-xs font-medium text-accent"> {p.note}</span>}
+                      </span>
+                    </Fragment>
+                  ))}
+                </div>
+              )}
             </motion.div>
           </div>
 
