@@ -3,6 +3,13 @@ const nextConfig = {
   // output: 'standalone', // Disabled for simpler Docker deployment
   transpilePackages: ['@thinkspace/ui', '@thinkspace/types'],
   images: {
+    // The Next.js image optimizer was rejecting every CMS image with
+    // "url parameter is not allowed" (400), breaking PNG/JPG on /works, /news,
+    // product pages, etc. Strapi already generates sized variants
+    // (thumbnail/small/medium/large) and Cloudflare serves them compressed and
+    // cached, so we skip the optimizer entirely and serve images as-is. This
+    // also covers SVGs uniformly (no dangerouslyAllowSVG dance needed).
+    unoptimized: true,
     remotePatterns: [
       // Development
       { protocol: 'http', hostname: 'localhost', port: '1337' },
