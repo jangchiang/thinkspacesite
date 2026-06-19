@@ -2179,6 +2179,229 @@ async function backfillHeroCredentials(strapi: Core.Strapi) {
   }
 }
 
+// ---- Products (Logix + Proxmox) ----
+// Mirrors the in-code fallback on the product pages so the entries appear in the
+// CMS fully populated and editable. Component list-field shapes:
+//   feature {icon,title,body} · pillar {icon,title,tagline,points(text \n)} ·
+//   faq {question,answer} · roadmap-node {milestone,status,statusLabel,features(text \n)} ·
+//   tier {name,tagline,featured,points(json[])} · add-on {icon,title,body,features(json[])}
+const productsData: Record<string, { en: any; th: any }> = {
+  logix: {
+    en: {
+      name: 'Logix', slug: 'logix', order: 1,
+      eyebrow: 'Product · Logix',
+      title: 'Your Sovereign AI Platform', titleHighlight: 'AI Platform',
+      intro: 'Logix is sovereign agentic AI infrastructure for organizations that want to own their AI workspace, not rent it. Give your teams an AI workspace like Claude.ai or ChatGPT with full control over your data, knowledge, and infrastructure.',
+      ctaLabel: 'Get Started',
+      heroChips: ['Agentic AI', 'Data Sovereignty', 'On-Prem + On-Cloud'],
+      features: [
+        { icon: 'Bot', title: 'Agentic AI Harness', body: 'Orchestration, reasoning, and tool use across autonomous agents.' },
+        { icon: 'Library', title: 'Unified Knowledge System', body: 'Wiki, Vectors, and Graph unified into a single knowledge layer.' },
+        { icon: 'Brain', title: 'Triple Memory', body: 'Episodic, Semantic, and Procedural memory for durable context.' },
+        { icon: 'Plug', title: 'MCP Hub', body: 'A standard protocol hub for integrating tools.' },
+        { icon: 'Sparkles', title: 'Skills + Marketplace', body: 'User-created, shareable automation skills.' },
+        { icon: 'UserCog', title: 'Personas', body: 'Configurable AI personas tailored per use case.' },
+        { icon: 'Server', title: 'Infrastructure Manager', body: 'A GUI for managing vLLM, Ollama, and SGLang.' },
+        { icon: 'Rocket', title: 'One-Click Deployment', body: 'A catalog of AI apps plus support for custom repos.' },
+        { icon: 'KeyRound', title: 'API Token System', body: 'Let external applications integrate securely via API.' },
+        { icon: 'Network', title: 'Hybrid LLM Routing', body: 'Transparent routing between Cloud and On-Premise models.' },
+      ],
+      pillars: [
+        { icon: 'Sparkles', title: 'Build', tagline: 'Compose agents, knowledge & skills', points: 'Agentic AI harness for reasoning & tools\nUnified knowledge: Wiki + Vectors + Graph\nTriple memory for durable context\nSkills, MCP & configurable personas' },
+        { icon: 'ServerCog', title: 'Deploy', tagline: 'Run anywhere you choose', points: 'One-click deployment from an AI app catalog\nInfrastructure Manager: vLLM / Ollama / SGLang\nHybrid LLM routing (cloud + on-prem)\nDeploy on-premise or on-cloud' },
+        { icon: 'ShieldCheck', title: 'Govern', tagline: 'Own & control everything', points: 'Your data, models & knowledge stay yours\nAccess control via API token system\nNo vendor lock-in (open source)\nAir-gapped capable' },
+      ],
+      useCases: [
+        { icon: 'Brain', title: 'Research & knowledge copilots', body: 'Search and synthesize internal knowledge with agents grounded in your own sources.' },
+        { icon: 'UserCog', title: 'Student & customer support', body: '24/7 assistants that understand your context, policies and tone.' },
+        { icon: 'Library', title: 'Document & data analysis', body: 'Summarize, extract and query large document sets and data with RAG.' },
+        { icon: 'Sparkles', title: 'Internal workflow automation', body: 'Build reusable skills to automate repetitive team workflows.' },
+        { icon: 'Plug', title: 'Domain copilots via personas', body: 'Configure expert AI personas specialized per department or use case.' },
+        { icon: 'KeyRound', title: 'Secure private-data Q&A', body: 'Let teams ask questions of sensitive data without it ever leaving your walls.' },
+      ],
+      faqs: [
+        { question: 'What does "sovereign" actually mean?', answer: 'Your organization owns and hosts the platform. Your data, models, and knowledge stay inside your own infrastructure and never leave to a third party.' },
+        { question: 'Can Logix run fully on-premise / air-gapped?', answer: 'Yes. Logix deploys on-premise, on-cloud, or hybrid, and fully supports air-gapped environments.' },
+        { question: 'Which LLMs does Logix support?', answer: 'Open models via vLLM, Ollama, and SGLang, plus cloud models through transparent hybrid routing (LiteLLM).' },
+        { question: 'How is our data kept private?', answer: 'All data, vectors, and knowledge live in your own database. There are no external calls unless you explicitly route to a cloud model.' },
+        { question: 'How do teams use it day-to-day?', answer: 'It is an AI workspace like ChatGPT or Claude — with agents, skills, personas, and a unified knowledge system.' },
+        { question: 'How is it deployed and maintained?', answer: 'A one-click deployment catalog plus an Infrastructure Manager GUI, with ThinkSpace supporting your rollout.' },
+      ],
+      roadmap: [
+        { milestone: 'Available now · v1.0', status: 'live', statusLabel: 'Live', features: 'Sovereign AI workspace\nChat + RAG with citations\nKnowledge, memory & personas\nMulti-tenant, on-premise' },
+        { milestone: 'Coming soon · v1.5', status: 'soon', statusLabel: 'Coming soon', features: 'OpenAI-compatible API\nLive Data Connectors\nADE high-accuracy mode\nEnterprise SSO & governance' },
+        { milestone: 'Next · v2.0', status: 'soon', statusLabel: 'Coming soon', features: 'Knowledge graph\nGPU cluster management\nSkills marketplace\nMobile apps (iOS + Android)' },
+        { milestone: 'Roadmap · v2.5+', status: 'planned', statusLabel: 'Planned', features: 'Desktop app + CLI\nMore model & media adapters\nEcosystem & scale' },
+      ],
+    },
+    th: {
+      name: 'Logix', slug: 'logix', order: 1,
+      eyebrow: 'ผลิตภัณฑ์ · Logix',
+      title: 'แพลตฟอร์ม AI อธิปไตยของคุณ', titleHighlight: 'AI อธิปไตย',
+      intro: 'Logix คือโครงสร้างพื้นฐาน AI เชิงเอเจนต์สำหรับองค์กรที่ต้องการ "เป็นเจ้าของ" พื้นที่ทำงาน AI ของตนเอง ไม่ใช่แค่เช่าใช้ มอบพื้นที่ทำงาน AI แบบเดียวกับ Claude.ai หรือ ChatGPT ให้ทีมของคุณ พร้อมการควบคุมข้อมูล ความรู้ และโครงสร้างพื้นฐานได้อย่างเต็มที่',
+      ctaLabel: 'ติดต่อเรา',
+      heroChips: ['เอเจนต์ AI', 'อธิปไตยข้อมูล', 'On-Prem + On-Cloud'],
+      features: [
+        { icon: 'Bot', title: 'Agentic AI Harness', body: 'การประสานงานเอเจนต์ การใช้เหตุผล และการเรียกใช้เครื่องมืออัตโนมัติ' },
+        { icon: 'Library', title: 'ระบบความรู้แบบรวมศูนย์', body: 'รวม Wiki, Vectors และ Graph ไว้ในระบบเดียว' },
+        { icon: 'Brain', title: 'หน่วยความจำสามชั้น', body: 'Episodic + Semantic + Procedural เพื่อความต่อเนื่องของบริบท' },
+        { icon: 'Plug', title: 'MCP Hub', body: 'โปรโตคอลมาตรฐานสำหรับการเชื่อมต่อเครื่องมือ' },
+        { icon: 'Sparkles', title: 'Skills + Marketplace', body: 'ระบบอัตโนมัติที่ผู้ใช้สร้างเองและแชร์ได้' },
+        { icon: 'UserCog', title: 'Personas', body: 'กำหนดบุคลิก AI ได้ตามแต่ละกรณีการใช้งาน' },
+        { icon: 'Server', title: 'ตัวจัดการโครงสร้างพื้นฐาน', body: 'GUI สำหรับจัดการ vLLM / Ollama / SGLang' },
+        { icon: 'Rocket', title: 'ติดตั้งในคลิกเดียว', body: 'แคตตาล็อกแอป AI พร้อมรองรับ repo ที่กำหนดเอง' },
+        { icon: 'KeyRound', title: 'ระบบ API Token', body: 'ให้แอปภายนอกเชื่อมต่อผ่าน API ได้อย่างปลอดภัย' },
+        { icon: 'Network', title: 'การกำหนดเส้นทาง LLM แบบไฮบริด', body: 'กำหนดเส้นทางระหว่าง Cloud และ On-Premise อย่างโปร่งใส' },
+      ],
+      pillars: [
+        { icon: 'Sparkles', title: 'สร้าง', tagline: 'ประกอบเอเจนต์ ความรู้ และสกิลเข้าด้วยกัน', points: 'Agentic AI harness สำหรับการใช้เหตุผลและเครื่องมือ\nระบบความรู้รวม: Wiki + Vectors + Graph\nหน่วยความจำสามชั้นเพื่อบริบทที่ต่อเนื่อง\nสกิล, MCP และเพอร์โซนาที่ปรับแต่งได้' },
+        { icon: 'ServerCog', title: 'ติดตั้ง', tagline: 'รันที่ใดก็ได้ที่คุณเลือก', points: 'ติดตั้งในคลิกเดียวจากแคตตาล็อกแอป AI\nInfrastructure Manager: vLLM / Ollama / SGLang\nกำหนดเส้นทาง LLM แบบไฮบริด (คลาวด์ + ออนพรีม)\nติดตั้งบนองค์กรหรือบนคลาวด์' },
+        { icon: 'ShieldCheck', title: 'กำกับดูแล', tagline: 'เป็นเจ้าของและควบคุมทุกอย่าง', points: 'ข้อมูล โมเดล และความรู้เป็นของคุณ\nควบคุมการเข้าถึงด้วยระบบ API token\nไม่มีการผูกขาดกับผู้ขาย (โอเพนซอร์ส)\nรองรับสภาพแวดล้อมแบบ air-gapped' },
+      ],
+      useCases: [
+        { icon: 'Brain', title: 'ผู้ช่วยวิจัยและความรู้', body: 'ค้นหาและสังเคราะห์ความรู้ภายในองค์กรด้วยเอเจนต์ที่อ้างอิงแหล่งข้อมูลของคุณ' },
+        { icon: 'UserCog', title: 'ผู้ช่วยสนับสนุนนักศึกษาและลูกค้า', body: 'ผู้ช่วยตอบคำถามตลอด 24 ชม. ที่เข้าใจบริบทและนโยบายขององค์กร' },
+        { icon: 'Library', title: 'วิเคราะห์เอกสารและข้อมูล', body: 'สรุป สกัด และถามตอบกับเอกสารและชุดข้อมูลขนาดใหญ่ด้วย RAG' },
+        { icon: 'Sparkles', title: 'ระบบอัตโนมัติของงานภายใน', body: 'สร้างสกิลที่นำกลับมาใช้ซ้ำเพื่ออัตโนมัติงานที่ทำซ้ำ ๆ ของทีม' },
+        { icon: 'Plug', title: 'โคไพลอตเฉพาะทางด้วยเพอร์โซนา', body: 'กำหนดเพอร์โซนา AI ที่เชี่ยวชาญเฉพาะแผนกหรือกรณีการใช้งาน' },
+        { icon: 'KeyRound', title: 'ถามตอบข้อมูลภายในอย่างปลอดภัย', body: 'ให้ทีมถามตอบกับข้อมูลที่ละเอียดอ่อนได้โดยข้อมูลไม่ออกนอกองค์กร' },
+      ],
+      faqs: [
+        { question: 'คำว่า "อธิปไตย (Sovereign)" หมายความว่าอย่างไร', answer: 'องค์กรของคุณเป็นเจ้าของและโฮสต์แพลตฟอร์มเอง ข้อมูล โมเดล และความรู้ทั้งหมดอยู่ภายในโครงสร้างพื้นฐานของคุณ ไม่ออกไปสู่บุคคลที่สาม' },
+        { question: 'Logix ติดตั้งภายในองค์กรแบบ Air-gapped ได้ไหม', answer: 'ได้ Logix ติดตั้งได้ทั้งบนองค์กร บนคลาวด์ หรือแบบไฮบริด และรองรับสภาพแวดล้อมแบบปิด (air-gapped) อย่างสมบูรณ์' },
+        { question: 'Logix รองรับโมเดล LLM ใดบ้าง', answer: 'รองรับโมเดลโอเพนซอร์สผ่าน vLLM, Ollama และ SGLang รวมถึงโมเดลบนคลาวด์ผ่านการกำหนดเส้นทางแบบไฮบริด (LiteLLM)' },
+        { question: 'ข้อมูลขององค์กรถูกเก็บเป็นความลับอย่างไร', answer: 'ข้อมูล เวกเตอร์ และฐานความรู้ทั้งหมดอยู่ในฐานข้อมูลของคุณ ไม่มีการเรียกออกภายนอก เว้นแต่คุณเลือกกำหนดเส้นทางไปยังโมเดลบนคลาวด์เอง' },
+        { question: 'ทีมงานใช้ Logix ในแต่ละวันอย่างไร', answer: 'เป็นพื้นที่ทำงาน AI คล้าย ChatGPT หรือ Claude พร้อมเอเจนต์ สกิล เพอร์โซนา และระบบความรู้แบบรวมศูนย์' },
+        { question: 'การติดตั้งและดูแลระบบเป็นอย่างไร', answer: 'มีแคตตาล็อกติดตั้งในคลิกเดียวและ Infrastructure Manager แบบ GUI โดยทีม ThinkSpace ช่วยดูแลการนำไปใช้งาน' },
+      ],
+      roadmap: [
+        { milestone: 'พร้อมใช้งานแล้ว · v1.0', status: 'live', statusLabel: 'ใช้งานจริง', features: 'พื้นที่ทำงาน AI อธิปไตย\nแชท + RAG พร้อมการอ้างอิง\nความรู้ หน่วยความจำ และเพอร์โซนา\nหลายผู้เช่า ติดตั้งในองค์กร' },
+        { milestone: 'เร็ว ๆ นี้ · v1.5', status: 'soon', statusLabel: 'กำลังจะมา', features: 'API ที่เข้ากันได้กับ OpenAI\nตัวเชื่อมต่อข้อมูลสด\nโหมด ADE ความแม่นยำสูง\nการกำกับดูแล + SSO ระดับองค์กร' },
+        { milestone: 'ถัดไป · v2.0', status: 'soon', statusLabel: 'กำลังจะมา', features: 'กราฟความรู้\nจัดการ GPU คลัสเตอร์\nมาร์เก็ตเพลสสกิล\nแอปมือถือ (iOS + Android)' },
+        { milestone: 'แผนงาน · v2.5+', status: 'planned', statusLabel: 'ในแผนงาน', features: 'แอปเดสก์ท็อป + CLI\nอะแดปเตอร์โมเดล/มีเดียเพิ่มเติม\nระบบนิเวศและการขยายขนาด' },
+      ],
+    },
+  },
+  proxmox: {
+    en: {
+      name: 'Proxmox VE', slug: 'proxmox', order: 2,
+      eyebrow: 'Authorized Proxmox Reseller',
+      title: 'Enterprise virtualization with', titleHighlight: 'Proxmox VE',
+      intro: 'As an official reseller of Proxmox Server Solutions, ThinkSpace designs, deploys and operates production-grade open-source virtualization — infrastructure you fully own and control, free of vendor lock-in.',
+      ctaLabel: 'Schedule a Technical Consult',
+      heroChips: ['KVM + LXC', 'ZFS / Ceph', 'High Availability', 'SDN + Firewall', 'Open Source'],
+      features: [
+        { icon: 'Boxes', title: 'KVM + LXC', body: 'Run full virtual machines (KVM) and lightweight containers (LXC) on a single platform for maximum workload flexibility.' },
+        { icon: 'Activity', title: 'HA & Live Migration', body: 'High-availability clustering with live migration of running VMs between nodes — no service interruption.' },
+        { icon: 'HardDrive', title: 'Software-Defined Storage', body: 'Built-in software-defined storage with ZFS and Ceph for resilient, distributed block storage.' },
+        { icon: 'Layers', title: 'Hyper-Converged Infrastructure', body: 'Converge compute, storage and networking into one HCI cluster to reduce complexity and hardware cost.' },
+        { icon: 'ShieldCheck', title: 'Built-in Backup & Restore', body: 'Scheduled, integrated backup and restore for VMs and containers with point-in-time recovery.' },
+        { icon: 'Network', title: 'SDN + Firewall', body: 'Software-defined networking (SDN) and an integrated firewall for cluster-, node- and VM-level security.' },
+        { icon: 'MonitorCheck', title: 'Central Web Management', body: 'A single web interface to manage the entire cluster — no separate management licensing required.' },
+        { icon: 'Server', title: 'Enterprise Open Source', body: 'A proven open-source platform free of vendor lock-in, with a tested Enterprise Repository for production.' },
+      ],
+      tiers: [
+        { name: 'Basic', tagline: 'For getting into production', featured: false, points: ['Enterprise Repository access', 'Stable, tested updates', 'Ticket-based support'] },
+        { name: 'Standard', tagline: 'Right-sized for most workloads', featured: true, points: ['Everything in Basic', 'Faster response times', 'Cluster configuration assistance'] },
+        { name: 'Premium', tagline: 'For mission-critical estates', featured: false, points: ['Everything in Standard', 'Highest support level', 'Proactive architecture planning'] },
+      ],
+      addOns: [
+        { icon: 'Database', title: 'Proxmox Backup Server', body: 'Enterprise backup solution for VMs, containers and physical hosts.', features: ['Incremental, deduplicated backups', 'Client-side encryption', 'Data integrity verification'] },
+        { icon: 'Mail', title: 'Proxmox Mail Gateway', body: 'A mail gateway that filters spam and malware before it reaches your mail server.', features: ['Multi-layer spam & virus filtering', 'Quarantine and custom rules', 'Centralized reporting & statistics'] },
+      ],
+      faqs: [
+        { question: 'Is ThinkSpace an official Proxmox reseller?', answer: 'Yes — ThinkSpace is an authorized reseller of Proxmox Server Solutions, providing subscriptions, deployment, and enterprise-grade support.' },
+        { question: 'How is Proxmox VE different from VMware?', answer: 'Proxmox VE is an open-source virtualization platform (KVM + LXC) you fully own — no vendor lock-in — with ZFS/Ceph, HA, and SDN built in, dramatically reducing licensing cost.' },
+        { question: 'Do you provide support and SLAs?', answer: 'Yes. We offer B2B support packages with SLAs, Proxmox licensing, and proactive management at the tier your organization chooses.' },
+        { question: 'Can ThinkSpace migrate us from VMware / Hyper-V?', answer: 'Yes. We plan the architecture, design the cluster, and execute a safe migration of your workloads from VMware or Hyper-V to Proxmox VE.' },
+        { question: 'Does it support high availability and backups?', answer: 'Yes — via Proxmox VE HA, ZFS/Ceph storage, and Proxmox Backup Server for continuity and disaster recovery.' },
+        { question: 'Can it run on-premise or in the cloud?', answer: 'Both. We design and operate Proxmox VE on your on-premise hardware or in the cloud, to fit your requirements.' },
+      ],
+      extra: {
+        dcmEyebrow: 'Central Control Plane',
+        dcmBody: 'Manage multiple Proxmox VE clusters from a single control plane, with unified visibility across the datacenter and seamless workload movement between clusters. ThinkSpace plans and configures this control plane to match your scale and requirements.',
+        dcmPoints: ['Unified resource view across all clusters', 'Cross-cluster workload migration', 'Consolidated access and role management'],
+        quote: '"ThinkSpace helps organizations truly own their virtualization infrastructure — a secure open-source platform backed by enterprise-grade support."',
+        attribution: 'Designed and operated by the ThinkSpace cloud & infrastructure team.',
+        ctaTitle: 'Ready to plan your Proxmox environment?',
+        ctaBody: 'Talk to our engineers about architecture, licensing and your migration path.',
+      },
+    },
+    th: {
+      name: 'Proxmox VE', slug: 'proxmox', order: 2,
+      eyebrow: 'ตัวแทนจำหน่ายที่ได้รับอนุญาต',
+      title: 'เวอร์ชวลไลเซชันระดับองค์กรด้วย', titleHighlight: 'Proxmox VE',
+      intro: 'ในฐานะตัวแทนจำหน่ายอย่างเป็นทางการของ Proxmox Server Solutions ทีม ThinkSpace ออกแบบ ติดตั้ง และดูแลแพลตฟอร์มเวอร์ชวลไลเซชันแบบโอเพนซอร์สที่พร้อมใช้งานในระดับองค์กร — โครงสร้างพื้นฐานที่คุณเป็นเจ้าของและควบคุมได้เต็มที่ ปราศจาก vendor lock-in',
+      ctaLabel: 'นัดหมายปรึกษาทางเทคนิค',
+      heroChips: ['KVM + LXC', 'ZFS / Ceph', 'High Availability', 'SDN + Firewall', 'Open Source'],
+      features: [
+        { icon: 'Boxes', title: 'KVM + LXC', body: 'รันทั้ง virtual machine (KVM) และ container ที่มีน้ำหนักเบา (LXC) บนแพลตฟอร์มเดียว เพื่อความยืดหยุ่นสูงสุดของเวิร์กโหลด' },
+        { icon: 'Activity', title: 'HA และ Live Migration', body: 'คลัสเตอร์ที่มีความพร้อมใช้งานสูง ย้ายเครื่องเสมือนแบบ live ระหว่างโหนดได้โดยไม่ต้องหยุดให้บริการ' },
+        { icon: 'HardDrive', title: 'Software-Defined Storage', body: 'สตอเรจที่กำหนดด้วยซอฟต์แวร์ในตัว รองรับ ZFS และ Ceph สำหรับ storage แบบกระจายที่ทนทาน' },
+        { icon: 'Layers', title: 'Hyper-Converged Infrastructure', body: 'รวมการประมวลผล สตอเรจ และเครือข่ายไว้ในคลัสเตอร์ HCI เดียว ลดความซับซ้อนและต้นทุนฮาร์ดแวร์' },
+        { icon: 'ShieldCheck', title: 'Backup & Restore ในตัว', body: 'สำรองและกู้คืนเครื่องเสมือนและคอนเทนเนอร์ตามกำหนดเวลา พร้อมการกู้คืนแบบละเอียด' },
+        { icon: 'Network', title: 'SDN + Firewall', body: 'เครือข่ายที่กำหนดด้วยซอฟต์แวร์ (SDN) และไฟร์วอลล์ในตัว ควบคุมความปลอดภัยระดับคลัสเตอร์ โหนด และ VM' },
+        { icon: 'MonitorCheck', title: 'การจัดการผ่านเว็บแบบรวมศูนย์', body: 'อินเทอร์เฟซเว็บเดียวสำหรับจัดการทั้งคลัสเตอร์ ไม่ต้องเสียค่าลิขสิทธิ์การจัดการเพิ่มเติม' },
+        { icon: 'Server', title: 'โอเพนซอร์สระดับองค์กร', body: 'แพลตฟอร์มโอเพนซอร์สที่พิสูจน์แล้ว ปราศจาก vendor lock-in พร้อม Enterprise Repository ที่ผ่านการทดสอบ' },
+      ],
+      tiers: [
+        { name: 'Basic', tagline: 'สำหรับการเริ่มต้นใช้งานจริง', featured: false, points: ['เข้าถึง Enterprise Repository', 'อัปเดตที่ผ่านการทดสอบเพื่อความเสถียร', 'การสนับสนุนผ่านระบบ ticket'] },
+        { name: 'Standard', tagline: 'เหมาะกับงานธุรกิจส่วนใหญ่', featured: true, points: ['ทุกอย่างใน Basic', 'เวลาตอบสนองที่เร็วขึ้น', 'ความช่วยเหลือในการกำหนดค่าคลัสเตอร์'] },
+        { name: 'Premium', tagline: 'สำหรับสภาพแวดล้อมที่สำคัญต่อภารกิจ', featured: false, points: ['ทุกอย่างใน Standard', 'ระดับการสนับสนุนสูงสุด', 'การวางแผนสถาปัตยกรรมเชิงรุก'] },
+      ],
+      addOns: [
+        { icon: 'Database', title: 'Proxmox Backup Server', body: 'โซลูชันสำรองข้อมูลระดับองค์กรสำหรับ VM, container และโฮสต์', features: ['การสำรองข้อมูลแบบ incremental และ deduplication', 'การเข้ารหัสฝั่งไคลเอนต์', 'การตรวจสอบความสมบูรณ์ของข้อมูล'] },
+        { icon: 'Mail', title: 'Proxmox Mail Gateway', body: 'เกตเวย์อีเมลที่ป้องกันสแปมและมัลแวร์ก่อนถึงเซิร์ฟเวอร์เมลของคุณ', features: ['การกรองสแปมและไวรัสแบบหลายชั้น', 'การกักกันและกฎที่ปรับแต่งได้', 'รายงานและสถิติแบบรวมศูนย์'] },
+      ],
+      faqs: [
+        { question: 'ThinkSpace เป็นตัวแทนจำหน่าย Proxmox อย่างเป็นทางการหรือไม่', answer: 'ใช่ ThinkSpace เป็นตัวแทนจำหน่ายที่ได้รับอนุญาตของ Proxmox Server Solutions ให้บริการสมัครสมาชิก การติดตั้ง และการสนับสนุนระดับองค์กร' },
+        { question: 'Proxmox VE ต่างจาก VMware อย่างไร', answer: 'Proxmox VE เป็นแพลตฟอร์มเวอร์ชวลไลเซชันโอเพนซอร์ส (KVM + LXC) ที่คุณเป็นเจ้าของเต็มที่ ไม่มีการผูกขาดกับผู้ขาย พร้อม ZFS/Ceph, HA และ SDN ในตัว ช่วยลดต้นทุนใบอนุญาตได้อย่างมาก' },
+        { question: 'มีบริการสนับสนุนและ SLA หรือไม่', answer: 'มี เราเสนอแพ็กเกจสนับสนุนแบบ B2B พร้อม SLA การออกใบอนุญาตจาก Proxmox และการดูแลเชิงรุกตามระดับที่องค์กรเลือก' },
+        { question: 'ThinkSpace ช่วยย้ายระบบจาก VMware/Hyper-V ได้ไหม', answer: 'ได้ เราวางแผนสถาปัตยกรรม ออกแบบคลัสเตอร์ และดำเนินการย้ายเวิร์กโหลดจาก VMware หรือ Hyper-V มาสู่ Proxmox VE อย่างปลอดภัย' },
+        { question: 'รองรับ High Availability และการสำรองข้อมูลหรือไม่', answer: 'รองรับ ด้วย Proxmox VE HA, ZFS/Ceph storage และ Proxmox Backup Server เพื่อความต่อเนื่องและการกู้คืนระบบ' },
+        { question: 'ติดตั้งภายในองค์กรหรือบนคลาวด์ได้หรือไม่', answer: 'ได้ทั้งสองแบบ เราออกแบบและดำเนินการ Proxmox VE ทั้งบนฮาร์ดแวร์ในองค์กรและบนคลาวด์ตามความต้องการ' },
+      ],
+      extra: {
+        dcmEyebrow: 'การควบคุมแบบรวมศูนย์',
+        dcmBody: 'จัดการคลัสเตอร์ Proxmox VE หลายชุดจากหน้าจอควบคุมเดียว มองเห็นทรัพยากรทั้งหมดทั่วทั้งดาต้าเซ็นเตอร์ และย้ายเวิร์กโหลดข้ามคลัสเตอร์ได้อย่างราบรื่น ThinkSpace ช่วยวางแผนและกำหนดค่าระนาบควบคุมส่วนกลางให้เหมาะกับขนาดและความต้องการขององค์กร',
+        dcmPoints: ['มุมมองทรัพยากรแบบรวมศูนย์ทั่วทุกคลัสเตอร์', 'การย้ายเวิร์กโหลดข้ามคลัสเตอร์', 'การจัดการการเข้าถึงและบทบาทแบบรวม'],
+        quote: '"ThinkSpace ช่วยให้องค์กรเป็นเจ้าของโครงสร้างพื้นฐานเวอร์ชวลไลเซชันของตนเองอย่างแท้จริง ด้วยแพลตฟอร์มโอเพนซอร์สที่ปลอดภัย พร้อมการสนับสนุนระดับองค์กร"',
+        attribution: 'ออกแบบและดูแลโดยทีมคลาวด์และโครงสร้างพื้นฐานของ ThinkSpace',
+        ctaTitle: 'พร้อมวางแผนสภาพแวดล้อม Proxmox ของคุณแล้วหรือยัง?',
+        ctaBody: 'พูดคุยกับวิศวกรของเราเพื่อกำหนดสถาปัตยกรรม การออกใบอนุญาต และเส้นทางการย้ายระบบ',
+      },
+    },
+  },
+}
+
+async function seedProducts(strapi: Core.Strapi) {
+  for (const [slug, byLocale] of Object.entries(productsData)) {
+    try {
+      const existing = await strapi.documents('api::product.product').findFirst({
+        filters: { slug: { $eq: slug } },
+        locale: 'en',
+      });
+      if (existing) {
+        strapi.log.info(`Product ${slug} already exists, skipping seed`);
+        continue;
+      }
+
+      const entry = await strapi.documents('api::product.product').create({
+        data: byLocale.en as any,
+        locale: 'en',
+      });
+      await strapi.documents('api::product.product').update({
+        documentId: entry.documentId,
+        data: byLocale.th as any,
+        locale: 'th-TH',
+      });
+      strapi.log.info(`Seeded product ${slug} (en + th-TH)`);
+    } catch (err) {
+      strapi.log.error(`Failed to seed product ${slug}: ${err}`);
+    }
+  }
+}
+
 async function seedHomepage(strapi: Core.Strapi) {
   try {
     const existingHomepage = await strapi.documents('api::homepage.homepage').findFirst({
@@ -2495,6 +2718,7 @@ export default {
     await seedContactInfo(strapi);
     await seedLegalPages(strapi);
     await seedServices(strapi);
+    await seedProducts(strapi);
     await seedHomepage(strapi);
     await seedClients(strapi);
     await seedPartners(strapi);
