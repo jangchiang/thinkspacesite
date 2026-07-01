@@ -99,6 +99,11 @@ const organizationJsonLd = {
     availableLanguage: ['English', 'Thai'],
   },
   knowsAbout: [
+    'Software Development',
+    'Custom Software Development',
+    'Web Application Development',
+    'Mobile Application Development',
+    'Enterprise Software',
     'Artificial Intelligence',
     'Data Science',
     'High-Performance Computing',
@@ -108,6 +113,72 @@ const organizationJsonLd = {
     'Proxmox Virtualization',
   ],
 }
+
+// Per-branch LocalBusiness entries — the strongest on-page signal that we are a
+// software/technology company physically in Chiang Mai and Hat Yai. Google uses
+// these (alongside a Google Business Profile per city) for local-pack + local
+// organic queries such as "บริษัทซอฟต์แวร์ในเชียงใหม่".
+const localBusinessJsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    '@id': `${siteUrl}/#chiangmai`,
+    name: 'ThinkSpace Technology — บริษัทซอฟต์แวร์และเทคโนโลยีในเชียงใหม่',
+    image: `${siteUrl}/logo.png`,
+    url: `${siteUrl}/th/software-chiang-mai`,
+    telephone: '+66-82-808-7666',
+    email: 'info@techthinkspace.com',
+    priceRange: '$$',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '211/141 Moo 2, Mae Hia',
+      addressLocality: 'Muang Chiang Mai',
+      addressRegion: 'Chiang Mai',
+      postalCode: '50100',
+      addressCountry: 'TH',
+    },
+    geo: { '@type': 'GeoCoordinates', latitude: 18.7669, longitude: 98.9459 },
+    areaServed: [{ '@type': 'City', name: 'Chiang Mai' }, { '@type': 'City', name: 'เชียงใหม่' }],
+    openingHoursSpecification: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '09:00',
+      closes: '18:00',
+    },
+    knowsAbout: ['Software Development', 'Custom Software', 'Web & Mobile Apps', 'AI', 'Enterprise Software'],
+    sameAs: ['https://www.facebook.com/techthinkspace', 'https://www.linkedin.com/company/techthinkspace'],
+    parentOrganization: { '@type': 'Organization', name: 'Thinkspace Technology', url: siteUrl },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    '@id': `${siteUrl}/#hatyai`,
+    name: 'ThinkSpace Technology — บริษัทซอฟต์แวร์และเทคโนโลยีในหาดใหญ่',
+    image: `${siteUrl}/logo.png`,
+    url: `${siteUrl}/th/software-hat-yai`,
+    telephone: '+66-82-808-7666',
+    email: 'info@techthinkspace.com',
+    priceRange: '$$',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Hat Yai',
+      addressRegion: 'Songkhla',
+      postalCode: '90110',
+      addressCountry: 'TH',
+    },
+    geo: { '@type': 'GeoCoordinates', latitude: 7.0086, longitude: 100.4747 },
+    areaServed: [{ '@type': 'City', name: 'Hat Yai' }, { '@type': 'City', name: 'หาดใหญ่' }, { '@type': 'City', name: 'Songkhla' }],
+    openingHoursSpecification: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '09:00',
+      closes: '18:00',
+    },
+    knowsAbout: ['Software Development', 'Custom Software', 'Web & Mobile Apps', 'AI', 'Enterprise Software'],
+    sameAs: ['https://www.facebook.com/techthinkspace', 'https://www.linkedin.com/company/techthinkspace'],
+    parentOrganization: { '@type': 'Organization', name: 'Thinkspace Technology', url: siteUrl },
+  },
+]
 
 const websiteJsonLd = {
   '@context': 'https://schema.org',
@@ -137,6 +208,13 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
+        {localBusinessJsonLd.map((biz) => (
+          <script
+            key={biz['@id']}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(biz) }}
+          />
+        ))}
       </head>
       <body className="min-h-screen bg-base-100" suppressHydrationWarning>
         <ThemeProvider>
