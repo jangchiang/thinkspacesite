@@ -161,12 +161,13 @@ const localBusinessJsonLd = [
     priceRange: '$$',
     address: {
       '@type': 'PostalAddress',
+      streetAddress: '15 Navamin Village Soi 4, Punnakan-Tungdon Rd., Kho Hong',
       addressLocality: 'Hat Yai',
       addressRegion: 'Songkhla',
       postalCode: '90110',
       addressCountry: 'TH',
     },
-    geo: { '@type': 'GeoCoordinates', latitude: 7.0086, longitude: 100.4747 },
+    geo: { '@type': 'GeoCoordinates', latitude: 7.0075, longitude: 100.498 },
     areaServed: [{ '@type': 'City', name: 'Hat Yai' }, { '@type': 'City', name: 'หาดใหญ่' }, { '@type': 'City', name: 'Songkhla' }],
     openingHoursSpecification: {
       '@type': 'OpeningHoursSpecification',
