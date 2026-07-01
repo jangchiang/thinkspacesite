@@ -964,8 +964,8 @@ const contactInfoData: ContactInfoSeedData = {
   phone: '+66 082-808-7666',
   lineId: '@techthinkspace',
   address: {
-    th: 'กรุงเทพมหานคร, ประเทศไทย',
-    en: 'Bangkok, Thailand',
+    th: '211/141 หมู่ 2 ตำบลแม่เหียะ อำเภอเมือง เชียงใหม่ 50100 (และสาขาหาดใหญ่ สงขลา)',
+    en: '211/141 Moo 2, Mae Hia, Muang, Chiang Mai 50100 (with a Hat Yai, Songkhla branch)',
   },
   workingHours: {
     th: 'จันทร์ - ศุกร์: 9:00 - 18:00',
