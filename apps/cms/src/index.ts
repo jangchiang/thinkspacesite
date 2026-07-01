@@ -964,8 +964,8 @@ const contactInfoData: ContactInfoSeedData = {
   phone: '+66 082-808-7666',
   lineId: '@techthinkspace',
   address: {
-    th: '211/141 หมู่ 2 ตำบลแม่เหียะ อำเภอเมือง เชียงใหม่ 50100 (และสาขาหาดใหญ่ สงขลา)',
-    en: '211/141 Moo 2, Mae Hia, Muang, Chiang Mai 50100 (with a Hat Yai, Songkhla branch)',
+    th: 'สำนักงานเชียงใหม่: 211/141 หมู่ 2 ตำบลแม่เหียะ อำเภอเมือง เชียงใหม่ 50100 · สำนักงานหาดใหญ่: 15 หมู่บ้านนวมินทร์ ซอย 4 ถ.ปุณณกัณฑ์-ทุ่งดอน ตำบลคอหงส์ อำเภอหาดใหญ่ สงขลา 90110',
+    en: 'Chiang Mai office: 211/141 Moo 2, Mae Hia, Muang, Chiang Mai 50100 · Hat Yai office: 15 Navamin Village Soi 4, Punnakan-Tungdon Rd., Kho Hong, Hat Yai, Songkhla 90110',
   },
   workingHours: {
     th: 'จันทร์ - ศุกร์: 9:00 - 18:00',
