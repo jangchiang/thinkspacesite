@@ -18,6 +18,12 @@ const LOCALE_MAP: Record<string, string> = {
   'th': TH_PRIMARY,
 }
 
+// Client / Partner / Hero-card entries are edited in Strapi Admin (logo swaps, new
+// logos). They used to cache for an hour, so a logo change took up to 60 minutes to
+// appear; every other collection here uses the 60s default. Keep them in line with it
+// — the /api/revalidate webhook purges these tags on save; this is the fallback.
+const CMS_LOGO_REVALIDATE = 60
+
 interface StrapiResponse<T> {
   data: T
   meta?: {
@@ -323,7 +329,7 @@ export async function getClients() {
     populate: ['logo'],
     sort: 'order:asc',
     tags: ['clients'],
-    revalidate: 3600,
+    revalidate: CMS_LOGO_REVALIDATE,
   })
 
   return response.data
@@ -335,7 +341,7 @@ export async function getPartners() {
     populate: ['logo'],
     sort: 'order:asc',
     tags: ['partners'],
-    revalidate: 3600,
+    revalidate: CMS_LOGO_REVALIDATE,
   })
 
   return response.data
@@ -374,7 +380,7 @@ export async function getHeroCards(locale: Locale) {
     populate: ['image', 'background'],
     sort: 'order:asc',
     tags: ['hero-cards'],
-    revalidate: 3600,
+    revalidate: CMS_LOGO_REVALIDATE,
   })
 
   return response.data
