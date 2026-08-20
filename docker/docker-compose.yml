@@ -19,7 +19,10 @@ services:
       - NEXT_PUBLIC_STRAPI_URL=${NEXT_PUBLIC_STRAPI_URL}
       - STRAPI_URL=${STRAPI_URL:-http://cms:1337}
       - STRAPI_API_TOKEN=${STRAPI_API_TOKEN}
-      - REVALIDATION_SECRET=${REVALIDATION_SECRET}
+      # Both spellings are passed through: the app accepts either, and different env
+      # files in this repo define different names.
+      - REVALIDATION_SECRET=${REVALIDATION_SECRET:-${REVALIDATE_SECRET}}
+      - REVALIDATE_SECRET=${REVALIDATE_SECRET:-${REVALIDATION_SECRET}}
     depends_on:
       - cms
     networks:

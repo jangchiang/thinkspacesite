@@ -1,11 +1,25 @@
 import { revalidateTag } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
 
+// The secret is spelled REVALIDATE_SECRET in .env.example but REVALIDATION_SECRET in
+// docker-compose/.env.production — accept either so the endpoint authenticates whichever
+// name the environment happens to define. An unset secret means the endpoint is disabled
+// (rather than open), so a missing env var can never make it publicly callable.
+const REVALIDATE_SECRET = process.env.REVALIDATE_SECRET || process.env.REVALIDATION_SECRET
+
 export async function POST(request: NextRequest) {
   const secret = request.headers.get('x-revalidate-secret')
 
+  if (!REVALIDATE_SECRET) {
+    console.error('Revalidation rejected: neither REVALIDATE_SECRET nor REVALIDATION_SECRET is set')
+    return NextResponse.json(
+      { success: false, message: 'Revalidation not configured' },
+      { status: 503 }
+    )
+  }
+
   // Verify secret
-  if (secret !== process.env.REVALIDATE_SECRET) {
+  if (secret !== REVALIDATE_SECRET) {
     return NextResponse.json(
       { success: false, message: 'Invalid secret' },
       { status: 401 }
@@ -15,8 +29,25 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
 
-    // Strapi webhook payload
-    const { model, entry } = body
+    // Strapi webhook payload. entry.* events carry { event, model, entry };
+    // media.* events carry { event, media } and no model at all.
+    const { event, model, entry } = body
+
+    // Replacing a file in the Media Library (e.g. swapping a partner logo for a new
+    // version) fires media.update, not entry.update — the entry is untouched, so there
+    // is no model to map. Purge every tag that renders CMS media instead.
+    if (typeof event === 'string' && event.startsWith('media.')) {
+      const mediaTags = ['clients', 'partners', 'hero-cards', 'homepage', 'services', 'products', 'case-studies', 'blog-posts', 'pages', 'about-page', 'page-heroes', 'site-settings']
+      for (const tag of mediaTags) {
+        revalidateTag(tag, { expire: 0 })
+      }
+      console.log(`Revalidated media tags: ${mediaTags.join(', ')}`)
+      return NextResponse.json({
+        success: true,
+        revalidated: mediaTags,
+        timestamp: new Date().toISOString(),
+      })
+    }
 
     if (!model) {
       return NextResponse.json(
